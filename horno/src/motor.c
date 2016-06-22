@@ -2,7 +2,7 @@
  * motor.c
  *
  *  Created on: 31/5/2016
- *      Author: m4v
+ *      Author: Elián Hanisch, Gastón Riera y Rodrigo Oliver
  *
  *  Funciones para controlar el motor paso a paso.
  *

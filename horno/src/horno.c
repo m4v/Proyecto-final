@@ -1,7 +1,7 @@
 /*
 ===============================================================================
  Name        : horno.c
- Author      : $(author)
+ Author      : Elián Hanisch, Gastón Riera y Rodrigo Oliver
  Version     :
  Copyright   : $(copyright)
  Description : main definition
