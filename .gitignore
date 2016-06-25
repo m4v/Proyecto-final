@@ -4,8 +4,6 @@
 /**/RemoteSystemsTempFiles
 /**/Debug
 *.launch
-*.cproject
-*.project
 .settings
 
 # Docbook
