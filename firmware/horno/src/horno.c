@@ -27,6 +27,9 @@
 static int32_t pasos;
 static int32_t paso_inc = 0;
 
+/* mensaje de inicio para mandar por el UART */
+static char mensaje_inicio[] = "\r\nProyecto Final Horno Dental\r\n";
+
 void SysTick_Handler(void)
 {
 	Board_LED_Toggle(0);
@@ -55,25 +58,22 @@ int main(void) {
 
     /* código del horno empieza aquí */
 
-    SysTick_Config(SystemCoreClock / 40);
+    /* SystemCoreClock es 96Mhz
+     * SysTick_Config usa el argumento para cargar un contador decreciente
+     * que cuando llega a cero genera una interrupción. El contador es de
+     * 24bits.
+     */
+    SysTick_Config(SystemCoreClock / 40); // 40 interrupciones por segundo
     Horno_Init();
+
+    DEBUGOUT(mensaje_inicio);
 
     // Force the counter to be placed into memory
     volatile static int i = 0;
     // Enter an infinite loop, just incrementing a counter
     while(1) {
+    	i++;
 
-    	/* leer botones para controlar el motor PP */
-        bool der = Chip_GPIO_GetPinState(LPC_GPIO, 2, 12);
-        bool izq = Chip_GPIO_GetPinState(LPC_GPIO, 2, 11);
-        bool parar = Chip_GPIO_GetPinState(LPC_GPIO, 2, 5);
-        if (!parar) {
-        	paso_inc = 0;
-        } else if (!der) {
-        	paso_inc = 1;
-        } else if (!izq) {
-        	paso_inc = -1;
-        }
     }
     return 0 ;
 }
