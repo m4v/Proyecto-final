@@ -24,6 +24,7 @@
 
 /* definitions and declarations here */
 
+static int32_t contador;
 static int32_t pasos;
 static int32_t paso_inc = 0;
 
@@ -32,7 +33,11 @@ static char mensaje_inicio[] = "\r\nProyecto Final Horno Dental\r\n";
 
 void SysTick_Handler(void)
 {
-	Board_LED_Toggle(0);
+	contador++;
+	if ((contador % 4) == 0) {
+		/* divido por 4 para que no parpadeé tan rápido el led */
+		Board_LED_Toggle(0);
+	}
 	if (paso_inc == 0) {
 		/* no queremos dejar el motor clavado con una bobina siempre encendida */
 		Horno_MotorApagar();
