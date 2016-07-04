@@ -4,6 +4,8 @@ El objetivo de este proyecto es diseñar un sistema de control digital para un h
 
 ## Estructura de directorios
 
-* horno - Código fuente del programa del horno.
-* lpc_board_nxp_lpcxpresso_1769 - Librerías de LPCxpresso 1769.
-* lpc_chip_175x_6x - Biblioteca micro controlador.
+* firmware/ - Directorio con el programa del horno.
+  * horno/ - Código fuente específico del horno.
+  * lpc_board_nxp_lpcxpresso_1769/ - Librerías de LPCxpresso 1769.
+  * lpc_chip_175x_6x/ - Biblioteca micro controlador.
+  * periph_*/ - ejemplos de LPCOpen
