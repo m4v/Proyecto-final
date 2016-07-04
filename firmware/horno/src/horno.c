@@ -30,6 +30,7 @@ static int32_t paso_inc = 0;
 
 /* mensaje de inicio para mandar por el UART */
 static char mensaje_inicio[] = "\r\nProyecto Final Horno Dental\r\n";
+static char mensaje_menu[] = "La tecla 'c' inicia el contador, 'x' lo detiene.\r\n";
 
 void SysTick_Handler(void)
 {
@@ -48,6 +49,9 @@ void SysTick_Handler(void)
 }
 
 int main(void) {
+
+	uint8_t charUART;
+	int contador_enable = 0;
 
 #if defined (__USE_LPCOPEN)
 #if !defined(NO_BOARD_LIB)
@@ -76,9 +80,21 @@ int main(void) {
     // Force the counter to be placed into memory
     volatile static int i = 0;
     // Enter an infinite loop, just incrementing a counter
-    while(1) {
-    	i++;
 
+	DEBUGOUT(mensaje_menu);
+    while(1) {
+    	charUART = DEBUGIN();
+    	if (charUART == 'c') {
+    		contador_enable = 1;
+    	} else if (charUART == 'x') {
+    		DEBUGOUT("Contador detenido.\r\n");
+    		DEBUGOUT(mensaje_menu);
+    		contador_enable = 0;
+    	}
+    	if (contador_enable) {
+    		i++;
+    		DEBUGOUT("Valor del contador %d\r\n", i);
+    	}
     }
     return 0 ;
 }
