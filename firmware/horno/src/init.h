@@ -19,6 +19,8 @@ typedef struct {
 	uint32_t pin:5;
 } PUERTO_T;
 
+#define ADC_CHANNEL ADC_CH0
+
 void Horno_Init (void);
 
 #endif /* INIT_H_ */
