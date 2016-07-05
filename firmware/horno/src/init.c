@@ -67,8 +67,11 @@ void Horno_Init (void) {
 
 	GPIO_SetDirections(gpiodir, sizeof(gpiodir) / sizeof(GPIO_DIR_T));
 
-	/*ADC Init */
+	/* ADC Init */
 	Chip_ADC_Init(LPC_ADC, &ADCSetup);
 	Chip_ADC_EnableChannel(LPC_ADC, ADC_CHANNEL, ENABLE);
+	/* Enable ADC Interrupt */
+	Chip_ADC_Int_SetChannelCmd(LPC_ADC, ADC_CHANNEL, ENABLE);
+	NVIC_EnableIRQ(ADC_IRQn);
 }
 

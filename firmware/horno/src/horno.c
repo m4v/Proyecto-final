@@ -23,36 +23,54 @@
 #include "motor.h"
 
 /* definitions and declarations here */
+#define NUM_MUESTRAS 800
 
-static int32_t contador;
+static bool adc_enabled = false;
 static int32_t pasos;
 static int32_t paso_inc = 0;
+static uint32_t time_ms = 0;
+
+static int muestras_i = 0;
+static uint16_t muestras[NUM_MUESTRAS];
 
 /* mensaje de inicio para mandar por el UART */
 static char mensaje_inicio[] = "\r\nProyecto Final Horno Dental\r\n";
-static char mensaje_menu[] = "La tecla 'c' inicia el ADC, 'x' lo detiene.\r\n";
+static char mensaje_menu[] = "Presione la tecla 'c' iniciar la captura.\r\n";
 
+/* rutina de interrupción del systick */
 void SysTick_Handler(void)
 {
-	contador++;
-	if ((contador % 4) == 0) {
-		/* divido por 4 para que no parpadeé tan rápido el led */
-		Board_LED_Toggle(0);
+//	time_ms++;
+//	if ((time_ms % 100) == 0) {
+//		/* parpadeo de 10hz */
+//		Board_LED_Toggle(0);
+//	}
+//	if (paso_inc == 0) {
+//		/* no queremos dejar el motor clavado con una bobina siempre encendida */
+//		Horno_MotorApagar();
+//	} else {
+//		pasos += paso_inc;
+//		Horno_MotorPaso(pasos);
+//	}
+
+	if (adc_enabled) {
+		if (muestras_i > NUM_MUESTRAS) {
+			adc_enabled = false;
+			Board_LED_Set(0, false);
+		}
+		Chip_ADC_SetStartMode(LPC_ADC, ADC_START_NOW, ADC_TRIGGERMODE_RISING);
 	}
-	if (paso_inc == 0) {
-		/* no queremos dejar el motor clavado con una bobina siempre encendida */
-		Horno_MotorApagar();
-	} else {
-		pasos += paso_inc;
-		Horno_MotorPaso(pasos);
-	}
+}
+
+/* rutina de interrupción del ADC */
+void ADC_IRQHandler(void)
+{
+	Chip_ADC_ReadValue(LPC_ADC, ADC_CHANNEL, &muestras[muestras_i++]);
 }
 
 int main(void) {
 	uint8_t charUART;
-    uint16_t dataADC;
-
-	int adc_enable = 0;
+	int i;
 
 #if defined (__USE_LPCOPEN)
 #if !defined(NO_BOARD_LIB)
@@ -61,8 +79,6 @@ int main(void) {
     // Set up and initialize all required blocks and
     // functions related to the board hardware
     Board_Init();
-    // Set the LED to the state of "On"
-    Board_LED_Set(0, true);
 #endif
 #endif
 
@@ -73,37 +89,22 @@ int main(void) {
      * que cuando llega a cero genera una interrupción. El contador es de
      * 24bits.
      */
-    SysTick_Config(SystemCoreClock / 40); // 40 interrupciones por segundo
+    SysTick_Config(SystemCoreClock / 10000); // una interrupción cada 0.1 ms
     Horno_Init();
 
     DEBUGOUT(mensaje_inicio);
-
-    // Force the counter to be placed into memory
-    volatile static int i = 0;
-    // Enter an infinite loop, just incrementing a counter
-
-	DEBUGOUT(mensaje_menu);
+   	DEBUGOUT(mensaje_menu);
     while(1) {
     	charUART = DEBUGIN();
     	if (charUART == 'c') {
-    		adc_enable = 1;
-    	} else if (charUART == 'x') {
-    		DEBUGOUT("ADC detenido.\r\n");
-    		DEBUGOUT(mensaje_menu);
-    		adc_enable = 0;
-    	}
-    	if (adc_enable) {
-    		Chip_ADC_SetStartMode(LPC_ADC, ADC_START_NOW, ADC_TRIGGERMODE_RISING);
-			/* Waiting for A/D conversion complete */
-			while (Chip_ADC_ReadStatus(LPC_ADC, ADC_CHANNEL, ADC_DR_DONE_STAT) != SET) {}
-			/* Read ADC value */
-			Chip_ADC_ReadValue(LPC_ADC, ADC_CHANNEL, &dataADC);
-			/* Print ADC value */
-			volatile uint32_t j;
-			j = 5000000;
-			DEBUGOUT("ADC value is : 0x%04x\r\n", dataADC);
-			/* Delay */
-			while (j--) {}
+    		adc_enabled = true;
+    		muestras_i = 0;
+    		Board_LED_Set(0, true);
+    		while(adc_enabled) {}
+    		for (i=0; i < NUM_MUESTRAS; i++) {
+    			DEBUGOUT("%.1f, %4d\r\n", (float)i/10, muestras[i]); // tiempo en ms
+    		}
+    		Board_LED_Set(0, false);
     	}
     }
     return 0;
