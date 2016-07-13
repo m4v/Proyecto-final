@@ -23,7 +23,7 @@
 #include "motor.h"
 
 /* definitions and declarations here */
-#define NUM_MUESTRAS 800
+#define NUM_MUESTRAS 1000
 
 static bool adc_enabled = false;
 static int32_t pasos;
@@ -89,7 +89,7 @@ int main(void) {
      * que cuando llega a cero genera una interrupción. El contador es de
      * 24bits.
      */
-    SysTick_Config(SystemCoreClock / 10000); // una interrupción cada 0.1 ms
+    SysTick_Config(SystemCoreClock / 1000); // una interrupción cada 1 ms
     Horno_Init();
 
     DEBUGOUT(mensaje_inicio);

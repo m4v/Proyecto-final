@@ -73,5 +73,10 @@ void Horno_Init (void) {
 	/* Enable ADC Interrupt */
 	Chip_ADC_Int_SetChannelCmd(LPC_ADC, ADC_CHANNEL, ENABLE);
 	NVIC_EnableIRQ(ADC_IRQn);
+
+	uint8_t div = 0xFF;
+	uint32_t cr = LPC_ADC->CR & (~ADC_SAMPLE_RATE_CONFIG_MASK);
+	cr |= ADC_CR_CLKDIV(div);
+	LPC_ADC->CR = cr;
 }
 
