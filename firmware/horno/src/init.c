@@ -16,6 +16,8 @@
 
 #include "init.h"
 
+static ADC_CLOCK_SETUP_T ADCSetup;
+
 /* Pin muxing configuration */
 static const PINMUX_GRP_T pinmux[] = {
 	/* pines para motor paso a paso */
@@ -27,7 +29,8 @@ static const PINMUX_GRP_T pinmux[] = {
 	{2,  11,  IOCON_MODE_INACT | IOCON_FUNC0},
 	{2,  12,  IOCON_MODE_INACT | IOCON_FUNC0},
 	{2,   5,  IOCON_MODE_INACT | IOCON_FUNC0},
-
+	/* pin del ADC */
+	{0,  23,  IOCON_MODE_INACT | IOCON_FUNC1},
 };
 
 /* Pin GPIO configuration */
@@ -40,7 +43,7 @@ static const GPIO_DIR_T gpiodir[] = {
 	/* pines de control del motor como entradas */
 	{2,  11, false},
 	{2,  12, false},
-	{2,  5, false},
+	{2,  5,  false},
 };
 
 /*
@@ -63,5 +66,17 @@ void Horno_Init (void) {
 	Chip_IOCON_SetPinMuxing(LPC_IOCON, pinmux, sizeof(pinmux) / sizeof(PINMUX_GRP_T));
 
 	GPIO_SetDirections(gpiodir, sizeof(gpiodir) / sizeof(GPIO_DIR_T));
+
+	/* ADC Init */
+	Chip_ADC_Init(LPC_ADC, &ADCSetup);
+	Chip_ADC_EnableChannel(LPC_ADC, ADC_CHANNEL, ENABLE);
+	/* Enable ADC Interrupt */
+	Chip_ADC_Int_SetChannelCmd(LPC_ADC, ADC_CHANNEL, ENABLE);
+	NVIC_EnableIRQ(ADC_IRQn);
+
+	uint8_t div = 0xFF;
+	uint32_t cr = LPC_ADC->CR & (~ADC_SAMPLE_RATE_CONFIG_MASK);
+	cr |= ADC_CR_CLKDIV(div);
+	LPC_ADC->CR = cr;
 }
 
