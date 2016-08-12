@@ -21,6 +21,7 @@
 /* includes del proyecto */
 #include "init.h"
 #include "motor.h"
+#include "320240.h"
 
 /* definitions and declarations here */
 #define NUM_MUESTRAS 1000
@@ -92,6 +93,7 @@ int main(void) {
     SysTick_Config(SystemCoreClock / 1000); // una interrupción cada 1 ms
     Horno_Init();
 
+    /*
     DEBUGOUT(mensaje_inicio);
    	DEBUGOUT(mensaje_menu);
     while(1) {
@@ -107,5 +109,12 @@ int main(void) {
     		Board_LED_Set(0, false);
     	}
     }
+     */
+
+    /* Display */
+    Display_Init();
+
+
+
     return 0;
 }

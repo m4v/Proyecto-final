@@ -35,15 +35,30 @@ static const PINMUX_GRP_T pinmux[] = {
 
 /* Pin GPIO configuration */
 static const GPIO_DIR_T gpiodir[] = {
+	//  Los pines del motor los mudé al costado izquierdo. Y todos consecutivos
 	/* pines del motor como salidas */
+	{0,  6, true},
+	{0,  7, true},
+	{0,  8, true},
+	{0,  9, true},
+	/* pines de control del motor como entradas */
+	{0,  0, false},
+	{0,  1, false},
+	{0,  18,  false},
+	/* pines de datos display como salida*/
+	{0,  4, true},
+	{0,  5, true},
+	{0,  10, true},
+	{0,  11, true},
+	/* pines de control display como salida */
+	{2,  0, true},
+	{2,  1, true},
+	{2,  2, true},
+	{2,  3, true},
+	{2,  4, true},
+	{2,  5, true},
 	{2,  6, true},
 	{2,  7, true},
-	{2,  8, true},
-	{2, 10, true},
-	/* pines de control del motor como entradas */
-	{2,  11, false},
-	{2,  12, false},
-	{2,  5,  false},
 };
 
 /*
