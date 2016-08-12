@@ -11,6 +11,7 @@
 #include "board.h"
 #endif
 
+#include "320240.h"
 /*  Datos
  * Comandos control
  * CS#		P0.4
@@ -25,16 +26,7 @@
 
 /* Defines */
 
-#define
-
-
-/* Declaro Funciones */
-void Display_Init(void);
-void Parameter_Write(uint32_t x);
-void Command_Write(uint32_t x);
-//void delay(int miliseg);
-void delayUS(unsigned int us);
-
+// #define
 
 /* Cada vez que le mandamos algo al display, hay que ponerle una configuración particular. Esto lo hacemos con una función
  * que sellamará: Command_Write.
@@ -44,6 +36,11 @@ void delayUS(unsigned int us);
  * La escritura de una letra, en modo caracter, es lo misma misma operación que escribir un registro.
  */
 
+/*Declaro las funciones */
+void Display_Init(void);
+void Parameter_Write(uint32_t x);
+void Command_Write(uint32_t x);
+void delayUS(unsigned int us);
 
 
 /* Main */
@@ -124,17 +121,19 @@ void Display_Init(void)
 
 }
 
-
+/* */
 void Parameter_Write(uint32_t pmtr)
 {
 	Chip_GPIO_SetPinState(LPC_GPIO, 0, 5, false);// A0=LOW
 	delayUS(10);
 	Chip_GPIO_SetPinState(LPC_GPIO, 0, 10, true);// RD=HIGH
 	delayUS(10);
-	Chip_GPIO_SetPinState(LPC_GPIO, 0, 11, false);// WR=LOW
-	delayUS(10);
 	Chip_GPIO_SetPortValue(LPC_GPIO, 2, pmtr);
+	delayUS(10);
+	Chip_GPIO_SetPinState(LPC_GPIO, 0, 11, false);// WR=LOW
 	delayUS(20);
+	Chip_GPIO_SetPinState(LPC_GPIO, 0, 11, true);// WR=HIGH
+	//delayUS(20);
 }
 
 void Command_Write(uint32_t cmd)
@@ -143,10 +142,11 @@ void Command_Write(uint32_t cmd)
 	delayUS(10);
 	Chip_GPIO_SetPinState(LPC_GPIO, 0, 10, true);// RD=HIGH
 	delayUS(10);
+	Chip_GPIO_SetPortValue(LPC_GPIO, 2, cmd); // equivalente de FIOPIN2 = cmd;
+	delayUS(10);
 	Chip_GPIO_SetPinState(LPC_GPIO, 0, 11, false);// WR=LOW -- equivalente de FIOPIN0 &= ~(1<<11);
 	delayUS(10);
-// void Chip_GPIO_SetPortValue(LPC_GPIO_T *pGPIO, uint8_t port, uint32_t value)
-	Chip_GPIO_SetPortValue(LPC_GPIO, 2, cmd); // equivalente de FIOPIN2 = cmd;
+	Chip_GPIO_SetPinState(LPC_GPIO, 0, 11, true);// WR=HIGH
 	delayUS(20);
 }
 
@@ -163,4 +163,4 @@ void delayUS(unsigned int us)
 
 
 
--
+
