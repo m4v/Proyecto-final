@@ -21,16 +21,30 @@ static ADC_CLOCK_SETUP_T ADCSetup;
 /* Pin muxing configuration */
 static const PINMUX_GRP_T pinmux[] = {
 	/* pines para motor paso a paso */
-	{2,   6,  IOCON_MODE_INACT | IOCON_FUNC0},
-	{2,   7,  IOCON_MODE_INACT | IOCON_FUNC0},
-	{2,   8,  IOCON_MODE_INACT | IOCON_FUNC0},
-	{2,  10,  IOCON_MODE_INACT | IOCON_FUNC0},
+	{0,   6,  IOCON_MODE_INACT | IOCON_FUNC0},
+	{0,   7,  IOCON_MODE_INACT | IOCON_FUNC0},
+	{0,   8,  IOCON_MODE_INACT | IOCON_FUNC0},
+	{0,   9,  IOCON_MODE_INACT | IOCON_FUNC0},
 	/* pines para control del motor */
-	{2,  11,  IOCON_MODE_INACT | IOCON_FUNC0},
-	{2,  12,  IOCON_MODE_INACT | IOCON_FUNC0},
-	{2,   5,  IOCON_MODE_INACT | IOCON_FUNC0},
+	{0,   0,  IOCON_MODE_INACT | IOCON_FUNC0},
+	{0,   1,  IOCON_MODE_INACT | IOCON_FUNC0},
+	{0,  18,  IOCON_MODE_INACT | IOCON_FUNC0},
 	/* pin del ADC */
 	{0,  23,  IOCON_MODE_INACT | IOCON_FUNC1},
+	/* pines del display */
+	{0,   4,  IOCON_MODE_INACT | IOCON_FUNC0}, // /CS and /RES
+	{0,   5,  IOCON_MODE_INACT | IOCON_FUNC0}, // A0
+	{0,  10,  IOCON_MODE_INACT | IOCON_FUNC0}, // /RD
+	{0,  11,  IOCON_MODE_INACT | IOCON_FUNC0}, // /WD
+	/* D[0-7] display */
+	{2,   0,  IOCON_MODE_INACT | IOCON_FUNC0},
+	{2,   1,  IOCON_MODE_INACT | IOCON_FUNC0},
+	{2,   2,  IOCON_MODE_INACT | IOCON_FUNC0},
+	{2,   3,  IOCON_MODE_INACT | IOCON_FUNC0},
+	{2,   4,  IOCON_MODE_INACT | IOCON_FUNC0},
+	{2,   5,  IOCON_MODE_INACT | IOCON_FUNC0},
+	{2,   6,  IOCON_MODE_INACT | IOCON_FUNC0},
+	{2,   7,  IOCON_MODE_INACT | IOCON_FUNC0},
 };
 
 /* Pin GPIO configuration */
