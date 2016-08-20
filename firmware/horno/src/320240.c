@@ -14,12 +14,10 @@
 #include "320240.h"
 /*  Datos
  * Comandos control
- * CS#		P0.4
- * A0		P0.5
- * RD0#		P0.10
- * WR0#		P0.11
- * WAIT#	P2.11
- * RESET#	P2.12
+ * /CS and /RES		P0.4
+ * A0				P0.5
+ * /RD				P0.10
+ * /WD				P0.11
  */
 
 /* Datos D[7:0] P2.0:P2.7 */
@@ -49,6 +47,11 @@ void Display_Init(void)
 	// A esta altura ya están todos los pines correspondientes como salida.
 	// Los pines de WAIT y RES los dejo en bajo por HARD.
 	// 15.1.2 Initialization example. Pág 103, controlador
+	//Chip_GPIO_SetPinState(LPC_GPIO, 2, 12, true);// /Res active in LOW
+	//delayUS(10);
+	Chip_GPIO_SetPinState(LPC_GPIO, 0, 4, false);// /CS active in LOW
+	//delayUS(10);
+
 
 	// start
 	// supply on
@@ -154,7 +157,7 @@ void delayUS(unsigned int us)
 {
 	int i,x;
 	//clock @96MHz
-	us=us*96; //96 ciclos equivale a 1 us
+	//us=us*96; //96 ciclos equivale a 1 us
 	for(i=0;i<(us*96); i++)
 	{
 		x++;
