@@ -112,9 +112,9 @@ int main(void) {
      */
 
     /* Display */
-   while(1){
+//while(1){
     Display_Init();
-   }
+
 
 
     return 0;

@@ -64,18 +64,18 @@ void Display_Init(void)
 	Parameter_Write(0x87); //P2 -- D7=1 MOD usually HIGH. D[3-0]= Horizontal size -1. Ahora está en 7, Tamano horiz=8
 	Parameter_Write(0x07); //P3 -- D[3-0]= Vertical size -1. Ahora en 7, tamano vert=8
 	Parameter_Write(0x27); // 0x27  //P4 -- Character Bytes per Row. D[7-0]=([C/R]x bpp)-1. Ahora está en C/R=40
-	Parameter_Write(0x2F); // 0x49 //P5 -- Total Character Bytes per Row. D[7-0]=[C/R]+1. Ahora está en 73
+	Parameter_Write(0x29); // 0x49 //P5 -- Total Character Bytes per Row. D[7-0]=[C/R]+1. Ahora está en 73
 	Parameter_Write(0xEF); // 0xEF //P6 -- Frame Height. D[7-0]=Frame height in lines-1. Cantidad de líneas: P6=(240-1). Esta es la altura del display.
-	Parameter_Write(0x28); // 0x28 //P7 -- P8P7 habla de la cantidad de direcciones horizontales. El datasheet habla de 128 con el display de 512, pero considerando una pantalla virtual extra.Para nosotros(sin pantalla virtual) (320/8)=40=0x0028 (P8=0x00,P7=0x28).
+	Parameter_Write(0x29); // 0x28 //P7 -- P8P7 habla de la cantidad de direcciones horizontales. El datasheet habla de 128 con el display de 512, pero considerando una pantalla virtual extra.Para nosotros(sin pantalla virtual) (320/8)=40=0x0028 (P8=0x00,P7=0x28).
 	Parameter_Write(0x00); // 0x00 //P8
 	//SCROLL
 	Command_Write(0x44); //C
 	Parameter_Write(0x00); //P1
 	Parameter_Write(0x00); //P2
-	Parameter_Write(0x30); //REG[0Dh] bits 7-0 = screen block 1 size in number of lines - 1 --0x30 //P3
+	Parameter_Write(0x40); //REG[0Dh] bits 7-0 = screen block 1 size in number of lines - 1 --0x30 //P3
 	Parameter_Write(0x00); //P4
 	Parameter_Write(0x10); //P5
-	Parameter_Write(0x30); //P6 -- Igual que P3
+	Parameter_Write(0x40); //P6 -- Igual que P3
 	Parameter_Write(0x00); //P7
 	Parameter_Write(0x04); //P8
 	// Estos no me sirven porque configuré single panel
@@ -90,9 +90,9 @@ void Display_Init(void)
 	Parameter_Write(0x01); //P1	-- D[1-0]: layer composition method, D[1-0]=0b01; EXOR
 	// DISP OFF
 	Command_Write(0x58); //C -- Disp OFF
-	Parameter_Write(0x14); //0x56 //P1
+	Parameter_Write(0x06); //0x56 //P1
 	// clear data in first layer
-	int i;
+	//int i;
 
 	/*Command_Write(0x42); //C -- Le aviso que voy a escribir
 	for (i=0;i<(40*30);i++){
@@ -114,7 +114,7 @@ void Display_Init(void)
 	Parameter_Write(0x86); //P2 -- Vertical cursor size=7px
 	//DISP ON
 	Command_Write(0x59); //C -- Disp ON
-	Parameter_Write(0x14); //0x00 //P1
+	//Parameter_Write(0x14); //0x00 //P1
 	// CSR DIR.
 	Command_Write(0x4C); //C -- Set cursor shift direction to right.
 
@@ -130,53 +130,47 @@ void Display_Init(void)
 	Parameter_Write(0x4F); // O
 	Parameter_Write(0x4E); // N
 	 */
-
+	while(1){
 	char c='A';
-    while(c<100) {
-    	//Parameter_Write(c);
+	int i;
+    for(i=0; i<40; i++) {
     	Parameter_Write(c);
-    	c++;
+    	delayUS(1000);
       }
-
+}
 
 }
 
 /* */
 void Parameter_Write(uint32_t pmtr)
 {
-	Chip_GPIO_SetPortValue(LPC_GPIO, 2, pmtr);
+
+	Chip_GPIO_SetPortValue(LPC_GPIO, 2, pmtr); //datos
 
 	Chip_GPIO_SetPinState(LPC_GPIO, 0, 4, false); // /CS=LOW
-	//delayUS(1000);
-	Chip_GPIO_SetPinState(LPC_GPIO, 0, 11, false);// WR=LOW
-	delayUS(1000);
-
 	Chip_GPIO_SetPinState(LPC_GPIO, 0, 5, false);// A0=LOW
-	//Chip_GPIO_SetPinState(LPC_GPIO, 0, 10, true);// RD=HIGH
-	//Chip_GPIO_SetPinState(LPC_GPIO, 0, 11, false);// WR=LOW
+	Chip_GPIO_SetPinState(LPC_GPIO, 0, 11, false);// WR=LOW
+	Chip_GPIO_SetPinState(LPC_GPIO, 0, 10, true);// RD=HIGH
 	delayUS(1000);
-
-	Chip_GPIO_SetPinState(LPC_GPIO, 0, 11, true);// WR=HIGH
+	Chip_GPIO_SetPinState(LPC_GPIO, 0, 11, true);// /WR=HIGH
 	Chip_GPIO_SetPinState(LPC_GPIO, 0, 4, true); // /CS=HIGH
-	//Chip_GPIO_SetPinState(LPC_GPIO, 0, 5, true);// A0=LOW
 	delayUS(1000);
 }
 
 void Command_Write(uint32_t cmd)
 {
-	Chip_GPIO_SetPinState(LPC_GPIO, 0, 5, true); // Send Command
-
-	Chip_GPIO_SetPortValue(LPC_GPIO, 2, cmd); // equivalente de FIOPIN2 = cmd;
+	Chip_GPIO_SetPortValue(LPC_GPIO, 2, cmd); // datos
 
 	Chip_GPIO_SetPinState(LPC_GPIO, 0, 4, false); // /CS=LOW
-	delayUS(1000);
-	Chip_GPIO_SetPinState(LPC_GPIO, 0, 11, false);// WR=LOW
+	Chip_GPIO_SetPinState(LPC_GPIO, 0, 5, true); // A0=HIGH
+	Chip_GPIO_SetPinState(LPC_GPIO, 0, 11, false); // WR=LOW
+	Chip_GPIO_SetPinState(LPC_GPIO, 0, 10, true); // RD=HIGH
 	delayUS(1000);
 
 	Board_LED_Set(0, true);
 	delayUS(1000);
-	Chip_GPIO_SetPinState(LPC_GPIO, 0, 4, true); // /CS=HIGH
 	Chip_GPIO_SetPinState(LPC_GPIO, 0, 11, true);// WR=HIGH
+	Chip_GPIO_SetPinState(LPC_GPIO, 0, 4, true); // /CS=HIGH
 	Board_LED_Set(0, false);
 	delayUS(1000);
 }
