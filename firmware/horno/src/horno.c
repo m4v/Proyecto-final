@@ -114,8 +114,13 @@ int main(void) {
     /* Display */
 //while(1){
     Display_Init();
-
-
-
+    while(1){
+//    	char c='A';
+//    	int i;
+//        for(i=0; i<40; i++) {
+//        	Parameter_Write(c);
+//        	delayUS(1000);
+//        }
+    }
     return 0;
 }
