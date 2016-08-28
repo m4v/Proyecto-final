@@ -1,0 +1,21 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP CONN_LPC1769
+D Connector LPCXpresso LPC1769
+K LPCXpresso LPC1769
+F datasheet/LPCXpressoLPC1769revB.pdf
+$ENDCMP
+#
+$CMP LTC1050
+D Zero drift operational amplifier
+K Ampliop opamp
+F datasheet/LTC1050.pdf
+$ENDCMP
+#
+$CMP OP07
+D Op amp
+K Ampliop opamp
+F datasheet/OP07.pdf
+$ENDCMP
+#
+#End Doc Library
