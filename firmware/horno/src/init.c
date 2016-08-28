@@ -15,6 +15,7 @@
 #endif
 
 #include "init.h"
+#include "delay.h"
 
 static ADC_CLOCK_SETUP_T ADCSetup;
 
@@ -97,6 +98,9 @@ void Horno_Init (void) {
 	Chip_IOCON_SetPinMuxing(LPC_IOCON, pinmux, sizeof(pinmux) / sizeof(PINMUX_GRP_T));
 
 	GPIO_SetDirections(gpiodir, sizeof(gpiodir) / sizeof(GPIO_DIR_T));
+
+	/* Habilitar el timer para hacer retrasos */
+	Horno_delay_timer_Init();
 
 	/* ADC Init */
 	Chip_ADC_Init(LPC_ADC, &ADCSetup);
