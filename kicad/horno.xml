@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <export version="D">
   <design>
-    <source>/home/m4v/Facultad/Trabajo Final/kicad/horno.sch</source>
-    <date>dom 28 ago 2016 16:05:42 ART</date>
+    <source>/home/m4v/Facultad/Trabajo Final/github/kicad/horno.sch</source>
+    <date>dom 28 ago 2016 16:50:01 ART</date>
     <tool>Eeschema 4.0.3+e1-6302~38~ubuntu15.10.1-stable</tool>
     <sheet number="1" name="/" tstamps="/">
       <title_block>
@@ -73,19 +73,21 @@
   <components>
     <comp ref="R9">
       <value>R</value>
+      <footprint>Resistors_ThroughHole:Resistor_Horizontal_RM10mm</footprint>
       <libsource lib="device" part="R"/>
       <sheetpath names="/" tstamps="/"/>
       <tstamp>57C663FD</tstamp>
     </comp>
     <comp ref="Q1">
       <value>BC547</value>
-      <footprint>TO-92</footprint>
+      <footprint>TO_SOT_Packages_THT:TO-92_Inline_Narrow_Oval</footprint>
       <libsource lib="transistors" part="BC547"/>
       <sheetpath names="/" tstamps="/"/>
       <tstamp>57C67500</tstamp>
     </comp>
     <comp ref="P4">
       <value>CONN_01X02</value>
+      <footprint>Pin_Headers:Pin_Header_Straight_1x02</footprint>
       <libsource lib="conn" part="CONN_01X02"/>
       <sheetpath names="/" tstamps="/"/>
       <tstamp>57C6822B</tstamp>
@@ -98,144 +100,168 @@
     </comp>
     <comp ref="U2">
       <value>OP07</value>
+      <footprint>Housings_DIP:DIP-8_W7.62mm_LongPads</footprint>
       <libsource lib="horno" part="OP07"/>
       <sheetpath names="/Amplificador LM35/" tstamps="/57C2159A/"/>
       <tstamp>57C21948</tstamp>
     </comp>
     <comp ref="U1">
       <value>OP07</value>
+      <footprint>Housings_DIP:DIP-8_W7.62mm_LongPads</footprint>
       <libsource lib="horno" part="OP07"/>
       <sheetpath names="/Amplificador LM35/" tstamps="/57C2159A/"/>
       <tstamp>57C2198D</tstamp>
     </comp>
     <comp ref="R4">
       <value>330k</value>
+      <footprint>Resistors_ThroughHole:Resistor_Horizontal_RM10mm</footprint>
       <libsource lib="device" part="R"/>
       <sheetpath names="/Amplificador LM35/" tstamps="/57C2159A/"/>
       <tstamp>57C221C6</tstamp>
     </comp>
     <comp ref="R3">
       <value>56k</value>
+      <footprint>Resistors_ThroughHole:Resistor_Horizontal_RM10mm</footprint>
       <libsource lib="device" part="R"/>
       <sheetpath names="/Amplificador LM35/" tstamps="/57C2159A/"/>
       <tstamp>57C2222B</tstamp>
     </comp>
     <comp ref="C2">
       <value>220nF</value>
+      <footprint>Capacitors_ThroughHole:C_Disc_D3_P2.5</footprint>
       <libsource lib="device" part="C"/>
       <sheetpath names="/Amplificador LM35/" tstamps="/57C2159A/"/>
       <tstamp>57C2224C</tstamp>
     </comp>
     <comp ref="C1">
       <value>220nF</value>
+      <footprint>Capacitors_ThroughHole:C_Disc_D3_P2.5</footprint>
       <libsource lib="device" part="C"/>
       <sheetpath names="/Amplificador LM35/" tstamps="/57C2159A/"/>
       <tstamp>57C22291</tstamp>
     </comp>
     <comp ref="R2">
       <value>56k</value>
+      <footprint>Resistors_ThroughHole:Resistor_Horizontal_RM10mm</footprint>
       <libsource lib="device" part="R"/>
       <sheetpath names="/Amplificador LM35/" tstamps="/57C2159A/"/>
       <tstamp>57C227F8</tstamp>
     </comp>
     <comp ref="R1">
       <value>10k</value>
+      <footprint>Resistors_ThroughHole:Resistor_Horizontal_RM10mm</footprint>
       <libsource lib="device" part="R"/>
       <sheetpath names="/Amplificador LM35/" tstamps="/57C2159A/"/>
       <tstamp>57C2282F</tstamp>
     </comp>
     <comp ref="RV2">
       <value>POT</value>
+      <footprint>Potentiometers:Potentiometer_Bourns_3005_Angular_ScrewFront</footprint>
       <libsource lib="device" part="POT"/>
       <sheetpath names="/Amplificador LM35/" tstamps="/57C2159A/"/>
       <tstamp>57C51C6E</tstamp>
     </comp>
     <comp ref="RV1">
       <value>POT</value>
+      <footprint>Potentiometers:Potentiometer_Bourns_3005_Angular_ScrewFront</footprint>
       <libsource lib="device" part="POT"/>
       <sheetpath names="/Amplificador LM35/" tstamps="/57C2159A/"/>
       <tstamp>57C52300</tstamp>
     </comp>
     <comp ref="P2">
       <value>CONN_01X03</value>
+      <footprint>Pin_Headers:Pin_Header_Straight_1x03</footprint>
       <libsource lib="conn" part="CONN_01X03"/>
       <sheetpath names="/Amplificador LM35/" tstamps="/57C2159A/"/>
       <tstamp>57C53794</tstamp>
     </comp>
     <comp ref="C7">
       <value>0,1uF</value>
+      <footprint>Capacitors_ThroughHole:C_Disc_D3_P2.5</footprint>
       <libsource lib="device" part="C"/>
       <sheetpath names="/Amplificador LM35/" tstamps="/57C2159A/"/>
       <tstamp>57C5CD4F</tstamp>
     </comp>
     <comp ref="C8">
       <value>0.1uF</value>
+      <footprint>Capacitors_ThroughHole:C_Disc_D3_P2.5</footprint>
       <libsource lib="device" part="C"/>
       <sheetpath names="/Amplificador LM35/" tstamps="/57C2159A/"/>
       <tstamp>57C5CD56</tstamp>
     </comp>
     <comp ref="C5">
       <value>0,1uF</value>
+      <footprint>Capacitors_ThroughHole:C_Disc_D3_P2.5</footprint>
       <libsource lib="device" part="C"/>
       <sheetpath names="/Amplificador LM35/" tstamps="/57C2159A/"/>
       <tstamp>57C5D251</tstamp>
     </comp>
     <comp ref="C6">
       <value>0.1uF</value>
+      <footprint>Capacitors_ThroughHole:C_Disc_D3_P2.5</footprint>
       <libsource lib="device" part="C"/>
       <sheetpath names="/Amplificador LM35/" tstamps="/57C2159A/"/>
       <tstamp>57C5D258</tstamp>
     </comp>
     <comp ref="U4">
       <value>OP07</value>
+      <footprint>Housings_DIP:DIP-8_W7.62mm_LongPads</footprint>
       <libsource lib="horno" part="OP07"/>
       <sheetpath names="/Amplificador Termocupla/" tstamps="/57C52EB8/"/>
       <tstamp>57C55D27</tstamp>
     </comp>
     <comp ref="R8">
       <value>330k</value>
+      <footprint>Resistors_ThroughHole:Resistor_Horizontal_RM10mm</footprint>
       <libsource lib="device" part="R"/>
       <sheetpath names="/Amplificador Termocupla/" tstamps="/57C52EB8/"/>
       <tstamp>57C55D3C</tstamp>
     </comp>
     <comp ref="R7">
       <value>56k</value>
+      <footprint>Resistors_ThroughHole:Resistor_Horizontal_RM10mm</footprint>
       <libsource lib="device" part="R"/>
       <sheetpath names="/Amplificador Termocupla/" tstamps="/57C52EB8/"/>
       <tstamp>57C55D43</tstamp>
     </comp>
     <comp ref="C4">
       <value>220nF</value>
+      <footprint>Capacitors_ThroughHole:C_Disc_D3_P2.5</footprint>
       <libsource lib="device" part="C"/>
       <sheetpath names="/Amplificador Termocupla/" tstamps="/57C52EB8/"/>
       <tstamp>57C55D4A</tstamp>
     </comp>
     <comp ref="C3">
       <value>220nF</value>
+      <footprint>Capacitors_ThroughHole:C_Disc_D3_P2.5</footprint>
       <libsource lib="device" part="C"/>
       <sheetpath names="/Amplificador Termocupla/" tstamps="/57C52EB8/"/>
       <tstamp>57C55D51</tstamp>
     </comp>
     <comp ref="RV3">
       <value>POT</value>
+      <footprint>Potentiometers:Potentiometer_Bourns_3005_Angular_ScrewFront</footprint>
       <libsource lib="device" part="POT"/>
       <sheetpath names="/Amplificador Termocupla/" tstamps="/57C52EB8/"/>
       <tstamp>57C55D6D</tstamp>
     </comp>
     <comp ref="P3">
       <value>CONN_01X02</value>
+      <footprint>Pin_Headers:Pin_Header_Straight_1x02</footprint>
       <libsource lib="conn" part="CONN_01X02"/>
       <sheetpath names="/Amplificador Termocupla/" tstamps="/57C52EB8/"/>
       <tstamp>57C56440</tstamp>
     </comp>
     <comp ref="U3">
       <value>LTC1050</value>
+      <footprint>Housings_DIP:DIP-8_W7.62mm_LongPads</footprint>
       <libsource lib="horno" part="LTC1050"/>
       <sheetpath names="/Amplificador Termocupla/" tstamps="/57C52EB8/"/>
       <tstamp>57C565D5</tstamp>
     </comp>
     <comp ref="R5">
       <value>1,5k</value>
+      <footprint>Resistors_ThroughHole:Resistor_Horizontal_RM10mm</footprint>
       <fields>
         <field name="Tol">1%</field>
       </fields>
@@ -245,6 +271,7 @@
     </comp>
     <comp ref="R6">
       <value>120k</value>
+      <footprint>Resistors_ThroughHole:Resistor_Horizontal_RM10mm</footprint>
       <fields>
         <field name="Tol">1%</field>
       </fields>
@@ -254,55 +281,63 @@
     </comp>
     <comp ref="C11">
       <value>0,1uF</value>
+      <footprint>Capacitors_ThroughHole:C_Disc_D3_P2.5</footprint>
       <libsource lib="device" part="C"/>
       <sheetpath names="/Amplificador Termocupla/" tstamps="/57C52EB8/"/>
       <tstamp>57C5B8B6</tstamp>
     </comp>
     <comp ref="C12">
       <value>0.1uF</value>
+      <footprint>Capacitors_ThroughHole:C_Disc_D3_P2.5</footprint>
       <libsource lib="device" part="C"/>
       <sheetpath names="/Amplificador Termocupla/" tstamps="/57C52EB8/"/>
       <tstamp>57C5B90B</tstamp>
     </comp>
     <comp ref="C9">
       <value>0,1uF</value>
+      <footprint>Capacitors_ThroughHole:C_Disc_D3_P2.5</footprint>
       <libsource lib="device" part="C"/>
       <sheetpath names="/Amplificador Termocupla/" tstamps="/57C52EB8/"/>
       <tstamp>57C5C537</tstamp>
     </comp>
     <comp ref="C10">
       <value>0.1uF</value>
+      <footprint>Capacitors_ThroughHole:C_Disc_D3_P2.5</footprint>
       <libsource lib="device" part="C"/>
       <sheetpath names="/Amplificador Termocupla/" tstamps="/57C52EB8/"/>
       <tstamp>57C5C53D</tstamp>
     </comp>
     <comp ref="U5">
       <value>L293D</value>
-      <footprint>stepper drivers-DIL16</footprint>
+      <footprint>Housings_DIP:DIP-16_W7.62mm_LongPads</footprint>
       <libsource lib="stepper drivers" part="L293D"/>
       <sheetpath names="/Driver del motor paso a paso/" tstamps="/57C5E497/"/>
       <tstamp>57C5E503</tstamp>
     </comp>
     <comp ref="P6">
       <value>CONN_01X05</value>
+      <footprint>Pin_Headers:Pin_Header_Angled_1x05</footprint>
       <libsource lib="conn" part="CONN_01X05"/>
       <sheetpath names="/Driver del motor paso a paso/" tstamps="/57C5E497/"/>
       <tstamp>57C5E7CF</tstamp>
     </comp>
     <comp ref="C14">
       <value>0,1uF</value>
+      <footprint>Capacitors_ThroughHole:C_Disc_D3_P2.5</footprint>
       <libsource lib="device" part="C_Small"/>
       <sheetpath names="/Driver del motor paso a paso/" tstamps="/57C5E497/"/>
       <tstamp>57C5F150</tstamp>
     </comp>
     <comp ref="C13">
       <value>1uF</value>
+      <footprint>Capacitors_ThroughHole:C_Radial_D5_L6_P2.5</footprint>
       <libsource lib="device" part="CP_Small"/>
       <sheetpath names="/Driver del motor paso a paso/" tstamps="/57C5E497/"/>
       <tstamp>57C5F33D</tstamp>
     </comp>
     <comp ref="P5">
       <value>CONN_01X02</value>
+      <footprint>Pin_Headers:Pin_Header_Straight_1x02</footprint>
       <libsource lib="conn" part="CONN_01X02"/>
       <sheetpath names="/Driver del motor paso a paso/" tstamps="/57C5E497/"/>
       <tstamp>57C6A8B7</tstamp>
@@ -607,8 +642,11 @@
     </libpart>
   </libparts>
   <libraries>
-    <library logical="device">
-      <uri>/usr/share/kicad/library/device.lib</uri>
+    <library logical="stepper drivers">
+      <uri>/home/m4v/Facultad/Trabajo Final/github/kicad/bibliotecas/stepper drivers.lib</uri>
+    </library>
+    <library logical="horno">
+      <uri>/home/m4v/Facultad/Trabajo Final/github/kicad/bibliotecas/horno.lib</uri>
     </library>
     <library logical="conn">
       <uri>/usr/share/kicad/library/conn.lib</uri>
@@ -616,11 +654,8 @@
     <library logical="transistors">
       <uri>/usr/share/kicad/library/transistors.lib</uri>
     </library>
-    <library logical="horno">
-      <uri>/home/m4v/Facultad/Trabajo Final/kicad/bibliotecas/horno.lib</uri>
-    </library>
-    <library logical="stepper drivers">
-      <uri>/home/m4v/Facultad/Trabajo Final/kicad/bibliotecas/stepper drivers.lib</uri>
+    <library logical="device">
+      <uri>/usr/share/kicad/library/device.lib</uri>
     </library>
   </libraries>
   <nets>

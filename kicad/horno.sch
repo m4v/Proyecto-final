@@ -32,7 +32,7 @@ EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
 Sheet 1 5
-Title "Circuitos digital y analógicos"
+Title "Esquemático jerárquico"
 Date "2016-08-27"
 Rev "1"
 Comp "Elián Hanisch - Rodrigo Oliver - Gastón Riera"
@@ -70,35 +70,27 @@ $EndSheet
 $Sheet
 S 2100 3700 1400 850 
 U 57C2159A
-F0 "Amplificador LM35" 60
+F0 "LM35" 60
 F1 "AmpLM35.sch" 60
 F2 "+5V" I L 2100 3800 60 
 F3 "-5V" I L 2100 3900 60 
 F4 "GND" I L 2100 4450 60 
 F5 "LM35_OUT" O R 3500 3950 60 
 $EndSheet
-Wire Wire Line
-	3500 3950 4300 3950
 $Sheet
 S 2100 2700 1400 750 
 U 57C52EB8
-F0 "Amplificador Termocupla" 60
+F0 "Termocupla" 60
 F1 "AmpTermocupla.sch" 60
 F2 "TERMOCUPLA_OUT" O R 3500 2800 60 
 F3 "+5V" I L 2100 2800 60 
 F4 "-5V" I L 2100 2900 60 
 F5 "GND" I L 2100 3350 60 
 $EndSheet
-Wire Wire Line
-	3500 2800 3850 2800
-Wire Wire Line
-	3850 2800 3850 3850
-Wire Wire Line
-	3850 3850 4300 3850
 $Sheet
 S 6300 4550 1100 1450
 U 57C5E497
-F0 "Driver del motor paso a paso" 60
+F0 "Motor paso a paso" 60
 F1 "motorPP.sch" 60
 F2 "S1" I L 6300 5050 60 
 F3 "S2" I L 6300 5150 60 
@@ -116,21 +108,17 @@ F 3 "" H 6000 3300 50  0000 C CNN
 	1    6000 3300
 	0    1    1    0   
 $EndComp
-Wire Wire Line
-	5450 3300 5850 3300
 $Comp
 L BC547 Q1
 U 1 1 57C67500
 P 6600 3300
 F 0 "Q1" H 6800 3375 50  0000 L CNN
 F 1 "BC547" H 6800 3300 50  0000 L CNN
-F 2 "TO_SOT_Packages_THT:TO-92_Inline_Narrow_Oval" H 6800 3225 50  0000 L CIN
+F 2 "TO_SOT_Packages_THT:TO-92_Inline_Narrow_Oval" H 6800 3225 50  0001 L CIN
 F 3 "" H 6600 3300 50  0000 L CNN
 	1    6600 3300
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	6150 3300 6400 3300
 $Comp
 L GND #PWR01
 U 1 1 57C67CA4
@@ -142,8 +130,6 @@ F 3 "" H 6700 3650 50  0000 C CNN
 	1    6700 3650
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	6700 3500 6700 3650
 $Comp
 L CONN_01X02 P4
 U 1 1 57C6822B
@@ -166,6 +152,31 @@ F 3 "" H 6700 2300 50  0000 C CNN
 	1    6700 2300
 	1    0    0    -1  
 $EndComp
+$Comp
+L CONN_02X11 P7
+U 1 1 57C3EF67
+P 2350 6650
+F 0 "P7" H 2350 7250 50  0000 C CNN
+F 1 "CONN_02X11" V 2350 6650 50  0000 C CNN
+F 2 "Pin_Headers:Pin_Header_Straight_2x11" H 2350 5450 50  0001 C CNN
+F 3 "" H 2350 5450 50  0000 C CNN
+	1    2350 6650
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3500 3950 4300 3950
+Wire Wire Line
+	3500 2800 3850 2800
+Wire Wire Line
+	3850 2800 3850 3850
+Wire Wire Line
+	3850 3850 4300 3850
+Wire Wire Line
+	5450 3300 5850 3300
+Wire Wire Line
+	6150 3300 6400 3300
+Wire Wire Line
+	6700 3500 6700 3650
 Wire Wire Line
 	6700 2300 6700 2600
 Wire Wire Line
@@ -182,4 +193,68 @@ Wire Wire Line
 	6300 5250 5450 5250
 Wire Wire Line
 	5450 5350 6300 5350
+Wire Wire Line
+	4300 4700 3650 4700
+Wire Wire Line
+	4300 4800 3650 4800
+Wire Wire Line
+	4300 4900 3650 4900
+Wire Wire Line
+	4300 5000 3650 5000
+Wire Wire Line
+	4300 5100 3650 5100
+Text Label 3650 4700 0    60   ~ 0
+LCD_D0
+Text Label 3650 4800 0    60   ~ 0
+LCD_D1
+Text Label 3650 4900 0    60   ~ 0
+LCD_D2
+Text Label 3650 5000 0    60   ~ 0
+LCD_D3
+Text Label 3650 5100 0    60   ~ 0
+LCD_D4
+Wire Wire Line
+	4300 5200 3650 5200
+Wire Wire Line
+	4300 5300 3650 5300
+Wire Wire Line
+	4300 5400 3650 5400
+Text Label 3650 5200 0    60   ~ 0
+LCD_D5
+Text Label 3650 5300 0    60   ~ 0
+LCD_D6
+Text Label 3650 5400 0    60   ~ 0
+LCD_D7
+Wire Wire Line
+	2100 6450 1650 6450
+Text Label 1650 6450 0    60   ~ 0
+LCD_D0
+Wire Wire Line
+	2100 6550 1650 6550
+Wire Wire Line
+	2100 6650 1650 6650
+Wire Wire Line
+	2100 6750 1650 6750
+Wire Wire Line
+	2600 6450 3050 6450
+Text Label 3050 6450 2    60   ~ 0
+LCD_D1
+Wire Wire Line
+	2600 6550 3050 6550
+Wire Wire Line
+	2600 6650 3050 6650
+Wire Wire Line
+	2600 6750 3050 6750
+Text Label 3050 6550 2    60   ~ 0
+LCD_D3
+Text Label 3050 6650 2    60   ~ 0
+LCD_D5
+Text Label 3050 6750 2    60   ~ 0
+LCD_D7
+Text Label 1650 6550 0    60   ~ 0
+LCD_D2
+Text Label 1650 6650 0    60   ~ 0
+LCD_D4
+Text Label 1650 6750 0    60   ~ 0
+LCD_D6
 $EndSCHEMATC

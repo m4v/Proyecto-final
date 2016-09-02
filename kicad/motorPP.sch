@@ -52,34 +52,34 @@ F 3 "" H 5950 3900 60  0001 C CNN
 	1    5950 3900
 	1    0    0    -1  
 $EndComp
-Text HLabel 2950 1850 0    60   Input ~ 0
+Text HLabel 2450 3600 0    60   Input ~ 0
 S1
-Text HLabel 2950 1950 0    60   Input ~ 0
+Text HLabel 2450 3700 0    60   Input ~ 0
 S2
-Text HLabel 2950 2050 0    60   Input ~ 0
+Text HLabel 2450 3800 0    60   Input ~ 0
 S3
-Text HLabel 2950 2150 0    60   Input ~ 0
+Text HLabel 2450 3900 0    60   Input ~ 0
 S4
 $Comp
 L CONN_01X05 P6
 U 1 1 57C5E7CF
-P 10000 5750
-F 0 "P6" H 10000 6050 50  0000 C CNN
-F 1 "CONN_01X05" V 10100 5750 50  0000 C CNN
-F 2 "Pin_Headers:Pin_Header_Angled_1x05" H 10000 5750 50  0001 C CNN
-F 3 "" H 10000 5750 50  0000 C CNN
-	1    10000 5750
+P 10000 3700
+F 0 "P6" H 10000 4000 50  0000 C CNN
+F 1 "CONN_01X05" V 10100 3700 50  0000 C CNN
+F 2 "Pin_Headers:Pin_Header_Angled_1x05" H 10000 3700 50  0001 C CNN
+F 3 "" H 10000 3700 50  0000 C CNN
+	1    10000 3700
 	1    0    0    1   
 $EndComp
 $Comp
 L GND #PWR033
 U 1 1 57C5E8F6
-P 9450 5950
-F 0 "#PWR033" H 9450 5700 50  0001 C CNN
-F 1 "GND" H 9450 5800 50  0000 C CNN
-F 2 "" H 9450 5950 50  0000 C CNN
-F 3 "" H 9450 5950 50  0000 C CNN
-	1    9450 5950
+P 9450 3900
+F 0 "#PWR033" H 9450 3650 50  0001 C CNN
+F 1 "GND" H 9450 3750 50  0000 C CNN
+F 2 "" H 9450 3900 50  0000 C CNN
+F 3 "" H 9450 3900 50  0000 C CNN
+	1    9450 3900
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -171,15 +171,7 @@ F 3 "" H 4650 4850 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	2950 1850 5250 1850
-Wire Wire Line
-	2950 1950 5150 1950
-Wire Wire Line
-	9450 5950 9800 5950
-Wire Wire Line
-	6700 5650 9800 5650
-Wire Wire Line
-	6900 5550 9800 5550
+	9450 3900 9800 3900
 Wire Wire Line
 	7350 4150 7350 3800
 Wire Wire Line
@@ -199,58 +191,17 @@ Wire Wire Line
 Wire Wire Line
 	4650 4450 4650 4650
 Wire Wire Line
-	5250 3400 5350 3400
+	5100 4400 5350 4400
 Wire Wire Line
-	5150 4400 5350 4400
-Wire Wire Line
-	5250 1850 5250 3400
-Wire Wire Line
-	5150 1950 5150 4400
-Wire Wire Line
-	5350 4200 5250 4200
-Wire Wire Line
-	5250 4200 5250 5750
-Wire Wire Line
-	5350 3600 5050 3600
-Wire Wire Line
-	5050 3600 5050 5850
+	5100 4200 5350 4200
 Connection ~ 4650 4600
 Wire Wire Line
 	4350 3800 5350 3800
 Wire Wire Line
 	5350 4000 4350 4000
-Wire Wire Line
-	6700 3400 6550 3400
-Wire Wire Line
-	6700 2150 6700 3400
-Wire Wire Line
-	6800 4400 6550 4400
-Wire Wire Line
-	6800 2050 6800 4400
-Wire Wire Line
-	2950 2050 6800 2050
-Wire Wire Line
-	2950 2150 6700 2150
-Wire Wire Line
-	5050 5850 9800 5850
-Wire Wire Line
-	5250 5750 9800 5750
-Wire Wire Line
-	6550 4200 6700 4200
-Wire Wire Line
-	6700 4200 6700 5650
-Wire Wire Line
-	6550 3600 6900 3600
-Wire Wire Line
-	6900 3600 6900 5550
 Connection ~ 7200 3200
 Wire Wire Line
 	7050 4600 6550 4600
-Wire Wire Line
-	7050 2900 7050 4600
-Connection ~ 7050 3200
-Wire Wire Line
-	7050 2900 5350 2900
 Wire Wire Line
 	5350 2900 5350 3200
 $Comp
@@ -294,4 +245,88 @@ Wire Wire Line
 	9700 2550 9700 2300
 Wire Wire Line
 	9700 2300 9800 2300
+Text Label 3050 3600 0    60   ~ 0
+IN1
+Text Label 3050 3700 0    60   ~ 0
+IN2
+Text Label 3050 3800 0    60   ~ 0
+IN3
+Text Label 3050 3900 0    60   ~ 0
+IN4
+Wire Wire Line
+	2450 3600 3050 3600
+Wire Wire Line
+	3050 3700 2450 3700
+Wire Wire Line
+	2450 3800 3050 3800
+Wire Wire Line
+	3050 3900 2450 3900
+Text Label 5100 3400 0    60   ~ 0
+IN1
+Text Label 5100 4400 0    60   ~ 0
+IN2
+Text Label 5100 3600 0    60   ~ 0
+OUT1
+Text Label 5100 4200 0    60   ~ 0
+OUT2
+Wire Wire Line
+	5100 3400 5350 3400
+Wire Wire Line
+	5350 3600 5100 3600
+Text Label 9250 3800 0    60   ~ 0
+OUT1
+Text Label 9250 3700 0    60   ~ 0
+OUT2
+Text Label 9250 3600 0    60   ~ 0
+OUT3
+Text Label 9250 3500 0    60   ~ 0
+OUT4
+Wire Wire Line
+	9250 3500 9800 3500
+Wire Wire Line
+	9800 3600 9250 3600
+Wire Wire Line
+	9250 3700 9800 3700
+Wire Wire Line
+	9800 3800 9250 3800
+$Comp
+L +5V #PWR?
+U 1 1 57C4777C
+P 5350 2900
+F 0 "#PWR?" H 5350 2750 50  0001 C CNN
+F 1 "+5V" H 5350 3040 50  0000 C CNN
+F 2 "" H 5350 2900 50  0000 C CNN
+F 3 "" H 5350 2900 50  0000 C CNN
+	1    5350 2900
+	1    0    0    -1  
+$EndComp
+Text Label 6800 3600 2    60   ~ 0
+OUT4
+Wire Wire Line
+	6800 3600 6550 3600
+Text Label 6800 4200 2    60   ~ 0
+OUT3
+Text Label 6800 4400 2    60   ~ 0
+IN3
+Text Label 6800 3400 2    60   ~ 0
+IN4
+Wire Wire Line
+	6800 3400 6550 3400
+Wire Wire Line
+	6550 4200 6800 4200
+Wire Wire Line
+	6550 4400 6800 4400
+$Comp
+L +5V #PWR?
+U 1 1 57C47990
+P 7050 4500
+F 0 "#PWR?" H 7050 4350 50  0001 C CNN
+F 1 "+5V" H 7050 4640 50  0000 C CNN
+F 2 "" H 7050 4500 50  0000 C CNN
+F 3 "" H 7050 4500 50  0000 C CNN
+	1    7050 4500
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7050 4500 7050 4600
 $EndSCHEMATC
