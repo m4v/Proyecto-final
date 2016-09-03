@@ -37,7 +37,6 @@
  */
 
 /*Declaro las funciones */
-void Display_Init(void);
 void Parameter_Write(unsigned char x);
 void Command_Write(unsigned char x);
 void Clear_text_layer(unsigned char x);
