@@ -13,16 +13,6 @@
 
 #include "delay.h"
 #include "320240.h"
-/*  Datos
- * Comandos control
- * /CS 				P0.4
- * A0				P0.5
- * /RD				P0.10
- * /WR				P0.11
- * /RES				P2.12
- */
-
-/* Datos D[7:0] P2.0:P2.7 */
 
 /* Defines */
 
@@ -33,8 +23,10 @@
 #define CLR_WR Chip_GPIO_SetPinState(LPC_GPIO, 0, 11, false)
 #define SET_RD Chip_GPIO_SetPinState(LPC_GPIO, 0, 10, true)
 #define CLR_RD Chip_GPIO_SetPinState(LPC_GPIO, 0, 10, false)
+#define SET_RST Chip_GPIO_SetPinState(LPC_GPIO, 2, 12, true)
+#define CLR_RST Chip_GPIO_SetPinState(LPC_GPIO, 2, 12, false)
 
-// #define
+/* Datos D[7:0] P2.0:P2.7 */
 
 /* Cada vez que le mandamos algo al display, hay que ponerle una configuración particular. Esto lo hacemos con una función
  * que sellamará: Command_Write.
@@ -53,15 +45,13 @@ void Clear_text_layer(unsigned char x);
 /* Main */
 void Display_Init(void)
 {
-	Horno_udelay(2e6);
-	// A esta altura ya están todos los pines correspondientes como salida.
-	// 15.1.2 Initialization example. Pág 103, controlador
-	SET_A0;
 	SET_RD;
 	SET_WR;
-	/* acá  hay que tener cuidado, porque al mover el puerto 2 ponemos todos los pines mayores a p2.7 en cero
-	 * Por eso es que no funciona cuando comandamos el Res desde ese pin.*/
-
+	/* reseteamos el display y esperamos a que se estabilice */
+	CLR_RST;
+	Horno_udelay(1e3);
+	SET_RST;
+	Horno_udelay(3e3);
 
 	// start
 	// supply on
