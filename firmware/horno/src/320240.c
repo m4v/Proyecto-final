@@ -158,14 +158,25 @@ void Display_Init(void)
 
 
 
+}
 
+/*
+ * Escribir 8 bits en el bus de datos
+ */
+void Data_Write(uint8_t pmtr)
+{
+	uint32_t port = Chip_GPIO_GetPortValue(LPC_GPIO, 2);
+	/* limpio los 8 bits del puerto y cambio sus datos */
+	port &= ~0xFF;
+	port |= pmtr;
+	Chip_GPIO_SetPortValue(LPC_GPIO, 2, port);
 }
 
 /* */
 void Parameter_Write(unsigned char pmtr)
 {
 	// Datos
-	Chip_GPIO_SetPortValue(LPC_GPIO, 2, pmtr);
+	Data_Write(pmtr);
 
 	// Control
 	CLR_A0;
@@ -179,7 +190,7 @@ void Parameter_Write(unsigned char pmtr)
 void Command_Write(unsigned char cmd)
 {
 	// Datos
-	Chip_GPIO_SetPortValue(LPC_GPIO, 2, cmd);
+	Data_Write(cmd);
 
 	// Control
 	SET_A0;
