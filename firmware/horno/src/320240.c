@@ -26,6 +26,14 @@
 
 /* Defines */
 
+/* mapeo de pines */
+#define SET_A0 Chip_GPIO_SetPinState(LPC_GPIO, 0, 5, true)
+#define CLR_A0 Chip_GPIO_SetPinState(LPC_GPIO, 0, 5, false)
+#define SET_WR Chip_GPIO_SetPinState(LPC_GPIO, 0, 11, true)
+#define CLR_WR Chip_GPIO_SetPinState(LPC_GPIO, 0, 11, false)
+#define SET_RD Chip_GPIO_SetPinState(LPC_GPIO, 0, 10, true)
+#define CLR_RD Chip_GPIO_SetPinState(LPC_GPIO, 0, 10, false)
+
 // #define
 
 /* Cada vez que le mandamos algo al display, hay que ponerle una configuración particular. Esto lo hacemos con una función
@@ -48,12 +56,9 @@ void Display_Init(void)
 	Horno_udelay(2e6);
 	// A esta altura ya están todos los pines correspondientes como salida.
 	// 15.1.2 Initialization example. Pág 103, controlador
-	//Chip_GPIO_SetPinState(LPC_GPIO, 2, 12, true);// /Res active in LOW
-	Chip_GPIO_SetPinState(LPC_GPIO, 0, 4, true); // /CS=HIGH
-	Chip_GPIO_SetPinState(LPC_GPIO, 0, 5, true); // A0=HIGH
-	Chip_GPIO_SetPinState(LPC_GPIO, 0, 10, true); // /RD=HIGH
-	Chip_GPIO_SetPinState(LPC_GPIO, 0, 11, true); // /WR=HIGH
-	// Chip_GPIO_SetPinState(LPC_GPIO, 2, 12, true); // /RES=HIGH
+	SET_A0;
+	SET_RD;
+	SET_WR;
 	/* acá  hay que tener cuidado, porque al mover el puerto 2 ponemos todos los pines mayores a p2.7 en cero
 	 * Por eso es que no funciona cuando comandamos el Res desde ese pin.*/
 
@@ -163,13 +168,11 @@ void Parameter_Write(unsigned char pmtr)
 	Chip_GPIO_SetPortValue(LPC_GPIO, 2, pmtr);
 
 	// Control
-	Chip_GPIO_SetPinState(LPC_GPIO, 0, 4, false); // /CS=LOW
-	Chip_GPIO_SetPinState(LPC_GPIO, 0, 5, false); // A0=LOW
-	Chip_GPIO_SetPinState(LPC_GPIO, 0, 11, false); // WR=LOW
-	Chip_GPIO_SetPinState(LPC_GPIO, 0, 10, true); // RD=HIGH
+	CLR_A0;
+	CLR_WR;
+	SET_RD;
 	Horno_udelay(2e3); // esperar 2 ms
-	Chip_GPIO_SetPinState(LPC_GPIO, 0, 11, true);// /WR=HIGH
-	Chip_GPIO_SetPinState(LPC_GPIO, 0, 4, true); // /CS=HIGH
+	SET_WR;
 	Horno_udelay(2e3); // esperar 2 ms
 }
 
@@ -179,16 +182,14 @@ void Command_Write(unsigned char cmd)
 	Chip_GPIO_SetPortValue(LPC_GPIO, 2, cmd);
 
 	// Control
-	Chip_GPIO_SetPinState(LPC_GPIO, 0, 4, false); // /CS=LOW
-	Chip_GPIO_SetPinState(LPC_GPIO, 0, 5, true); // A0=HIGH
-	Chip_GPIO_SetPinState(LPC_GPIO, 0, 11, false); // WR=LOW
-	Chip_GPIO_SetPinState(LPC_GPIO, 0, 10, true); // RD=HIGH
+	SET_A0;
+	CLR_WR;
+	SET_RD;
 	Horno_udelay(2e3); // esperar 2 ms
 
 	Board_LED_Set(0, false);
 	Horno_udelay(2e3); // esperar 2 ms
-	Chip_GPIO_SetPinState(LPC_GPIO, 0, 11, true);// WR=HIGH
-	Chip_GPIO_SetPinState(LPC_GPIO, 0, 4, true); // /CS=HIGH
+	SET_WR;
 	Board_LED_Set(0, true);
 	Horno_udelay(2e3); // esperar 2 ms
 }
