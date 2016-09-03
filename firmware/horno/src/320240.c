@@ -121,33 +121,13 @@ void Display_Init(void)
 	Command_Write(0x42);
 	// Acá terminamos y dejamos listo para escribir
 
-
-
-	while(1){
 	char c='A';
 	int i;
     for(i=0; i<40; i++) {
     	Parameter_Write(c);
     	c++;
 //    	Horno_udelay(500e3);
-      }
-    Board_LED_Set(0, false);
-	Horno_udelay(1e6);
-	Board_LED_Set(0, true);
-
-
-//	Command_Write(0x58); //C -- Disp ON
-//	Horno_udelay(1e6);
-//	Command_Write(0x59); //C -- Disp ON
-//	Horno_udelay(1e6);
-//	//DISP ON
-//	Command_Write(0x59); //C -- Disp ON
-//	Parameter_Write(0x06); //0x00 //P1
-
-	}
-
-
-
+    }
 }
 
 /*

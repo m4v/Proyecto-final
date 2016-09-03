@@ -22,6 +22,7 @@
 #include "init.h"
 #include "motor.h"
 #include "320240.h"
+#include "delay.h"
 
 /* definitions and declarations here */
 #define NUM_MUESTRAS 1000
@@ -113,7 +114,9 @@ int main(void) {
 
     /* Display */
 
-    Display_Init();
-
+    while(1) {
+    	Display_Init();
+    	Horno_udelay(5e6);
+    }
     return 0;
 }
