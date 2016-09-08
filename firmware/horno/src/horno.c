@@ -113,10 +113,9 @@ int main(void) {
      */
 
     /* Display */
-
     while(1) {
     	Display_Init();
-    	Horno_udelay(5e6);
+    	Horno_udelay(1e6);
     }
     return 0;
 }
