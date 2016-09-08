@@ -15,6 +15,7 @@
 #endif
 
 #include "init.h"
+#include "delay.h"
 
 static ADC_CLOCK_SETUP_T ADCSetup;
 
@@ -32,10 +33,11 @@ static const PINMUX_GRP_T pinmux[] = {
 	/* pin del ADC */
 	{0,  23,  IOCON_MODE_INACT | IOCON_FUNC1},
 	/* pines del display */
-	{0,   4,  IOCON_MODE_INACT | IOCON_FUNC0}, // /CS and /RES
+	{0,   4,  IOCON_MODE_INACT | IOCON_FUNC0}, // /CS
 	{0,   5,  IOCON_MODE_INACT | IOCON_FUNC0}, // A0
 	{0,  10,  IOCON_MODE_INACT | IOCON_FUNC0}, // /RD
-	{0,  11,  IOCON_MODE_INACT | IOCON_FUNC0}, // /WD
+	{0,  11,  IOCON_MODE_INACT | IOCON_FUNC0}, // /WR
+	{2,  12,  IOCON_MODE_INACT | IOCON_FUNC0}, // /RES
 	/* D[0-7] display */
 	{2,   0,  IOCON_MODE_INACT | IOCON_FUNC0},
 	{2,   1,  IOCON_MODE_INACT | IOCON_FUNC0},
@@ -60,11 +62,12 @@ static const GPIO_DIR_T gpiodir[] = {
 	{0,  1, false},
 	{0,  18,  false},
 	/* pines de datos display como salida*/
-	{0,  4, true},
-	{0,  5, true},
-	{0,  10, true},
-	{0,  11, true},
-	/* pines de control display como salida */
+	{0,  4, true}, // /CS
+	{0,  5, true}, // A0
+	{0,  10, true}, // /RD
+	{0,  11, true}, // /WR
+	{2,  12, true}, // /RES
+	/* D[0-7] display */
 	{2,  0, true},
 	{2,  1, true},
 	{2,  2, true},
@@ -95,6 +98,9 @@ void Horno_Init (void) {
 	Chip_IOCON_SetPinMuxing(LPC_IOCON, pinmux, sizeof(pinmux) / sizeof(PINMUX_GRP_T));
 
 	GPIO_SetDirections(gpiodir, sizeof(gpiodir) / sizeof(GPIO_DIR_T));
+
+	/* Habilitar el timer para hacer retrasos */
+	Horno_delay_timer_Init();
 
 	/* ADC Init */
 	Chip_ADC_Init(LPC_ADC, &ADCSetup);

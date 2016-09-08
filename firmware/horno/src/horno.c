@@ -22,6 +22,7 @@
 #include "init.h"
 #include "motor.h"
 #include "320240.h"
+#include "delay.h"
 
 /* definitions and declarations here */
 #define NUM_MUESTRAS 1000
@@ -90,7 +91,7 @@ int main(void) {
      * que cuando llega a cero genera una interrupción. El contador es de
      * 24bits.
      */
-    SysTick_Config(SystemCoreClock / 1000); // una interrupción cada 1 ms
+    //SysTick_Config(SystemCoreClock / 1000); // una interrupción cada 1 ms
     Horno_Init();
 
     /*
@@ -112,9 +113,9 @@ int main(void) {
      */
 
     /* Display */
-    Display_Init();
-
-
-
+    while(1) {
+    	Display_Init();
+    	Horno_udelay(1e6);
+    }
     return 0;
 }
