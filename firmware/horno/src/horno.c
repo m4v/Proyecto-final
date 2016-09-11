@@ -90,7 +90,7 @@ int main(void) {
      * que cuando llega a cero genera una interrupción. El contador es de
      * 24bits.
      */
-    SysTick_Config(SystemCoreClock / 1000); // una interrupción cada 1 ms
+    //SysTick_Config(SystemCoreClock / 1000); // una interrupción cada 1 ms
     Horno_Init();
 
     /*
@@ -112,8 +112,9 @@ int main(void) {
      */
 
     /* Display */
+   while(1){
     Display_Init();
-
+   }
 
 
     return 0;
