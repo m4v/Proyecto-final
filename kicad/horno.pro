@@ -1,4 +1,4 @@
-update=dom 28 ago 2016 14:09:07 ART
+update=dom 11 sep 2016 15:21:10 ART
 version=1
 last_client=kicad
 [pcbnew]
@@ -25,7 +25,7 @@ version=1
 NetIExt=net
 [eeschema]
 version=1
-LibDir=bibliotecas;/home/m4v/electronica/kicad/kicad-library/library
+LibDir=bibliotecas
 [eeschema/libraries]
 LibName1=power
 LibName2=device
@@ -56,3 +56,13 @@ LibName26=sensors
 LibName27=bibliotecas/stepper drivers
 [general]
 version=1
+[schematic_editor]
+version=1
+PageLayoutDescrFile=
+PlotDirectoryName=
+SubpartIdSeparator=0
+SubpartFirstId=65
+NetFmtName=Pcbnew
+SpiceForceRefPrefix=0
+SpiceUseNetNumbers=0
+LabSize=60
