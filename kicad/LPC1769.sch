@@ -240,19 +240,19 @@ Text Label 4300 4800 0    60   ~ 0
 GPIO2
 Text Label 4300 4700 0    60   ~ 0
 GPIO3
-Text Label 4300 4200 0    60   ~ 0
+Text Label 4300 4600 0    60   ~ 0
 GPIO4
-Text Label 4300 4100 0    60   ~ 0
+Text Label 4300 4400 0    60   ~ 0
 GPIO5
-Text Label 4300 4000 0    60   ~ 0
+Text Label 4300 4300 0    60   ~ 0
 GPIO6
-Text Label 4300 3600 0    60   ~ 0
+Text Label 4300 4200 0    60   ~ 0
 GPIO7
-Text Label 4300 3500 0    60   ~ 0
+Text Label 4300 4100 0    60   ~ 0
 GPIO8
-Text Label 4300 3400 0    60   ~ 0
+Text Label 4300 4000 0    60   ~ 0
 GPIO9
-Text Label 4300 3100 0    60   ~ 0
+Text Label 4300 3900 0    60   ~ 0
 GPIO10
 $Comp
 L CONN_02X12 P9
@@ -418,17 +418,12 @@ Wire Wire Line
 	5100 4100 4300 4100
 Wire Wire Line
 	5100 4200 4300 4200
-Text Label 4300 3000 0    60   ~ 0
+Text Label 4300 3700 0    60   ~ 0
 GPIO11
-Text Label 4300 2900 0    60   ~ 0
+Text Label 4300 3600 0    60   ~ 0
 GPIO12
-Text Label 4300 2800 0    60   ~ 0
+Text Label 4300 3500 0    60   ~ 0
 GPIO13
-NoConn ~ 5100 4600
-NoConn ~ 5100 4400
-NoConn ~ 5100 4300
-NoConn ~ 5100 3900
-NoConn ~ 5100 3700
 $Comp
 L GNDD #PWR054
 U 1 1 57D4E6A6
@@ -441,12 +436,9 @@ F 3 "" H 8300 3400 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	8300 3400 8300 3050
-Wire Wire Line
-	8300 3050 8550 3050
+	8200 3050 8550 3050
 Wire Wire Line
 	8550 3150 8300 3150
-Connection ~ 8300 3150
 $Comp
 L GNDD #PWR055
 U 1 1 57D4E7B5
@@ -459,12 +451,9 @@ F 3 "" H 9300 3400 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	9300 3400 9300 3050
-Wire Wire Line
-	9300 3050 9050 3050
+	9600 3050 9050 3050
 Wire Wire Line
 	9050 3150 9300 3150
-Connection ~ 9300 3150
 $Comp
 L +5V #PWR056
 U 1 1 57D4E97D
@@ -477,12 +466,47 @@ F 3 "" H 9600 2750 50  0000 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	9600 2750 9600 2950
+	9600 2750 9600 3050
 Wire Wire Line
-	9600 2950 9050 2950
+	5100 3700 4300 3700
 Wire Wire Line
-	9050 2850 9600 2850
-Connection ~ 9600 2850
-NoConn ~ 8550 2850
-NoConn ~ 8550 2950
+	5100 3900 4300 3900
+Wire Wire Line
+	5100 4300 4300 4300
+Wire Wire Line
+	5100 4400 4300 4400
+Wire Wire Line
+	5100 4600 4300 4600
+Text Label 4300 3400 0    60   ~ 0
+GPIO14
+Text Label 4300 3100 0    60   ~ 0
+GPIO15
+Text Label 4300 3000 0    60   ~ 0
+GPIO16
+Text Label 4300 2900 0    60   ~ 0
+GPIO17
+Text Label 4300 2800 0    60   ~ 0
+GPIO18
+Wire Wire Line
+	8550 2850 8200 2850
+Wire Wire Line
+	8550 2950 8200 2950
+Wire Wire Line
+	9050 2850 9400 2850
+Text Label 8200 2850 0    60   ~ 0
+GPIO14
+Text Label 9400 2850 2    60   ~ 0
+GPIO15
+Text Label 8200 2950 0    60   ~ 0
+GPIO16
+Text Label 9400 2950 2    60   ~ 0
+GPIO17
+Text Label 8200 3050 0    60   ~ 0
+GPIO18
+Wire Wire Line
+	9050 2950 9400 2950
+Wire Wire Line
+	8300 3150 8300 3400
+Wire Wire Line
+	9300 3150 9300 3400
 $EndSCHEMATC
