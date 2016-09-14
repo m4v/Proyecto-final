@@ -6,6 +6,12 @@ K LPCXpresso LPC1769
 F datasheet/LPCXpressoLPC1769revB.pdf
 $ENDCMP
 #
+$CMP LTC1050
+D Zero drift operational amplifier
+K Ampliop opamp
+F datasheet/LTC1050.pdf
+$ENDCMP
+#
 $CMP OP07
 D Op amp
 K Ampliop opamp

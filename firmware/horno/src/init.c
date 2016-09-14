@@ -26,9 +26,10 @@ static const PINMUX_GRP_T pinmux[] = {
 	{0,   7,  IOCON_MODE_INACT | IOCON_FUNC0},
 	{0,   8,  IOCON_MODE_INACT | IOCON_FUNC0},
 	{0,   9,  IOCON_MODE_INACT | IOCON_FUNC0},
+	/* pines P0.0 y P0.1 reservados para la comunicación UART */
+	{0,   0,  IOCON_FUNC2},
+	{0,   1,  IOCON_FUNC2},
 	/* pines para control del motor */
-	{0,   0,  IOCON_MODE_INACT | IOCON_FUNC0},
-	{0,   1,  IOCON_MODE_INACT | IOCON_FUNC0},
 	{0,  18,  IOCON_MODE_INACT | IOCON_FUNC0},
 	/* pin del ADC */
 	{0,  23,  IOCON_MODE_INACT | IOCON_FUNC1},
