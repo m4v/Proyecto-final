@@ -137,33 +137,33 @@ void Display_Init(void)
 	// Acá terminamos y dejamos listo para escribir
 
 
-//	Put_rectangle(20,20);
-	for(int i=0;i<20;i++){
-		Put_pixel(i,2);}
+////	Put_rectangle(20,20);
+//	for(int i=0;i<20;i++){
+//		Put_pixel(i,2);}
 /*Esto escribe una linea de píxeles en diagonal*/
 //	for(int i=0;i<239;i++){
 //		Put_pixel(i,i);}
 
 /* Esto escribe el string prueba de en cascada y luego en ascendente*/
-//	char prueba[]="hola Ameo";
-//
-//	for(int i=0;i<30;i++){
-//	Set_text_position(i,i);
-//	Put_string(prueba);
-//	Horno_udelay(50e3);
-//	}
-//
-//	//	 clear data in first layer
-//		Command_Write(0x46); // Ponemos el cursor en el comienzo del 1er layer
-//		Parameter_Write(0x00); //P1 -- LSB
-//		Parameter_Write(0x00); //P2 -- MSB
-//		Fill_text_layer(0x00);
-//
-//	for(int i=30;i>=0;i--){
-//	Set_text_position((-i+30),(i-1));
-//	Put_string(prueba);
-//	Horno_udelay(50e3);
-//	}
+	char prueba[]="hola MUNDO";
+
+	for(int i=0;i<30;i++){
+	Set_text_position(i,i);
+	Put_string(prueba);
+	Horno_udelay(50e3);
+	}
+
+	//	 clear data in first layer
+		Command_Write(0x46); // Ponemos el cursor en el comienzo del 1er layer
+		Parameter_Write(0x00); //P1 -- LSB
+		Parameter_Write(0x00); //P2 -- MSB
+		Fill_text_layer(0x00);
+
+	for(int i=30;i>=0;i--){
+	Set_text_position((-i+30),(i-1));
+	Put_string(prueba);
+	Horno_udelay(50e3);
+	}
 
 /* Escribir toda la pantalla con líneas de letras consecutivas.*/
 //    for(int k=0; k<30; k++) {
