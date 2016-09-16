@@ -137,42 +137,51 @@ void Display_Init(void)
 	// Acá terminamos y dejamos listo para escribir
 
 
-////	Put_rectangle(20,20);
+/*Rectangulo de 20 x 10*/
+
 //	for(int i=0;i<20;i++){
-//		Put_pixel(i,2);}
+//		Inc_put_pixel(i,2);}
+
+
 /*Esto escribe una linea de píxeles en diagonal*/
 //	for(int i=0;i<239;i++){
 //		Put_pixel(i,i);}
 
 /* Esto escribe el string prueba de en cascada y luego en ascendente*/
-	char prueba[]="hola MUNDO";
+//	char prueba[]="hola LEO";
+//	for(int i=0;i<30;i++){
+//	Set_text_position(i,i);
+//	Put_string(prueba);
+////	Horno_udelay(50e3);
+//	}
+//
+//	//	 clear data in first layer
+//		Command_Write(0x46); // Ponemos el cursor en el comienzo del 1er layer
+//		Parameter_Write(0x00); //P1 -- LSB
+//		Parameter_Write(0x00); //P2 -- MSB
+//		Fill_text_layer(0x00);
+//
+//	for(int i=30;i>=0;i--){
+//	Set_text_position((-i+30),(i-1));
+//	Put_string(prueba);
+////	Horno_udelay(50e3);
+//	}
 
-/*	for(int i=0;i<30;i++){
-	Set_text_position(i,i);
-	Put_string(prueba);
-	Horno_udelay(50e3);
-	}
 
-	//	 clear data in first layer
-		Command_Write(0x46); // Ponemos el cursor en el comienzo del 1er layer
-		Parameter_Write(0x00); //P1 -- LSB
-		Parameter_Write(0x00); //P2 -- MSB
-		Fill_text_layer(0x00);
+//	Inc_put_pixel(200,200);
 
-	for(int i=30;i>=0;i--){
-	Set_text_position((-i+30),(i-1));
-	Put_string(prueba);
-	Horno_udelay(50e3);
-	}
+/*Clon esto hacemos un gusanito de 8 pixels de largo*/
 
-*/int j=0;
-for (int k=0;k<240;k++){
+	/*	int j=0;
+	for (int k=0;k<240;k++){
 		for(int i=0;i<320;i++){
 			j++;
 			if((j-1)%8==0){Clr_pixel(i-1,k);}
 			Inc_put_pixel(i,k);
 			Horno_udelay(500e2);
-	}}
+	}}*/
+
+
 /* Escribir toda la pantalla con líneas de letras consecutivas.*/
 //    for(int k=0; k<30; k++) {
 //    	char c='A';
@@ -181,7 +190,8 @@ for (int k=0;k<240;k++){
 //    	c++;
 ////    	Horno_udelay(500e3);   } //medio segundo
 //    }
-}
+
+} // Fin del main
 
 
 
@@ -289,31 +299,7 @@ void Inc_put_pixel(unsigned int x,unsigned int y){
 	Set_graphic_position(x/8,y);
 	int temp= (7-(x%8));
 	Command_Write(0x42);
-	switch(temp){
-	case 7:
-	Parameter_Write(0x80);
-	break;
-	case 6:
-	Parameter_Write(0xC0);
-	break;
-	case 5:
-	Parameter_Write(0xE0);
-	break;
-	case 4:
-	Parameter_Write(0xF0);
-	break;
-	case 3:
-	Parameter_Write(0xF8);
-	break;
-	case 2:
-	Parameter_Write(0xFC);
-	break;
-	case 1:
-	Parameter_Write(0xFE);
-	break;
-	case 0:
-	Parameter_Write(0xFF);
-	break;}
+	Parameter_Write(0xFF<<temp);
 }
 
 void Put_rectangle(unsigned int width, unsigned int height){
