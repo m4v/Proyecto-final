@@ -149,6 +149,7 @@ void Display_Init(void)
 //		Put_pixel(i,i);}
 
 /* Esto escribe el string prueba de en cascada y luego en ascendente*/
+//	char prueba[]="Hola MUNDO";
 //	for(int i=0;i<30;i++){
 //	Set_text_position(i,i);
 //	Put_string(prueba);
