@@ -17,115 +17,157 @@
 /* Defines */
 
 /* mapeo de pines */
-#define SET_CS Chip_GPIO_SetPinState(LPC_GPIO, 0, 4, true)
-#define CLR_CS Chip_GPIO_SetPinState(LPC_GPIO, 0, 4, false)
-#define SET_A0 Chip_GPIO_SetPinState(LPC_GPIO, 0, 5, true)
-#define CLR_A0 Chip_GPIO_SetPinState(LPC_GPIO, 0, 5, false)
-#define SET_WR Chip_GPIO_SetPinState(LPC_GPIO, 0, 11, true)
-#define CLR_WR Chip_GPIO_SetPinState(LPC_GPIO, 0, 11, false)
-#define SET_RD Chip_GPIO_SetPinState(LPC_GPIO, 0, 10, true)
-#define CLR_RD Chip_GPIO_SetPinState(LPC_GPIO, 0, 10, false)
+#define SET_CS  Chip_GPIO_SetPinState(LPC_GPIO, 0,  4, true)
+#define CLR_CS  Chip_GPIO_SetPinState(LPC_GPIO, 0,  4, false)
+#define SET_A0  Chip_GPIO_SetPinState(LPC_GPIO, 0,  5, true)
+#define CLR_A0  Chip_GPIO_SetPinState(LPC_GPIO, 0,  5, false)
+#define SET_WR  Chip_GPIO_SetPinState(LPC_GPIO, 0, 11, true)
+#define CLR_WR  Chip_GPIO_SetPinState(LPC_GPIO, 0, 11, false)
+#define SET_RD  Chip_GPIO_SetPinState(LPC_GPIO, 0, 10, true)
+#define CLR_RD  Chip_GPIO_SetPinState(LPC_GPIO, 0, 10, false)
 #define SET_RST Chip_GPIO_SetPinState(LPC_GPIO, 2, 12, true)
 #define CLR_RST Chip_GPIO_SetPinState(LPC_GPIO, 2, 12, false)
-
 /* Datos D[7:0] P2.0:P2.7 */
 
+/* comandos */
+#define SYSTEM_SET  0x40
+#define MEM_WRITE   0x42
+#define MEM_READ    0x43
+#define SCROLL      0x44
+#define CSRW        0x46
+#define CSRR        0x47
+#define DISPLAY_OFF 0x58
+#define DISPLAY_ON  0x59
+#define HDOT_SCR    0x5A
+#define OVERLAY     0x5B
+#define CSRFORM     0x5D
+#define CSRDIR_R    0x4C
+#define CSRDIR_L    0x4D
+#define CSRDIR_U    0x4E
+#define CSRDIR_D    0x4F
+#define GRAYSCALE   0x60
 
+#define LCD_DELAY 100 /* retraso usado para comunicarse con la pantalla */
 
 /*Declaro las funciones */
 void Parameter_Write(unsigned char x);
 void Command_Write(unsigned char x);
+void Data_Write(uint8_t);
 void Clear_text_layer(unsigned char x);
 void Put_string(char str[]);
 void Put_rectangle(unsigned int width, unsigned int height);
 void Set_text_position(unsigned int x, unsigned int y);
 void Set_graphic_position(unsigned int x, unsigned int y);
 
-char CTL=0x00;
-/* Main */
-void Display_Init(void)
+void Display_Reset(void)
 {
-	CLR_CS;
-	SET_RD;
-	SET_WR;
-	/* reseteamos el display y esperamos a que se estabilice */
 	CLR_RST;
 	Horno_udelay(1e3);
 	SET_RST;
 	Horno_udelay(3e3);
+}
 
-	// start
-	// supply on
-	// system set
-	Command_Write(0x40); //C
-	Parameter_Write(0x30); //P1  -- D5=D4=1 usually HIGH. D3=0->single panel. D0=1 CGROM->internal character(5x7) generator, resto todo LOW
-	Parameter_Write(0x87); //P2 -- D7=1 MOD usually HIGH. D[3-0]= Horizontal size -1. Ahora está en 7, Tamano horiz=8
-	Parameter_Write(0x07); //P3 -- D[3-0]= Vertical size -1. Ahora en 7, tamano vert=8
-	Parameter_Write(0x27); //P4 -- Character Bytes per Row. D[7-0]=([C/R]x bpp)-1. Ahora está en C/R=40
-	Parameter_Write(0x42); //P5 -- Total Character Bytes per Row. D[7-0]=[TC/R]+1. Ahora está en 73
-	Parameter_Write(0xEF); //P6 -- Frame Height. D[7-0]=Frame height in lines-1. Cantidad de líneas: P6=(240-1). Esta es la altura del display.
-	Parameter_Write(0x28); //P7 -- P8P7 habla de la cantidad de direcciones horizontales. El datasheet habla de 128 con el display de 512, pero considerando una pantalla virtual extra.Para nosotros(sin pantalla virtual) (320/8)=40=0x0028 (P8=0x00,P7=0x28).
-	Parameter_Write(0x00); //P8
-	//SCROLL
-	Command_Write(0x44); //C
-	Parameter_Write(0x00); //P1
-	Parameter_Write(0x00); //P2
-	Parameter_Write(0xEF); //P3 -- REG[0Dh] bits 7-0 = screen block 1 size in number of lines - 1
-	Parameter_Write(0x00); //P4 -- Second screen block start address
-	Parameter_Write(0x10); //P5
-	Parameter_Write(0xEF); //P6 -- Igual que P3
-	Parameter_Write(0x00); //P7 -- Third screen block start address
-	Parameter_Write(0x04); //P8
-	Parameter_Write(0x00); //P9 -- Fourth screen block start address
-	Parameter_Write(0x30); //P10 xz
-	//Hdot SCR
-	Command_Write(0x5A); //C
-	Parameter_Write(0x00); //P1 -- Set Horizontal pixel shift to zero
-	//OVLAY
-	Command_Write(0x5B); //C
-	Parameter_Write(0x01); //P1	-- D[1-0]: layer composition method, D[1-0]=0b01; EXOR
-	// DISP OFF
-//	Command_Write(0x58); //C -- Disp OFF
-//	Parameter_Write(0x06); //P1
+void Display_Init(void)
+{
+	SET_RD;
+	SET_WR;
+	Display_Reset();
 
-//	 clear data in first layer
-	Command_Write(0x46); // Ponemos el cursor en el comienzo del 1er layer
+	Command_Write(SYSTEM_SET);
+	Parameter_Write((1<<5)|(1<<4)|(0<<3)|(0<<2)|(0));
+	/*               \      \      \      \      \Character generator select (0=CGROM 1=CGRAM)
+	 *                \      \      \      \Character height (0=8p 1=16p)
+	 *                 \      \      \Panel drive select (0=single 1=dual)
+	 *                  \      \Reserved (must be 1)
+	 *                   \Screen origin compensation (1=no compensation)
+	 */
+	Parameter_Write((1<<7)|(8-1));
+	/*               \      \Horizontal character size (pixels)
+	 *                \MOD (0=16-line AC drive 1=two-frame AC drive)
+	 */
+	Parameter_Write(8-1);   // Vertical character size (pixels)
+	Parameter_Write(40-1);  // Character bytes per row (C/R*bpp)
+	Parameter_Write(66);    // Total character bytes per row (C/R+2 <= TC/R <= 255)
+	Parameter_Write(240-1);	// Frame height (la altura del display)
+
+	/* Horizontal address range (AP) */
+	Parameter_Write(0x28); // LSB
+	Parameter_Write(0x00); // MSB
+
+	Command_Write(GRAYSCALE);
+	Parameter_Write(0); // bits per pixel (0=1 1=2 3=4)
+
+	Command_Write(SCROLL);
+	/* SAD1 0x0000 */
+	Parameter_Write(0x00);  // LSB
+	Parameter_Write(0x00);  // MSB
+	Parameter_Write(240-1); // SL1
+	/* SAD2 0x1000 */
+	Parameter_Write(0x00);  // LSB
+	Parameter_Write(0x10);  // MSB
+	Parameter_Write(240-1); // SL2
+	/* SAD3 0x0400 */
+	Parameter_Write(0x00); // LSB
+	Parameter_Write(0x04); // MSB
+	/* SAD4 0x3000 */
+	Parameter_Write(0x00); // LSB
+	Parameter_Write(0x30); // MSB
+
+	Command_Write(HDOT_SCR);
+	Parameter_Write(0); // Horizontal pixel scroll
+
+	Command_Write(OVERLAY);
+	Parameter_Write((0<<4)|(0<<3)|(0<<2)|(1));
+	/*               \      \      \      \Layer composition method (0=OR 1=XOR 2=AND)
+	 *                \      \      \Screen block 1 display mode (0=text 1=graphics)
+	 *                 \      \Screen block 3 display mode (0=text 1=graphics)
+	 *                  \Layer overlay select (0=two layers 1=three layers)
+	 */
+
+	/* clear data in first layer */
+	Command_Write(CSRW); // Ponemos el cursor en el comienzo del 1er layer
 	Parameter_Write(0x00); //P1 -- LSB
 	Parameter_Write(0x00); //P2 -- MSB
 	Clear_text_layer(0x00);
 
-	//clear data in 2nd display memory page
-	Command_Write(0x46); // Ponemos el cursor en el comienzo del 2do layer
+	/* clear data in 2nd display memory page */
+	Command_Write(CSRW); // Ponemos el cursor en el comienzo del 2do layer
 	Parameter_Write(0x00); //P1 -- LSB
 	Parameter_Write(0x10); //P2 -- MSB
 	Clear_graphic_layer(0x00);
 
-//	Clear_graphic_layer(CTL);
-//	CTL++;
+	/* Set cursor to start of the first screen block. */
+	Command_Write(CSRW);
+	Parameter_Write(0x00);
+	Parameter_Write(0x00);
 
-	// CSRW
-	Command_Write(0x46); //C
-	Parameter_Write(0x00); //P1 -- Set cursor to star of the first screen block.
-	Parameter_Write(0x00); //P2
-	// CSR FORM
-	Command_Write(0x5D); //C
-	Parameter_Write(0x07); //P1 -- Horizontal cursor size=5px
-	Parameter_Write(0x87); //P2 -- Vertical cursor size=7px
-	//DISP ON
-	Command_Write(0x59); //C -- Disp ON
-	Parameter_Write(0x16);
-	// CSR DIR.
-	Command_Write(0x4C); //C -- Set cursor shift direction to right.
-	// MWRITE
-	Command_Write(0x42);
-	// Acá terminamos y dejamos listo para escribir
+	/* Set cursor shape */
+	Command_Write(CSRFORM);
+	Parameter_Write(8-1); // Horizontal cursor size
+	Parameter_Write((1<<7)|(8-1));
+	/*               \      \Vertical cursor size
+	 *                \Cursor Mode (0=dash 1=block)
+	 */
 
+	/* DISPLAY ON */
+	Command_Write(DISPLAY_ON);
+	Parameter_Write((0 << 6)|(1 << 4)|(1 << 2)|(2));
+	 /*              \        \        \        \cursor attributes
+	  *               \        \        \SAD1 attributes
+	  *                \        \SAD2 attributes
+	  *                 \SAD3 attributes
+	  */
 
-	char prueba[]="hola ELIAN";
+	Command_Write(CSRDIR_R); //Set cursor shift direction to right.
+
+	// Acá terminamos y podemos empezar a escribir
+	Command_Write(MEM_WRITE);
+
+	char prueba[]="hola MUNDO";
 
 	for(int i=0;i<30;i++){
 	Set_text_position(i,i);
-	Put_string(prueba);
+		Put_string(prueba);
 	}
 
 	//	 clear data in first layer
@@ -138,22 +180,12 @@ void Display_Init(void)
 	Set_text_position((-i+30),i);
 	Put_string(prueba);
 	}
-
-//    for(int k=0; k<30; k++) {
-//    	char c='A';
-//	for(int i=0; i<40; i++) {
-//    	Parameter_Write(c);
-//    	c++;
-////    	Horno_udelay(500e3); //medio segundo
-//    }
-//    }
 }
 
-/* Funtions */
+/* Functions */
 
-
-
-void Put_string(char str[]){
+void Put_string(char str[])
+{
 	// MWRITE
 	Command_Write(0x42);
 	int str_length=0;
@@ -161,7 +193,6 @@ void Put_string(char str[]){
 	for(int i=0; i<str_length;i++){
 		Parameter_Write(str[i]);
 	}
-
 }
 
 void Data_Write(uint8_t pmtr)
@@ -173,47 +204,38 @@ void Data_Write(uint8_t pmtr)
 	Chip_GPIO_SetPortValue(LPC_GPIO, 2, port);
 }
 
-
 void Parameter_Write(unsigned char pmtr)
 {
-	// Datos
 	Data_Write(pmtr);
 
-	// Control
 	CLR_CS;
 	CLR_A0;
 	CLR_WR;
 	SET_RD;
-	Horno_udelay(100);
+	Horno_udelay(LCD_DELAY);
 	SET_WR;
 	SET_CS;
-	Horno_udelay(100);
+	Horno_udelay(LCD_DELAY);
 }
 
 void Command_Write(unsigned char cmd)
 {
-	// Datos
 	Data_Write(cmd);
 
-	// Control
 	CLR_CS;
 	SET_A0;
 	CLR_WR;
 	SET_RD;
-	Horno_udelay(100);
-
-	Board_LED_Set(0, false);
-	Horno_udelay(100);
+	Horno_udelay(LCD_DELAY);
 	SET_WR;
 	SET_CS;
-	Board_LED_Set(0, true);
-	Horno_udelay(100);
+	Horno_udelay(LCD_DELAY);
 }
 
 void Clear_text_layer(unsigned char x){
 	int i;
-	Command_Write(0x42);
-	for(i=0;i<1200;i++){
+	Command_Write(MEM_WRITE);
+	for(i=0;i<(40*30);i++){
 		Parameter_Write(x);
 	}
 }
@@ -249,7 +271,6 @@ void Set_graphic_position(unsigned int x, unsigned int y){
 	Parameter_Write((unsigned char)(address & 0xFF)); //P1 -- LSB
 	Parameter_Write((unsigned char)(address >> 8)); //P2 -- MSB
 }
-
 
 void Put_rectangle(unsigned int width, unsigned int height){
 /* Para setear una dirección le pasamos con el CSRW la posición a dónde
