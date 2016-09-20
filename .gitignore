@@ -39,3 +39,6 @@
 *.swp
 *~
 *.kate-swp
+
+# kicad backup files
+*.kicad_pcb-bak
