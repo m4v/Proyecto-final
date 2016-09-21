@@ -16,6 +16,7 @@
 
 #include "init.h"
 #include "delay.h"
+#include "320240.h"
 
 static ADC_CLOCK_SETUP_T ADCSetup;
 
@@ -102,6 +103,8 @@ void Horno_Init (void) {
 
 	/* Habilitar el timer para hacer retrasos */
 	Horno_delay_timer_Init();
+
+	Horno_Display_Init();
 
 	/* ADC Init */
 	Chip_ADC_Init(LPC_ADC, &ADCSetup);

@@ -250,7 +250,7 @@ void Put_line_waddr(unsigned int x0, unsigned int y0, unsigned int x, unsigned i
 /*Inicializa el display segun el ejemplo de la pag 103 y alguna que otra config
 propia nuestra */
 
-void Display_Init(void)
+void Horno_Display_Init(void)
 {
 	CLR_CS;
 	SET_RD;

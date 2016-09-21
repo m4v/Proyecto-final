@@ -112,10 +112,7 @@ int main(void) {
     }
      */
 
-    /* Display */
-    while(1) {
-    	Display_Init();
-    	Horno_udelay(1e6);
-    }
+    Horno_Display_Test();
+
     return 0;
 }

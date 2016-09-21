@@ -8,6 +8,7 @@
 #ifndef 320240_H_
 #define 320240_H_
 
-void Display_Init(void);
+void Horno_Display_Init(void);
+void Horno_Display_Test(void);
 
 #endif /* 320240_H_ */
