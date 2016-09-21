@@ -52,12 +52,15 @@
 /*Declaro las funciones */
 void Parameter_Write(unsigned char x);
 void Command_Write(unsigned char x);
-void Data_Write(uint8_t);
-void Clear_text_layer(unsigned char x);
+void Fill_text_layer(unsigned char x);
+void Fill_graphic_layer(unsigned char x);
 void Put_string(char str[]);
-void Put_rectangle(unsigned int width, unsigned int height);
 void Set_text_position(unsigned int x, unsigned int y);
 void Set_graphic_position(unsigned int x, unsigned int y);
+void Put_pixel(unsigned int x, unsigned int y);
+void Put_rectangle(unsigned int width, unsigned int height);
+void Fill_rectangle(unsigned int width, unsigned int height);
+void Put_line( int x, unsigned int y, unsigned int largo);
 
 void Display_Reset(void)
 {
@@ -128,13 +131,26 @@ void Display_Init(void)
 	Command_Write(CSRW); // Ponemos el cursor en el comienzo del 1er layer
 	Parameter_Write(0x00); //P1 -- LSB
 	Parameter_Write(0x00); //P2 -- MSB
-	Clear_text_layer(0x00);
+	Fill_text_layer(0x00);
 
 	/* clear data in 2nd display memory page */
 	Command_Write(CSRW); // Ponemos el cursor en el comienzo del 2do layer
 	Parameter_Write(0x00); //P1 -- LSB
 	Parameter_Write(0x10); //P2 -- MSB
-	Clear_graphic_layer(0x00);
+	Fill_graphic_layer(0x00);
+
+/*Acá estan las funciones para limpiar el 3er y 4to layer*/
+//	 clear data in 3rd layer
+	Command_Write(CSRW); // Ponemos el cursor en el comienzo del 1er layer
+	Parameter_Write(0x00); //P1 -- LSB
+	Parameter_Write(0x04); //P2 -- MSB
+	Fill_text_layer(0x00);
+
+//	clear data in 4th display memory page
+	Command_Write(CSRW); // Ponemos el cursor en el comienzo del 2do layer
+	Parameter_Write(0x00); //P1 -- LSB
+	Parameter_Write(0x30); //P2 -- MSB
+	Fill_graphic_layer(0x00);
 
 	/* Set cursor to start of the first screen block. */
 	Command_Write(CSRW);
@@ -170,19 +186,83 @@ void Display_Init(void)
 		Put_string(prueba);
 	}
 
-	//	 clear data in first layer
-		Command_Write(0x46); // Ponemos el cursor en el comienzo del 1er layer
-		Parameter_Write(0x00); //P1 -- LSB
-		Parameter_Write(0x00); //P2 -- MSB
-		Clear_text_layer(0x00);
+/*Rectangulo de 20 x 10*/
 
-	for(int i=30;i>0;i--){
-	Set_text_position((-i+30),i);
-	Put_string(prueba);
-	}
-}
+//	for(int i=0;i<20;i++){
+//		Inc_put_pixel(i,2);}
 
-/* Functions */
+/*Esto escribe una linea de píxeles en diagonal*/
+//	for(int i=0;i<239;i++){
+//		Put_pixel(i,i);}
+
+/* Esto escribe el string prueba de en cascada y luego en ascendente*/
+//	char prueba[]="Hola MUNDO";
+//	for(int i=0;i<30;i++){
+//	Set_text_position(i,i);
+//	Put_string(prueba);
+//	Horno_udelay(50e3);
+//	}
+//
+//	//	 clear data in first layer
+//		Command_Write(0x46); // Ponemos el cursor en el comienzo del 1er layer
+//		Parameter_Write(0x00); //P1 -- LSB
+//		Parameter_Write(0x00); //P2 -- MSB
+//		Fill_text_layer(0x00);
+//
+//	for(int i=30;i>=0;i--){
+//	Set_text_position((-i+30),(i-1));
+//	Put_string(prueba);
+//	Horno_udelay(50e3);
+//	}
+
+
+//	Inc_put_pixel(200,200);
+
+/*Clon esto hacemos un gusanito de 8 pixels de largo*/
+
+	/*	int j=0;
+	for (int k=0;k<240;k++){
+		for(int i=0;i<320;i++){
+			j++;
+			if((j-1)%8==0){Clr_pixel(i-1,k);}
+			Inc_put_pixel(i,k);
+			Horno_udelay(500e2);
+	}}*/
+
+
+/* Escribir toda la pantalla con líneas de letras consecutivas.*/
+//    for(int k=0; k<30; k++) {
+//    	char c='A';
+//	for(int i=0; i<40; i++) {
+//    	Parameter_Write(c);
+//    	c++;
+////    	Horno_udelay(500e3);   } //medio segundo
+//    }
+//
+//	int j=0;
+//	int flag=0;
+//	for(int i=0;i<20;i){
+//		if(i<10 & flag !=1){
+//			i++;
+//			Put_line(i,j,(15+2*i));
+//			j++;
+//			Horno_udelay(500e3);
+//		if(i==10){flag=1;}
+//	}
+//	else if(flag==1 & i>0){
+//		i--;
+//		Put_line(i,j,(15+2*i));
+//		j++;
+//		Horno_udelay(500e3);
+//		if(i==0){i=21;}
+//
+//	}
+//	}
+
+} // Fin del main
+
+
+/* Funtions */
 
 void Put_string(char str[])
 {
@@ -232,7 +312,7 @@ void Command_Write(unsigned char cmd)
 	Horno_udelay(LCD_DELAY);
 }
 
-void Clear_text_layer(unsigned char x){
+void Fill_text_layer(unsigned char x){
 	int i;
 	Command_Write(MEM_WRITE);
 	for(i=0;i<(40*30);i++){
@@ -240,40 +320,109 @@ void Clear_text_layer(unsigned char x){
 	}
 }
 
-void Clear_graphic_layer(unsigned char x){
-	int i;
+void Fill_graphic_layer(unsigned char x){
 	Command_Write(0x42);
-	for(i=0;i<((0x28)*240);i++){
+	for(int i=0;i<((0x28)*240);i++){
 		Parameter_Write(x);
 	}
 }
 
 void Set_text_position(unsigned int x, unsigned int y){
-	int temp_x, temp_y;
-	temp_x=0+x;
-	temp_y=y*40;
 	unsigned int address;
 	address=(y * 40) + x;
-	// El inicio es 0,0. Posición 0x0000
 	Command_Write(0x46);
 	Parameter_Write((unsigned char)(address & 0xFF)); //P1 -- LSB
 	Parameter_Write((unsigned char)(address >> 8)); //P2 -- MSB
 }
 
+// Usamos, a mano que la dirección de comienzo de la capa gráfica (2do layer) es 0x1000.
+// Acá hay que poner una variable global que indique la dirección.
 void Set_graphic_position(unsigned int x, unsigned int y){
-	int temp_x, temp_y;
-	temp_x=0+x/8;
-	temp_y=y*40;
-	unsigned int address;
-	address=(0x1000 + (y * 40) + x/8);
-	// El inicio es 0,0. Posición 0x1000
+	unsigned int address=(0x1000 + (y * 40) + x);
 	Command_Write(0x46);
 	Parameter_Write((unsigned char)(address & 0xFF)); //P1 -- LSB
 	Parameter_Write((unsigned char)(address >> 8)); //P2 -- MSB
+}
+
+void Put_pixel(unsigned int x, unsigned int y){
+	Set_graphic_position(x/8,y);
+	int temp= (7-(x%8));
+	Command_Write(0x42);
+	Parameter_Write(0x01<<temp);
+}
+
+void Clr_pixel(unsigned int x, unsigned int y){
+	Set_graphic_position(x/8,y);
+	int temp= (7-(x%8));
+	Command_Write(0x42);
+	Parameter_Write(0x00<<temp);
+}
+
+void Inc_put_pixel(unsigned int x,unsigned int y){
+	Set_graphic_position(x/8,y);
+	int temp= (7-(x%8));
+	Command_Write(0x42);
+	Parameter_Write(0xFF<<temp);
 }
 
 void Put_rectangle(unsigned int width, unsigned int height){
-/* Para setear una dirección le pasamos con el CSRW la posición a dónde
- * comenzar a escribir
- */
+/*
+	Command_Write(0x46); // Ponemos el cursor en el comienzo del 2do layer <- Capa GRAFICA!
+	Parameter_Write(0x00); //P1 -- LSB
+	Parameter_Write(0x10); //P2 -- MSB
+//	Command_Write(0x42); // Avisamos que vamos a escribir
+	int x = width;
+	int y = height;
+
+	for(int j=0;j<x;j++){
+		Command_Write(0x42);
+		Parameter_Write(0xFF);}
+	for (int i=1; i<y; i++){
+		// Incremento una posición en y
+		Set_graphic_position(0,i);
+				Command_Write(0x42);
+				Parameter_Write(0x80);
+		Set_graphic_position(x*8,i);
+				Command_Write(0x42);
+				Parameter_Write(0x01);
+	}
+	Set_graphic_position(0,y);
+	for(int j=0;j<x;j++){
+
+		Command_Write(0x42);
+		Parameter_Write(0xFF);}
+*/
+	for(int i=0;i<width;i++){	Put_pixel(i,0);}		// Arista superior
+	for(int j=0;j<height;j++){	Put_pixel(0,j);}			// Arista izquierda
+	for(int j=0;j<height;j++){	Put_pixel(width,j);}		// Arista derecha
+	for(int i=0;i<width;i++){	Put_pixel(i,height);}	// Arista inferior
+}
+
+void Fill_rectangle(unsigned int width, unsigned int height){
+	// acá iria donde acomodamos la dirección
+	Set_graphic_position(width/8,height);
+}
+
+void Put_line( int x, unsigned int y, unsigned int largo){
+	char pp=(0x80>>(x%8)); // pixel inicial
+	int i;
+	largo=x+largo;
+	for (i=1; i<=(8-x%8); i++){
+		Set_graphic_position(x/8,y);
+		Command_Write(0x42);
+		Parameter_Write(pp);
+		pp=pp+((0x80>>(x%8))>>(i));
+	}
+	x=x+i-1;
+
+	for( x; x<(largo); x++){
+		Set_graphic_position(x/8,y);
+//		int temp= (7-(t%8));
+		Command_Write(0x42);
+		char p=0x7F;
+		char q;
+		q=~(p>>(x%8));
+		Parameter_Write(q);
+
+	}
 }
