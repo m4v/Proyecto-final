@@ -96,8 +96,7 @@ void Command_Write(unsigned char cmd)
 }
 
 void Put_string(char str[]){
-	// MWRITE
-	Command_Write(0x42);
+	Command_Write(MEM_WRITE);
 	int str_length=0;
 	str_length=strlen(str);
 	for(int i=0; i<str_length;i++){
@@ -114,7 +113,7 @@ void Fill_text_layer(unsigned char x){
 }
 
 void Fill_graphic_layer(unsigned char x){
-	Command_Write(0x42);
+	Command_Write(MEM_WRITE);
 	for(int i=0;i<((0x28)*240);i++){
 		Parameter_Write(x);
 	}
@@ -123,7 +122,7 @@ void Fill_graphic_layer(unsigned char x){
 void Set_text_position(unsigned int x, unsigned int y){
 	unsigned int address;
 	address=(y * 40) + x;
-	Command_Write(0x46);
+	Command_Write(CSRW);
 	Parameter_Write((unsigned char)(address & 0xFF)); //P1 -- LSB
 	Parameter_Write((unsigned char)(address >> 8)); //P2 -- MSB
 }
@@ -132,7 +131,7 @@ void Set_text_position(unsigned int x, unsigned int y){
 // Acá hay que poner una variable global que indique la dirección.
 void Set_graphic_position(unsigned int x, unsigned int y){
 	unsigned int address=(0x1000 + (y * 40) + x);
-	Command_Write(0x46);
+	Command_Write(CSRW);
 	Parameter_Write((unsigned char)(address & 0xFF)); //P1 -- LSB
 	Parameter_Write((unsigned char)(address >> 8)); //P2 -- MSB
 }
@@ -140,49 +139,49 @@ void Set_graphic_position(unsigned int x, unsigned int y){
 void Put_pixel(unsigned int x, unsigned int y){
 	Set_graphic_position(x/8,y);
 	int temp= (7-(x%8));
-	Command_Write(0x42);
+	Command_Write(MEM_WRITE);
 	Parameter_Write(0x01<<temp);
 }
 
 void Clr_pixel(unsigned int x, unsigned int y){
 	Set_graphic_position(x/8,y);
 	int temp= (7-(x%8));
-	Command_Write(0x42);
+	Command_Write(MEM_WRITE);
 	Parameter_Write(0x00<<temp);
 }
 
 void Inc_put_pixel(unsigned int x,unsigned int y){
 	Set_graphic_position(x/8,y);
 	int temp= (7-(x%8));
-	Command_Write(0x42);
+	Command_Write(MEM_WRITE);
 	Parameter_Write(0xFF<<temp);
 }
 
 void Put_rectangle(unsigned int width, unsigned int height){
 /*
-	Command_Write(0x46); // Ponemos el cursor en el comienzo del 2do layer <- Capa GRAFICA!
+	Command_Write(CSRW); // Ponemos el cursor en el comienzo del 2do layer <- Capa GRAFICA!
 	Parameter_Write(0x00); //P1 -- LSB
 	Parameter_Write(0x10); //P2 -- MSB
-//	Command_Write(0x42); // Avisamos que vamos a escribir
+//	Command_Write(MEM_WRITE); // Avisamos que vamos a escribir
 	int x = width;
 	int y = height;
 
 	for(int j=0;j<x;j++){
-		Command_Write(0x42);
+		Command_Write(MEM_WRITE);
 		Parameter_Write(0xFF);}
 	for (int i=1; i<y; i++){
 		// Incremento una posición en y
 		Set_graphic_position(0,i);
-				Command_Write(0x42);
+				Command_Write(MEM_WRITE);
 				Parameter_Write(0x80);
 		Set_graphic_position(x*8,i);
-				Command_Write(0x42);
+				Command_Write(MEM_WRITE);
 				Parameter_Write(0x01);
 	}
 	Set_graphic_position(0,y);
 	for(int j=0;j<x;j++){
 
-		Command_Write(0x42);
+		Command_Write(MEM_WRITE);
 		Parameter_Write(0xFF);}
 */
 	for(int i=0;i<width;i++){	Put_pixel(i,0);}		// Arista superior
@@ -202,7 +201,7 @@ void Put_line( int x, unsigned int y, unsigned int largo){
 	largo=x+largo;
 	for (i=1; i<=(8-x%8); i++){
 		Set_graphic_position(x/8,y);
-		Command_Write(0x42);
+		Command_Write(MEM_WRITE);
 		Parameter_Write(pp);
 		pp=pp+((0x80>>(x%8))>>(i));
 	}
@@ -211,7 +210,7 @@ void Put_line( int x, unsigned int y, unsigned int largo){
 	for( x; x<(largo); x++){
 		Set_graphic_position(x/8,y);
 //		int temp= (7-(t%8));
-		Command_Write(0x42);
+		Command_Write(MEM_WRITE);
 		char p=0x7F;
 		char q;
 		q=~(p>>(x%8));
@@ -229,7 +228,7 @@ void Put_line_waddr(unsigned int x0, unsigned int y0, unsigned int x, unsigned i
 	largo=x+largo;
 	for (i=1; i<=(8-largo%8); i++){
 		Set_graphic_position(x/8,y);
-		Command_Write(0x42);
+		Command_Write(MEM_WRITE);
 		Parameter_Write(pp);
 		pp=pp+((0x80>>(x%8))>>(i));
 	}
@@ -238,7 +237,7 @@ void Put_line_waddr(unsigned int x0, unsigned int y0, unsigned int x, unsigned i
 	for( x; x<(largo); x++){
 		Set_graphic_position(x/8,y);
 //		int temp= (7-(t%8));
-		Command_Write(0x42);
+		Command_Write(MEM_WRITE);
 		char p=0x7F;
 		char q;
 		q=~(p>>(x%8));
@@ -376,7 +375,7 @@ void Horno_Display_Test(void)
 //	}
 //
 //	//	 clear data in first layer
-//		Command_Write(0x46); // Ponemos el cursor en el comienzo del 1er layer
+//		Command_Write(CSRW); // Ponemos el cursor en el comienzo del 1er layer
 //		Parameter_Write(0x00); //P1 -- LSB
 //		Parameter_Write(0x00); //P2 -- MSB
 //		Fill_text_layer(0x00);
