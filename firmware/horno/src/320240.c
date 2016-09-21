@@ -49,20 +49,6 @@
 
 #define LCD_DELAY 100 /* retraso usado para comunicarse con la pantalla */
 
-/*Declaro las funciones */
-void init_display(void);
-void Parameter_Write(unsigned char x);
-void Command_Write(unsigned char x);
-void Fill_text_layer(unsigned char x);
-void Fill_graphic_layer(unsigned char x);
-void Put_string(char str[]);
-void Set_text_position(unsigned int x, unsigned int y);
-void Set_graphic_position(unsigned int x, unsigned int y);
-void Put_pixel(unsigned int x, unsigned int y);
-void Put_rectangle(unsigned int width, unsigned int height);
-void Fill_rectangle(unsigned int width, unsigned int height);
-void Put_line( int x, unsigned int y, unsigned int largo);
-void Put_line_waddr(unsigned int x0, unsigned int y0, unsigned int x, unsigned int y, unsigned int largo);
 
 void Display_Reset(void)
 {
@@ -70,221 +56,6 @@ void Display_Reset(void)
 	Horno_udelay(1e3);
 	SET_RST;
 	Horno_udelay(3e3);
-}
-
-void Display_Init(void)
-{
-	init_display();
-
-
-//	for(int i=0;i<20;i++){
-//		Inc_put_pixel(i,2);}
-
-/*Esto escribe una linea de píxeles en diagonal*/
-//	for(int i=0;i<239;i++){
-//		Put_pixel(i,i);}
-
-/* Esto escribe el string prueba de en cascada y luego en ascendente*/
-//	char prueba[]="Hola MUNDO";
-//	for(int i=0;i<30;i++){
-//	Set_text_position(i,i);
-//	Put_string(prueba);
-//	Horno_udelay(50e3);
-//	}
-//
-//	//	 clear data in first layer
-//		Command_Write(0x46); // Ponemos el cursor en el comienzo del 1er layer
-//		Parameter_Write(0x00); //P1 -- LSB
-//		Parameter_Write(0x00); //P2 -- MSB
-//		Fill_text_layer(0x00);
-//
-//	for(int i=30;i>=0;i--){
-//	Set_text_position((-i+30),(i-1));
-//	Put_string(prueba);
-//	Horno_udelay(50e3);
-//	}
-
-//	Inc_put_pixel(200,200);
-
-/*Con esto hacemos un gusanito de 8 pixels de largo*/
-
-	/*	int j=0;
-	for (int k=0;k<240;k++){
-		for(int i=0;i<320;i++){
-			j++;
-			if((j-1)%8==0){Clr_pixel(i-1,k);}
-			Inc_put_pixel(i,k);
-			Horno_udelay(500e2);
-	}}*/
-
-/* Escribir toda la pantalla con líneas de letras consecutivas.*/
-//    for(int k=0; k<30; k++) {
-//    	char c='A';
-//	for(int i=0; i<40; i++) {
-//    	Parameter_Write(c);
-//    	c++;
-////    	Horno_udelay(500e3);   } //medio segundo
-//    }
-
-/*Test de jugar con el put_line */
-//	int j=0;
-//	int flag=0;
-//	for(int i=0;i<20;i){
-//		if(i<10 & flag !=1){
-//			i++;
-//			Put_line(i,j,(15+2*i));
-//			j++;
-//			Horno_udelay(500e3);
-//		if(i==10){flag=1;}
-//	}
-//	else if(flag==1 & i>0){
-//		i--;
-//		Put_line(i,j,(15+2*i));
-//		j++;
-//		Horno_udelay(500e3);
-//		if(i==0){i=21;}
-//
-//	}
-//	}
-
-
-/*Rectangulo de 20 x 10*/
-	int x0=0,y0=120;
-	for (int i=y0;i<=239;i++){
-		if(i==y0||i==239){
-			Put_line_waddr(x0,y0,0,i-y0,320);
-		}
-		Put_pixel(x0,i+1);
-		Put_pixel(319,i+1);
-//		Put_line_waddr(x0,y0,0,i,1);
-//		Put_line_waddr(310,y0,0,i,1);
-		}
-
-
-} // Fin del main
-
-
-
-/* Funtions */
-
-/*Inicializa el display segun el ejemplo de la pag 103 y alguna que otra config
-propia nuestra */
-
-void init_display(void) 
-{
-	CLR_CS;
-	SET_RD;
-	SET_WR;
-	Display_Reset();
-
-	Command_Write(SYSTEM_SET);
-	Parameter_Write((1<<5)|(1<<4)|(0<<3)|(0<<2)|(0));
-	/*               \      \      \      \      \Character generator select (0=CGROM 1=CGRAM)
-	 *                \      \      \      \Character height (0=8p 1=16p)
-	 *                 \      \      \Panel drive select (0=single 1=dual)
-	 *                  \      \Reserved (must be 1)
-	 *                   \Screen origin compensation (1=no compensation)
-	 */
-	Parameter_Write((1<<7)|(8-1));
-	/*               \      \Horizontal character size (pixels)
-	 *                \MOD (0=16-line AC drive 1=two-frame AC drive)
-	 */
-	Parameter_Write(8-1);   // Vertical character size (pixels)
-	Parameter_Write(40-1);  // Character bytes per row (C/R*bpp)
-	Parameter_Write(66);    // Total character bytes per row (C/R+2 <= TC/R <= 255)
-	Parameter_Write(240-1);	// Frame height (la altura del display)
-
-	/* Horizontal address range (AP) */
-	Parameter_Write(0x28); // LSB
-	Parameter_Write(0x00); // MSB
-
-	Command_Write(GRAYSCALE);
-	Parameter_Write(0); // bits per pixel (0=1 1=2 3=4)
-
-	Command_Write(SCROLL);
-	/* SAD1 0x0000 */
-	Parameter_Write(0x00);  // LSB
-	Parameter_Write(0x00);  // MSB
-	Parameter_Write(240-1); // SL1
-	/* SAD2 0x1000 */
-	Parameter_Write(0x00);  // LSB
-	Parameter_Write(0x10);  // MSB
-	Parameter_Write(240-1); // SL2
-	/* SAD3 0x0400 */
-	Parameter_Write(0x00); // LSB
-	Parameter_Write(0x04); // MSB
-	/* SAD4 0x3000 */
-	Parameter_Write(0x00); // LSB
-	Parameter_Write(0x30); // MSB
-
-	Command_Write(HDOT_SCR);
-	Parameter_Write(0); // Horizontal pixel scroll
-
-	Command_Write(OVERLAY);
-	Parameter_Write((0<<4)|(0<<3)|(0<<2)|(1));
-	/*               \      \      \      \Layer composition method (0=OR 1=XOR 2=AND)
-	 *                \      \      \Screen block 1 display mode (0=text 1=graphics)
-	 *                 \      \Screen block 3 display mode (0=text 1=graphics)
-	 *                  \Layer overlay select (0=two layers 1=three layers)
-	 */
-
-	/* clear data in first layer */
-	Command_Write(CSRW); // Ponemos el cursor en el comienzo del 1er layer
-	Parameter_Write(0x00); //P1 -- LSB
-	Parameter_Write(0x00); //P2 -- MSB
-	Fill_text_layer(0x00);
-
-	/* clear data in 2nd display memory page */
-	Command_Write(CSRW); // Ponemos el cursor en el comienzo del 2do layer
-	Parameter_Write(0x00); //P1 -- LSB
-	Parameter_Write(0x10); //P2 -- MSB
-	Fill_graphic_layer(0x00);
-
-/*Acá estan las funciones para limpiar el 3er y 4to layer*/
-//	 clear data in 3rd layer
-	Command_Write(CSRW); // Ponemos el cursor en el comienzo del 1er layer
-	Parameter_Write(0x00); //P1 -- LSB
-	Parameter_Write(0x04); //P2 -- MSB
-	Fill_text_layer(0x00);
-
-//	clear data in 4th display memory page
-	Command_Write(CSRW); // Ponemos el cursor en el comienzo del 2do layer
-	Parameter_Write(0x00); //P1 -- LSB
-	Parameter_Write(0x30); //P2 -- MSB
-	Fill_graphic_layer(0x00);
-
-	/* Set cursor to start of the first screen block. */
-	Command_Write(CSRW);
-	Parameter_Write(0x00);
-	Parameter_Write(0x00);
-
-	/* Set cursor shape */
-	Command_Write(CSRFORM);
-	Parameter_Write(8-1); // Horizontal cursor size
-	Parameter_Write((1<<7)|(8-1));
-	/*               \      \Vertical cursor size
-	 *                \Cursor Mode (0=dash 1=block)
-	 */
-
-	/* DISPLAY ON */
-	Command_Write(DISPLAY_ON);
-	Parameter_Write((0 << 6)|(1 << 4)|(1 << 2)|(2));
-	 /*              \        \        \        \cursor attributes
-	  *               \        \        \SAD1 attributes
-	  *                \        \SAD2 attributes
-	  *                 \SAD3 attributes
-	  */
-
-	Command_Write(CSRDIR_R); //Set cursor shift direction to right.
-}
-void Put_string(char str[]){
-	// MWRITE
-	Command_Write(0x42);
-	int str_length=0;
-	str_length=strlen(str);
-	for(int i=0; i<str_length;i++){
-		Parameter_Write(str[i]);
-	}
 }
 
 void Data_Write(uint8_t pmtr)
@@ -322,6 +93,16 @@ void Command_Write(unsigned char cmd)
 	SET_WR;
 	SET_CS;
 	Horno_udelay(LCD_DELAY);
+}
+
+void Put_string(char str[]){
+	// MWRITE
+	Command_Write(0x42);
+	int str_length=0;
+	str_length=strlen(str);
+	for(int i=0; i<str_length;i++){
+		Parameter_Write(str[i]);
+	}
 }
 
 void Fill_text_layer(unsigned char x){
@@ -464,4 +245,200 @@ void Put_line_waddr(unsigned int x0, unsigned int y0, unsigned int x, unsigned i
 		Parameter_Write(q);
 	}
 
+}
+
+/*Inicializa el display segun el ejemplo de la pag 103 y alguna que otra config
+propia nuestra */
+
+void Display_Init(void)
+{
+	CLR_CS;
+	SET_RD;
+	SET_WR;
+	Display_Reset();
+
+	Command_Write(SYSTEM_SET);
+	Parameter_Write((1<<5)|(1<<4)|(0<<3)|(0<<2)|(0));
+	/*               \      \      \      \      \Character generator select (0=CGROM 1=CGRAM)
+	 *                \      \      \      \Character height (0=8p 1=16p)
+	 *                 \      \      \Panel drive select (0=single 1=dual)
+	 *                  \      \Reserved (must be 1)
+	 *                   \Screen origin compensation (1=no compensation)
+	 */
+	Parameter_Write((1<<7)|(8-1));
+	/*               \      \Horizontal character size (pixels)
+	 *                \MOD (0=16-line AC drive 1=two-frame AC drive)
+	 */
+	Parameter_Write(8-1);   // Vertical character size (pixels)
+	Parameter_Write(40-1);  // Character bytes per row (C/R*bpp)
+	Parameter_Write(66);    // Total character bytes per row (C/R+2 <= TC/R <= 255)
+	Parameter_Write(240-1);	// Frame height (la altura del display)
+
+	/* Horizontal address range (AP) */
+	Parameter_Write(0x28); // LSB
+	Parameter_Write(0x00); // MSB
+
+	Command_Write(GRAYSCALE);
+	Parameter_Write(0); // bits per pixel (0=1 1=2 3=4)
+
+	Command_Write(SCROLL);
+	/* SAD1 0x0000 */
+	Parameter_Write(0x00);  // LSB
+	Parameter_Write(0x00);  // MSB
+	Parameter_Write(240-1); // SL1
+	/* SAD2 0x1000 */
+	Parameter_Write(0x00);  // LSB
+	Parameter_Write(0x10);  // MSB
+	Parameter_Write(240-1); // SL2
+	/* SAD3 0x0400 */
+	Parameter_Write(0x00); // LSB
+	Parameter_Write(0x04); // MSB
+	/* SAD4 0x3000 */
+	Parameter_Write(0x00); // LSB
+	Parameter_Write(0x30); // MSB
+
+	Command_Write(HDOT_SCR);
+	Parameter_Write(0); // Horizontal pixel scroll
+
+	Command_Write(OVERLAY);
+	Parameter_Write((0<<4)|(0<<3)|(0<<2)|(1));
+	/*               \      \      \      \Layer composition method (0=OR 1=XOR 2=AND)
+	 *                \      \      \Screen block 1 display mode (0=text 1=graphics)
+	 *                 \      \Screen block 3 display mode (0=text 1=graphics)
+	 *                  \Layer overlay select (0=two layers 1=three layers)
+	 */
+
+	/* clear data in first layer */
+	Command_Write(CSRW); // Ponemos el cursor en el comienzo del 1er layer
+	Parameter_Write(0x00); //P1 -- LSB
+	Parameter_Write(0x00); //P2 -- MSB
+	Fill_text_layer(0x00);
+
+	/* clear data in 2nd display memory page */
+	Command_Write(CSRW); // Ponemos el cursor en el comienzo del 2do layer
+	Parameter_Write(0x00); //P1 -- LSB
+	Parameter_Write(0x10); //P2 -- MSB
+	Fill_graphic_layer(0x00);
+
+/*Acá estan las funciones para limpiar el 3er y 4to layer*/
+//	 clear data in 3rd layer
+	Command_Write(CSRW); // Ponemos el cursor en el comienzo del 1er layer
+	Parameter_Write(0x00); //P1 -- LSB
+	Parameter_Write(0x04); //P2 -- MSB
+	Fill_text_layer(0x00);
+
+//	clear data in 4th display memory page
+	Command_Write(CSRW); // Ponemos el cursor en el comienzo del 2do layer
+	Parameter_Write(0x00); //P1 -- LSB
+	Parameter_Write(0x30); //P2 -- MSB
+	Fill_graphic_layer(0x00);
+
+	/* Set cursor to start of the first screen block. */
+	Command_Write(CSRW);
+	Parameter_Write(0x00);
+	Parameter_Write(0x00);
+
+	/* Set cursor shape */
+	Command_Write(CSRFORM);
+	Parameter_Write(8-1); // Horizontal cursor size
+	Parameter_Write((1<<7)|(8-1));
+	/*               \      \Vertical cursor size
+	 *                \Cursor Mode (0=dash 1=block)
+	 */
+
+	/* DISPLAY ON */
+	Command_Write(DISPLAY_ON);
+	Parameter_Write((0 << 6)|(1 << 4)|(1 << 2)|(2));
+	 /*              \        \        \        \cursor attributes
+	  *               \        \        \SAD1 attributes
+	  *                \        \SAD2 attributes
+	  *                 \SAD3 attributes
+	  */
+
+	Command_Write(CSRDIR_R); //Set cursor shift direction to right.
+}
+
+void Horno_Display_Test(void)
+{
+//	for(int i=0;i<20;i++){
+//		Inc_put_pixel(i,2);}
+
+/*Esto escribe una linea de píxeles en diagonal*/
+//	for(int i=0;i<239;i++){
+//		Put_pixel(i,i);}
+
+/* Esto escribe el string prueba de en cascada y luego en ascendente*/
+//	char prueba[]="Hola MUNDO";
+//	for(int i=0;i<30;i++){
+//	Set_text_position(i,i);
+//	Put_string(prueba);
+//	Horno_udelay(50e3);
+//	}
+//
+//	//	 clear data in first layer
+//		Command_Write(0x46); // Ponemos el cursor en el comienzo del 1er layer
+//		Parameter_Write(0x00); //P1 -- LSB
+//		Parameter_Write(0x00); //P2 -- MSB
+//		Fill_text_layer(0x00);
+//
+//	for(int i=30;i>=0;i--){
+//	Set_text_position((-i+30),(i-1));
+//	Put_string(prueba);
+//	Horno_udelay(50e3);
+//	}
+
+//	Inc_put_pixel(200,200);
+
+/*Con esto hacemos un gusanito de 8 pixels de largo*/
+
+	/*	int j=0;
+	for (int k=0;k<240;k++){
+		for(int i=0;i<320;i++){
+			j++;
+			if((j-1)%8==0){Clr_pixel(i-1,k);}
+			Inc_put_pixel(i,k);
+			Horno_udelay(500e2);
+	}}*/
+
+/* Escribir toda la pantalla con líneas de letras consecutivas.*/
+//    for(int k=0; k<30; k++) {
+//    	char c='A';
+//	for(int i=0; i<40; i++) {
+//    	Parameter_Write(c);
+//    	c++;
+////    	Horno_udelay(500e3);   } //medio segundo
+//    }
+
+/*Test de jugar con el put_line */
+//	int j=0;
+//	int flag=0;
+//	for(int i=0;i<20;i){
+//		if(i<10 & flag !=1){
+//			i++;
+//			Put_line(i,j,(15+2*i));
+//			j++;
+//			Horno_udelay(500e3);
+//		if(i==10){flag=1;}
+//	}
+//	else if(flag==1 & i>0){
+//		i--;
+//		Put_line(i,j,(15+2*i));
+//		j++;
+//		Horno_udelay(500e3);
+//		if(i==0){i=21;}
+//
+//	}
+//	}
+
+/*Rectangulo de 20 x 10*/
+	int x0=0,y0=120;
+	for (int i=y0;i<=239;i++){
+		if(i==y0||i==239){
+			Put_line_waddr(x0,y0,0,i-y0,320);
+		}
+		Put_pixel(x0,i+1);
+		Put_pixel(319,i+1);
+//		Put_line_waddr(x0,y0,0,i,1);
+//		Put_line_waddr(310,y0,0,i,1);
+	}
 }
