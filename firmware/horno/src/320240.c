@@ -33,6 +33,7 @@
 
 
 /*Declaro las funciones */
+void init_display(void);
 void Parameter_Write(unsigned char x);
 void Command_Write(unsigned char x);
 void Fill_text_layer(unsigned char x);
@@ -44,11 +45,108 @@ void Put_pixel(unsigned int x, unsigned int y);
 void Put_rectangle(unsigned int width, unsigned int height);
 void Fill_rectangle(unsigned int width, unsigned int height);
 void Put_line( int x, unsigned int y, unsigned int largo);
+void Put_line_waddr(unsigned int x0, unsigned int y0, unsigned int x, unsigned int y, unsigned int largo);
 
 char CTL=0x00;
 /* Main */
 void Display_Init(void)
 {
+	init_display();
+
+
+//	for(int i=0;i<20;i++){
+//		Inc_put_pixel(i,2);}
+
+/*Esto escribe una linea de píxeles en diagonal*/
+//	for(int i=0;i<239;i++){
+//		Put_pixel(i,i);}
+
+/* Esto escribe el string prueba de en cascada y luego en ascendente*/
+//	char prueba[]="Hola MUNDO";
+//	for(int i=0;i<30;i++){
+//	Set_text_position(i,i);
+//	Put_string(prueba);
+//	Horno_udelay(50e3);
+//	}
+//
+//	//	 clear data in first layer
+//		Command_Write(0x46); // Ponemos el cursor en el comienzo del 1er layer
+//		Parameter_Write(0x00); //P1 -- LSB
+//		Parameter_Write(0x00); //P2 -- MSB
+//		Fill_text_layer(0x00);
+//
+//	for(int i=30;i>=0;i--){
+//	Set_text_position((-i+30),(i-1));
+//	Put_string(prueba);
+//	Horno_udelay(50e3);
+//	}
+
+//	Inc_put_pixel(200,200);
+
+/*Con esto hacemos un gusanito de 8 pixels de largo*/
+
+	/*	int j=0;
+	for (int k=0;k<240;k++){
+		for(int i=0;i<320;i++){
+			j++;
+			if((j-1)%8==0){Clr_pixel(i-1,k);}
+			Inc_put_pixel(i,k);
+			Horno_udelay(500e2);
+	}}*/
+
+/* Escribir toda la pantalla con líneas de letras consecutivas.*/
+//    for(int k=0; k<30; k++) {
+//    	char c='A';
+//	for(int i=0; i<40; i++) {
+//    	Parameter_Write(c);
+//    	c++;
+////    	Horno_udelay(500e3);   } //medio segundo
+//    }
+
+/*Test de jugar con el put_line */
+//	int j=0;
+//	int flag=0;
+//	for(int i=0;i<20;i){
+//		if(i<10 & flag !=1){
+//			i++;
+//			Put_line(i,j,(15+2*i));
+//			j++;
+//			Horno_udelay(500e3);
+//		if(i==10){flag=1;}
+//	}
+//	else if(flag==1 & i>0){
+//		i--;
+//		Put_line(i,j,(15+2*i));
+//		j++;
+//		Horno_udelay(500e3);
+//		if(i==0){i=21;}
+//
+//	}
+//	}
+
+
+/*Rectangulo de 20 x 10*/
+	int x0=0,y0=120;
+	for (int i=y0;i<=239;i++){
+		if(i==y0||i==239){
+			Put_line_waddr(x0,y0,0,i-y0,320);
+		}
+		Put_pixel(x0,i+1);
+		Put_pixel(319,i+1);
+//		Put_line_waddr(x0,y0,0,i,1);
+//		Put_line_waddr(310,y0,0,i,1);
+		}
+
+
+} // Fin del main
+
+
+
+/* Funtions */
+
+/*Inicializa el display segun el ejemplo de la pag 103 y alguna que otra config
+propia nuestra */
+void init_display(void){
 	CLR_CS;
 	SET_RD;
 	SET_WR;
@@ -133,91 +231,7 @@ void Display_Init(void)
 	Parameter_Write(0x16);
 	// CSR DIR.
 	Command_Write(0x4C); //C -- Set cursor shift direction to right.
-	// MWRITE
-	Command_Write(0x42);
-	// Acá terminamos y dejamos listo para escribir
-
-
-/*Rectangulo de 20 x 10*/
-
-//	for(int i=0;i<20;i++){
-//		Inc_put_pixel(i,2);}
-
-
-/*Esto escribe una linea de píxeles en diagonal*/
-//	for(int i=0;i<239;i++){
-//		Put_pixel(i,i);}
-
-/* Esto escribe el string prueba de en cascada y luego en ascendente*/
-//	char prueba[]="Hola MUNDO";
-//	for(int i=0;i<30;i++){
-//	Set_text_position(i,i);
-//	Put_string(prueba);
-//	Horno_udelay(50e3);
-//	}
-//
-//	//	 clear data in first layer
-//		Command_Write(0x46); // Ponemos el cursor en el comienzo del 1er layer
-//		Parameter_Write(0x00); //P1 -- LSB
-//		Parameter_Write(0x00); //P2 -- MSB
-//		Fill_text_layer(0x00);
-//
-//	for(int i=30;i>=0;i--){
-//	Set_text_position((-i+30),(i-1));
-//	Put_string(prueba);
-//	Horno_udelay(50e3);
-//	}
-
-
-//	Inc_put_pixel(200,200);
-
-/*Clon esto hacemos un gusanito de 8 pixels de largo*/
-
-	/*	int j=0;
-	for (int k=0;k<240;k++){
-		for(int i=0;i<320;i++){
-			j++;
-			if((j-1)%8==0){Clr_pixel(i-1,k);}
-			Inc_put_pixel(i,k);
-			Horno_udelay(500e2);
-	}}*/
-
-
-/* Escribir toda la pantalla con líneas de letras consecutivas.*/
-//    for(int k=0; k<30; k++) {
-//    	char c='A';
-//	for(int i=0; i<40; i++) {
-//    	Parameter_Write(c);
-//    	c++;
-////    	Horno_udelay(500e3);   } //medio segundo
-//    }
-//
-//	int j=0;
-//	int flag=0;
-//	for(int i=0;i<20;i){
-//		if(i<10 & flag !=1){
-//			i++;
-//			Put_line(i,j,(15+2*i));
-//			j++;
-//			Horno_udelay(500e3);
-//		if(i==10){flag=1;}
-//	}
-//	else if(flag==1 & i>0){
-//		i--;
-//		Put_line(i,j,(15+2*i));
-//		j++;
-//		Horno_udelay(500e3);
-//		if(i==0){i=21;}
-//
-//	}
-//	}
-
-} // Fin del main
-
-
-
-/* Funtions */
-
+}
 void Put_string(char str[]){
 	// MWRITE
 	Command_Write(0x42);
@@ -384,4 +398,31 @@ void Put_line( int x, unsigned int y, unsigned int largo){
 		Parameter_Write(q);
 
 	}
+}
+
+void Put_line_waddr(unsigned int x0, unsigned int y0, unsigned int x, unsigned int y, unsigned int largo){
+	// quiero darle una direccion base y que de ahí
+	x=x0+x;
+	y=y0+y;
+	char pp=(0x80>>(x%8)); // pixel inicial
+	int i;
+	largo=x+largo;
+	for (i=1; i<=(8-largo%8); i++){
+		Set_graphic_position(x/8,y);
+		Command_Write(0x42);
+		Parameter_Write(pp);
+		pp=pp+((0x80>>(x%8))>>(i));
+	}
+	x=x+i-1;
+
+	for( x; x<(largo); x++){
+		Set_graphic_position(x/8,y);
+//		int temp= (7-(t%8));
+		Command_Write(0x42);
+		char p=0x7F;
+		char q;
+		q=~(p>>(x%8));
+		Parameter_Write(q);
+	}
+
 }
