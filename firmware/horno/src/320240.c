@@ -277,8 +277,8 @@ void Horno_Display_Init(void)
 	Parameter_Write(0x28); // LSB
 	Parameter_Write(0x00); // MSB
 
-	Command_Write(GRAYSCALE);
-	Parameter_Write(0); // bits per pixel (0=1 1=2 3=4)
+	//Command_Write(GRAYSCALE);
+	//Parameter_Write(0); // bits per pixel (0=1 1=2 3=4)
 
 	Command_Write(SCROLL);
 	/* SAD1 0x0000 */
