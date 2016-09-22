@@ -11,6 +11,7 @@
 #include "board.h"
 #endif
 
+#include <string.h>
 #include "delay.h"
 #include "320240.h"
 
