@@ -208,7 +208,7 @@ void Put_line( int x, unsigned int y, unsigned int largo){
 	}
 	x=x+i-1;
 
-	for( x; x<(largo); x++){
+	for(; x<largo; x++){
 		Set_graphic_position(x/8,y);
 //		int temp= (7-(t%8));
 		Command_Write(MEM_WRITE);
@@ -235,7 +235,7 @@ void Put_line_waddr(unsigned int x0, unsigned int y0, unsigned int x, unsigned i
 	}
 	x=x+i-1;
 
-	for( x; x<(largo); x++){
+	for(; x<(largo); x++){
 		Set_graphic_position(x/8,y);
 //		int temp= (7-(t%8));
 		Command_Write(MEM_WRITE);
