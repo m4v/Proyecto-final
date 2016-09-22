@@ -36,7 +36,11 @@ static int muestras_i = 0;
 static uint16_t muestras[NUM_MUESTRAS];
 
 /* mensaje de inicio para mandar por el UART */
-static char mensaje_inicio[] = "\r\nProyecto Final Horno Dental\r\n";
+static char mensaje_inicio[] =
+		"\r\n"
+		"Proyecto Final Horno Dental\r\n"
+		"===========================\r\n"
+		"\r\n";
 static char mensaje_menu[] = "Presione la tecla 'c' iniciar la captura.\r\n";
 
 /* rutina de interrupción del systick */
@@ -91,10 +95,10 @@ int main(void) {
      * que cuando llega a cero genera una interrupción. El contador es de
      * 24bits.
      */
-    //SysTick_Config(SystemCoreClock / 1000); // una interrupción cada 1 ms
+    SysTick_Config(SystemCoreClock / 1000); // una interrupción cada 1 ms
     Horno_Init();
 
-    /*
+
     DEBUGOUT(mensaje_inicio);
    	DEBUGOUT(mensaje_menu);
     while(1) {
@@ -110,7 +114,6 @@ int main(void) {
     		Board_LED_Set(0, false);
     	}
     }
-     */
 
     Horno_Display_Test();
 
