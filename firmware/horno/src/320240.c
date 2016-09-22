@@ -34,17 +34,17 @@
 #define MEM_WRITE   0x42
 #define MEM_READ    0x43
 #define SCROLL      0x44
-#define CSRW        0x46
-#define CSRR        0x47
+#define CSR_WRITE   0x46
+#define CSR_READ    0x47
 #define DISPLAY_OFF 0x58
 #define DISPLAY_ON  0x59
 #define HDOT_SCR    0x5A
 #define OVERLAY     0x5B
-#define CSRFORM     0x5D
-#define CSRDIR_R    0x4C
-#define CSRDIR_L    0x4D
-#define CSRDIR_U    0x4E
-#define CSRDIR_D    0x4F
+#define CSR_FORM    0x5D
+#define CSR_DIR_R   0x4C
+#define CSR_DIR_L   0x4D
+#define CSR_DIR_U   0x4E
+#define CSR_DIR_D   0x4F
 #define GRAYSCALE   0x60
 
 #define LCD_DELAY 100 /* retraso usado para comunicarse con la pantalla */
@@ -122,7 +122,7 @@ void Fill_graphic_layer(unsigned char x){
 void Set_text_position(unsigned int x, unsigned int y){
 	unsigned int address;
 	address=(y * 40) + x;
-	Command_Write(CSRW);
+	Command_Write(CSR_WRITE);
 	Parameter_Write((unsigned char)(address & 0xFF)); //P1 -- LSB
 	Parameter_Write((unsigned char)(address >> 8)); //P2 -- MSB
 }
@@ -131,7 +131,7 @@ void Set_text_position(unsigned int x, unsigned int y){
 // Acá hay que poner una variable global que indique la dirección.
 void Set_graphic_position(unsigned int x, unsigned int y){
 	unsigned int address=(0x1000 + (y * 40) + x);
-	Command_Write(CSRW);
+	Command_Write(CSR_WRITE);
 	Parameter_Write((unsigned char)(address & 0xFF)); //P1 -- LSB
 	Parameter_Write((unsigned char)(address >> 8)); //P2 -- MSB
 }
@@ -159,7 +159,7 @@ void Inc_put_pixel(unsigned int x,unsigned int y){
 
 void Put_rectangle(unsigned int width, unsigned int height){
 /*
-	Command_Write(CSRW); // Ponemos el cursor en el comienzo del 2do layer <- Capa GRAFICA!
+	Command_Write(CSR_WRITE); // Ponemos el cursor en el comienzo del 2do layer <- Capa GRAFICA!
 	Parameter_Write(0x00); //P1 -- LSB
 	Parameter_Write(0x10); //P2 -- MSB
 //	Command_Write(MEM_WRITE); // Avisamos que vamos a escribir
@@ -308,37 +308,37 @@ void Horno_Display_Init(void)
 	 */
 
 	/* clear data in first layer */
-	Command_Write(CSRW); // Ponemos el cursor en el comienzo del 1er layer
+	Command_Write(CSR_WRITE); // Ponemos el cursor en el comienzo del 1er layer
 	Parameter_Write(0x00); //P1 -- LSB
 	Parameter_Write(0x00); //P2 -- MSB
 	Fill_text_layer(0x00);
 
 	/* clear data in 2nd display memory page */
-	Command_Write(CSRW); // Ponemos el cursor en el comienzo del 2do layer
+	Command_Write(CSR_WRITE); // Ponemos el cursor en el comienzo del 2do layer
 	Parameter_Write(0x00); //P1 -- LSB
 	Parameter_Write(0x10); //P2 -- MSB
 	Fill_graphic_layer(0x00);
 
 /*Acá estan las funciones para limpiar el 3er y 4to layer*/
 //	 clear data in 3rd layer
-	Command_Write(CSRW); // Ponemos el cursor en el comienzo del 1er layer
+	Command_Write(CSR_WRITE); // Ponemos el cursor en el comienzo del 1er layer
 	Parameter_Write(0x00); //P1 -- LSB
 	Parameter_Write(0x04); //P2 -- MSB
 	Fill_text_layer(0x00);
 
 //	clear data in 4th display memory page
-	Command_Write(CSRW); // Ponemos el cursor en el comienzo del 2do layer
+	Command_Write(CSR_WRITE); // Ponemos el cursor en el comienzo del 2do layer
 	Parameter_Write(0x00); //P1 -- LSB
 	Parameter_Write(0x30); //P2 -- MSB
 	Fill_graphic_layer(0x00);
 
 	/* Set cursor to start of the first screen block. */
-	Command_Write(CSRW);
+	Command_Write(CSR_WRITE);
 	Parameter_Write(0x00);
 	Parameter_Write(0x00);
 
 	/* Set cursor shape */
-	Command_Write(CSRFORM);
+	Command_Write(CSR_FORM);
 	Parameter_Write(8-1); // Horizontal cursor size
 	Parameter_Write((1<<7)|(8-1));
 	/*               \      \Vertical cursor size
@@ -354,7 +354,7 @@ void Horno_Display_Init(void)
 	  *                 \SAD3 attributes
 	  */
 
-	Command_Write(CSRDIR_R); //Set cursor shift direction to right.
+	Command_Write(CSR_DIR_R); //Set cursor shift direction to right.
 }
 
 void Horno_Display_Test(void)
@@ -375,7 +375,7 @@ void Horno_Display_Test(void)
 //	}
 //
 //	//	 clear data in first layer
-//		Command_Write(CSRW); // Ponemos el cursor en el comienzo del 1er layer
+//		Command_Write(CSR_WRITE); // Ponemos el cursor en el comienzo del 1er layer
 //		Parameter_Write(0x00); //P1 -- LSB
 //		Parameter_Write(0x00); //P2 -- MSB
 //		Fill_text_layer(0x00);
