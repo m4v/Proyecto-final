@@ -51,6 +51,7 @@
 #define LCD_DELAY 100 /* retraso usado para comunicarse con la pantalla */
 
 
+/* activo la pata de reset del display */
 void Display_Reset(void)
 {
 	CLR_RST;
@@ -59,6 +60,7 @@ void Display_Reset(void)
 	Horno_udelay(3e3);
 }
 
+/* escribir un byte en el bus de datos */
 void Data_Write(uint8_t pmtr)
 {
 	uint32_t port = Chip_GPIO_GetPortValue(LPC_GPIO, 2);
@@ -120,21 +122,23 @@ void Fill_graphic_layer(unsigned char x){
 	}
 }
 
+// Usamos, a mano que la dirección de comienzo de la capa de texto es 0x0000.
+// Acá hay que poner la dirección en un define
 void Set_text_position(unsigned int x, unsigned int y){
 	unsigned int address;
 	address=(y * 40) + x;
 	Command_Write(CSR_WRITE);
-	Parameter_Write((unsigned char)(address & 0xFF)); //P1 -- LSB
-	Parameter_Write((unsigned char)(address >> 8)); //P2 -- MSB
+	Parameter_Write((unsigned char)(address & 0xFF)); // LSB
+	Parameter_Write((unsigned char)(address >> 8));   // MSB
 }
 
 // Usamos, a mano que la dirección de comienzo de la capa gráfica (2do layer) es 0x1000.
-// Acá hay que poner una variable global que indique la dirección.
+// Acá hay que poner la dirección en un define
 void Set_graphic_position(unsigned int x, unsigned int y){
 	unsigned int address=(0x1000 + (y * 40) + x);
 	Command_Write(CSR_WRITE);
-	Parameter_Write((unsigned char)(address & 0xFF)); //P1 -- LSB
-	Parameter_Write((unsigned char)(address >> 8)); //P2 -- MSB
+	Parameter_Write((unsigned char)(address & 0xFF)); // LSB
+	Parameter_Write((unsigned char)(address >> 8));   // MSB
 }
 
 void Put_pixel(unsigned int x, unsigned int y){
@@ -186,8 +190,8 @@ void Put_rectangle(unsigned int width, unsigned int height){
 		Parameter_Write(0xFF);}
 */
 	for(int i=0;i<width;i++){	Put_pixel(i,0);}		// Arista superior
-	for(int j=0;j<height;j++){	Put_pixel(0,j);}			// Arista izquierda
-	for(int j=0;j<height;j++){	Put_pixel(width,j);}		// Arista derecha
+	for(int j=0;j<height;j++){	Put_pixel(0,j);}		// Arista izquierda
+	for(int j=0;j<height;j++){	Put_pixel(width,j);}	// Arista derecha
 	for(int i=0;i<width;i++){	Put_pixel(i,height);}	// Arista inferior
 }
 
@@ -216,7 +220,6 @@ void Put_line( int x, unsigned int y, unsigned int largo){
 		char q;
 		q=~(p>>(x%8));
 		Parameter_Write(q);
-
 	}
 }
 
@@ -309,26 +312,25 @@ void Horno_Display_Init(void)
 	 */
 
 	/* clear data in first layer */
-	Command_Write(CSR_WRITE); // Ponemos el cursor en el comienzo del 1er layer
+	Command_Write(CSR_WRITE); // Ponemos el cursor en el comienzo del layer
 	Parameter_Write(0x00); //P1 -- LSB
 	Parameter_Write(0x00); //P2 -- MSB
 	Fill_text_layer(0x00);
 
 	/* clear data in 2nd display memory page */
-	Command_Write(CSR_WRITE); // Ponemos el cursor en el comienzo del 2do layer
+	Command_Write(CSR_WRITE); // Ponemos el cursor en el comienzo del layer
 	Parameter_Write(0x00); //P1 -- LSB
 	Parameter_Write(0x10); //P2 -- MSB
 	Fill_graphic_layer(0x00);
 
-/*Acá estan las funciones para limpiar el 3er y 4to layer*/
-//	 clear data in 3rd layer
-	Command_Write(CSR_WRITE); // Ponemos el cursor en el comienzo del 1er layer
+	/* clear data in 3rd layer */
+	Command_Write(CSR_WRITE); // Ponemos el cursor en el comienzo del layer
 	Parameter_Write(0x00); //P1 -- LSB
 	Parameter_Write(0x04); //P2 -- MSB
 	Fill_text_layer(0x00);
 
-//	clear data in 4th display memory page
-	Command_Write(CSR_WRITE); // Ponemos el cursor en el comienzo del 2do layer
+	/* clear data in 4th display memory page */
+	Command_Write(CSR_WRITE); // Ponemos el cursor en el comienzo del layer
 	Parameter_Write(0x00); //P1 -- LSB
 	Parameter_Write(0x30); //P2 -- MSB
 	Fill_graphic_layer(0x00);
