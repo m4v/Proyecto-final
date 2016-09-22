@@ -70,7 +70,7 @@ void Data_Write(uint8_t pmtr)
 	Chip_GPIO_SetPortValue(LPC_GPIO, 2, port);
 }
 
-void Parameter_Write(unsigned char pmtr)
+void Parameter_Write(uint8_t pmtr)
 {
 	Data_Write(pmtr);
 
@@ -84,7 +84,7 @@ void Parameter_Write(unsigned char pmtr)
 	Horno_udelay(LCD_DELAY);
 }
 
-void Command_Write(unsigned char cmd)
+void Command_Write(uint8_t cmd)
 {
 	Data_Write(cmd);
 
@@ -107,7 +107,7 @@ void Put_string(char str[]){
 	}
 }
 
-void Fill_text_layer(unsigned char x){
+void Fill_text_layer(uint8_t x){
 	int i;
 	Command_Write(MEM_WRITE);
 	for(i=0;i<(40*30);i++){
@@ -115,7 +115,7 @@ void Fill_text_layer(unsigned char x){
 	}
 }
 
-void Fill_graphic_layer(unsigned char x){
+void Fill_graphic_layer(uint8_t x){
 	Command_Write(MEM_WRITE);
 	for(int i=0;i<((0x28)*240);i++){
 		Parameter_Write(x);
@@ -124,45 +124,45 @@ void Fill_graphic_layer(unsigned char x){
 
 // Usamos, a mano que la dirección de comienzo de la capa de texto es 0x0000.
 // Acá hay que poner la dirección en un define
-void Set_text_position(unsigned int x, unsigned int y){
-	unsigned int address;
+void Set_text_position(uint32_t x, uint32_t y){
+	uint32_t address;
 	address=(y * 40) + x;
 	Command_Write(CSR_WRITE);
-	Parameter_Write((unsigned char)(address & 0xFF)); // LSB
-	Parameter_Write((unsigned char)(address >> 8));   // MSB
+	Parameter_Write((uint8_t)(address & 0xFF)); // LSB
+	Parameter_Write((uint8_t)(address >> 8));   // MSB
 }
 
 // Usamos, a mano que la dirección de comienzo de la capa gráfica (2do layer) es 0x1000.
 // Acá hay que poner la dirección en un define
-void Set_graphic_position(unsigned int x, unsigned int y){
-	unsigned int address=(0x1000 + (y * 40) + x);
+void Set_graphic_position(uint32_t x, uint32_t y){
+	uint32_t address=(0x1000 + (y * 40) + x);
 	Command_Write(CSR_WRITE);
-	Parameter_Write((unsigned char)(address & 0xFF)); // LSB
-	Parameter_Write((unsigned char)(address >> 8));   // MSB
+	Parameter_Write((uint8_t)(address & 0xFF)); // LSB
+	Parameter_Write((uint8_t)(address >> 8));   // MSB
 }
 
-void Put_pixel(unsigned int x, unsigned int y){
+void Put_pixel(uint32_t x, uint32_t y){
 	Set_graphic_position(x/8,y);
 	int temp= (7-(x%8));
 	Command_Write(MEM_WRITE);
 	Parameter_Write(0x01<<temp);
 }
 
-void Clr_pixel(unsigned int x, unsigned int y){
+void Clr_pixel(uint32_t x, uint32_t y){
 	Set_graphic_position(x/8,y);
 	int temp= (7-(x%8));
 	Command_Write(MEM_WRITE);
 	Parameter_Write(0x00<<temp);
 }
 
-void Inc_put_pixel(unsigned int x,unsigned int y){
+void Inc_put_pixel(uint32_t x,uint32_t y){
 	Set_graphic_position(x/8,y);
 	int temp= (7-(x%8));
 	Command_Write(MEM_WRITE);
 	Parameter_Write(0xFF<<temp);
 }
 
-void Put_rectangle(unsigned int width, unsigned int height){
+void Put_rectangle(uint32_t width, uint32_t height){
 /*
 	Command_Write(CSR_WRITE); // Ponemos el cursor en el comienzo del 2do layer <- Capa GRAFICA!
 	Parameter_Write(0x00); //P1 -- LSB
@@ -195,12 +195,12 @@ void Put_rectangle(unsigned int width, unsigned int height){
 	for(int i=0;i<width;i++){	Put_pixel(i,height);}	// Arista inferior
 }
 
-void Fill_rectangle(unsigned int width, unsigned int height){
+void Fill_rectangle(uint32_t width, uint32_t height){
 	// acá iria donde acomodamos la dirección
 	Set_graphic_position(width/8,height);
 }
 
-void Put_line( int x, unsigned int y, unsigned int largo){
+void Put_line( int x, uint32_t y, uint32_t largo){
 	char pp=(0x80>>(x%8)); // pixel inicial
 	int i;
 	largo=x+largo;
@@ -223,7 +223,7 @@ void Put_line( int x, unsigned int y, unsigned int largo){
 	}
 }
 
-void Put_line_waddr(unsigned int x0, unsigned int y0, unsigned int x, unsigned int y, unsigned int largo){
+void Put_line_waddr(uint32_t x0, uint32_t y0, uint32_t x, uint32_t y, uint32_t largo){
 	// quiero darle una direccion base y que de ahí
 	x=x0+x;
 	y=y0+y;
