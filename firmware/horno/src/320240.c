@@ -273,7 +273,9 @@ void Put_line_waddr(int x0, uint32_t y0, uint32_t x, uint32_t y, uint32_t largo)
 
 }
 
-void static_curve(){
+/* Curva de trabajo estática con el recuadro*/
+void static_curve_wsqare(){
+	/* Esto pone la curva*/
 	for (int i=0;i<50;i++){
 			/*primer rampa       --desde x0=10 y0=230 hasta x1=83 y1=181*/
 			/*segunda rampa      --desde x0=150 y0=181 hasta x1=223 y1=132*/
@@ -287,6 +289,17 @@ void static_curve(){
 			}
 
 		}
+	/* Esto pone el recuadro */
+	int x0=0,y0=120;
+	for (int i=y0;i<=239;i++){
+		if(i==y0||i==239){
+			Put_line_waddr(x0,y0,0,i-y0,320);
+		}
+		Put_pixel(x0,i+1);
+		Put_pixel(319,i+1);
+		Put_line_waddr(x0,y0,0,i,1);
+		Put_line_waddr(310,y0,0,i,1);
+	}
 }
 /* inicializa el display con una configuración parecida al 15.1.2 Initialization Example (p.103)
  *  del datasheet del controlador
@@ -401,21 +414,11 @@ void Horno_Display_Init(void)
 /* Con esta funcion jugamos y testeamos el display */
 void Horno_Display_Test(void)
 {
-//	for(int i=0;i<20;i++){
-//		Inc_put_pixel(i,2);}
-
-/*Esto escribe una linea de píxeles en diagonal*/
-//	for(int i=0;i<239;i++){
-//		Put_pixel(i,i);}
 
 	/* Curva de trabajo estática*/
-	static_curve();
+	static_curve_wsqare();
 
 
-
-
-//	for (int i=0;i<50;i++){
-//	Put_line_waddr(0,80,1.5*i,-i,8);}
 
 /* Esto escribe el string prueba de en cascada y luego en ascendente*/
 //	char prueba[]="Hola MUNDO";
@@ -458,36 +461,6 @@ void Horno_Display_Test(void)
 ////    	Horno_udelay(500e3);   } //medio segundo
 //    }	}
 
-/*Test de jugar con el put_line */
-//	int j=0;
-//	int flag=0;
-//	for(int i=0;i<20;i){
-//		if(i<10 & flag !=1){
-//			i++;
-//			Put_line(i,j,(15+2*i));
-//			j++;
-//			Horno_udelay(500e3);
-//		if(i==10){flag=1;}
-//	}
-//	else if(flag==1 & i>0){
-//		i--;
-//		Put_line(i,j,(15+2*i));
-//		j++;
-//		Horno_udelay(500e3);
-//		if(i==0){i=21;}
-//
-//	}
-//	}
 
-/*Rectangulo de 20 x 10*/
-	int x0=0,y0=120;
-	for (int i=y0;i<=239;i++){
-		if(i==y0||i==239){
-			Put_line_waddr(x0,y0,0,i-y0,320);
-		}
-		Put_pixel(x0,i+1);
-		Put_pixel(319,i+1);
-		Put_line_waddr(x0,y0,0,i,1);
-		Put_line_waddr(310,y0,0,i,1);
-	}
+
 }
