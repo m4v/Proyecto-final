@@ -70,6 +70,7 @@ void Data_Write(uint8_t pmtr)
 	Chip_GPIO_SetPortValue(LPC_GPIO, 2, port);
 }
 
+/* escribe parámetros. */
 void Parameter_Write(uint8_t pmtr)
 {
 	Data_Write(pmtr);
@@ -84,6 +85,7 @@ void Parameter_Write(uint8_t pmtr)
 	Horno_udelay(LCD_DELAY);
 }
 
+/* escribe comandos, necesarios para la configuración del controlador */
 void Command_Write(uint8_t cmd)
 {
 	Data_Write(cmd);
@@ -98,6 +100,7 @@ void Command_Write(uint8_t cmd)
 	Horno_udelay(LCD_DELAY);
 }
 
+/* escribe letra por letra, el contenido de una cadena */
 void Put_string(char str[]){
 	Command_Write(MEM_WRITE);
 	int str_length=0;
@@ -107,6 +110,10 @@ void Put_string(char str[]){
 	}
 }
 
+/* rellena la capa de texto con el valor de 8bit ingresado
+ * 0x00 pone todo en blanco.
+ * 0x20 pone todo en blanco, pero le pasamos el caracter espacio.
+ */
 void Fill_text_layer(uint8_t x){
 	int i;
 	Command_Write(MEM_WRITE);
@@ -115,6 +122,9 @@ void Fill_text_layer(uint8_t x){
 	}
 }
 
+/* rellena la capa gráfica con el valor de 8bit ingresado
+ * 0x00 pone todo en blanco
+ */
 void Fill_graphic_layer(uint8_t x){
 	Command_Write(MEM_WRITE);
 	for(int i=0;i<((0x28)*240);i++){
@@ -122,8 +132,11 @@ void Fill_graphic_layer(uint8_t x){
 	}
 }
 
-// Usamos, a mano que la dirección de comienzo de la capa de texto es 0x0000.
-// Acá hay que poner la dirección en un define
+/* fijamos una coordenada para comenzar a escribir en el layer de texto
+ *
+ * Usamos, a mano que la dirección de comienzo de la capa de texto es 0x0000.
+ * Acá hay que poner la dirección en un define
+ */
 void Set_text_position(uint32_t x, uint32_t y){
 	uint32_t address;
 	address=(y * 40) + x;
@@ -132,8 +145,11 @@ void Set_text_position(uint32_t x, uint32_t y){
 	Parameter_Write((uint8_t)(address >> 8));   // MSB
 }
 
-// Usamos, a mano que la dirección de comienzo de la capa gráfica (2do layer) es 0x1000.
-// Acá hay que poner la dirección en un define
+/* Fijamos las coordenadas para comenzar a escribir en el layer gráfico.
+ * Configurado para el 2do layer es 0x1000.
+ *
+ * Acá hay que poner la dirección en un define
+*/
 void Set_graphic_position(uint32_t x, uint32_t y){
 	uint32_t address=(0x1000 + (y * 40) + x);
 	Command_Write(CSR_WRITE);
@@ -141,6 +157,7 @@ void Set_graphic_position(uint32_t x, uint32_t y){
 	Parameter_Write((uint8_t)(address >> 8));   // MSB
 }
 
+/* Pone un pixel en la coordenada indicada */
 void Put_pixel(uint32_t x, uint32_t y){
 	Set_graphic_position(x/8,y);
 	int temp= (7-(x%8));
@@ -148,6 +165,7 @@ void Put_pixel(uint32_t x, uint32_t y){
 	Parameter_Write(0x01<<temp);
 }
 
+/* Limpia la coordenada puntual */
 void Clr_pixel(uint32_t x, uint32_t y){
 	Set_graphic_position(x/8,y);
 	int temp= (7-(x%8));
@@ -155,13 +173,15 @@ void Clr_pixel(uint32_t x, uint32_t y){
 	Parameter_Write(0x00<<temp);
 }
 
-void Inc_put_pixel(uint32_t x,uint32_t y){
-	Set_graphic_position(x/8,y);
-	int temp= (7-(x%8));
-	Command_Write(MEM_WRITE);
-	Parameter_Write(0xFF<<temp);
-}
+/* Función de rodri, pendiente de comentarios */
+//void Inc_put_pixel(uint32_t x,uint32_t y){
+//	Set_graphic_position(x/8,y);
+//	int temp= (7-(x%8));
+//	Command_Write(MEM_WRITE);
+//	Parameter_Write(0xFF<<temp);
+//}
 
+/* Hace un rectánculo de las dimensiones indicadas, comenzando en el (0,0) */
 void Put_rectangle(uint32_t width, uint32_t height){
 /*
 	Command_Write(CSR_WRITE); // Ponemos el cursor en el comienzo del 2do layer <- Capa GRAFICA!
@@ -195,11 +215,13 @@ void Put_rectangle(uint32_t width, uint32_t height){
 	for(int i=0;i<width;i++){	Put_pixel(i,height);}	// Arista inferior
 }
 
+/* Rellena rectángulo. Lo mismo que crear un cuadrado */
 void Fill_rectangle(uint32_t width, uint32_t height){
 	// acá iria donde acomodamos la dirección
 	Set_graphic_position(width/8,height);
 }
 
+/* Pone una línea que comienza en (x,y) y de longitud 'largo' */
 void Put_line( int x, uint32_t y, uint32_t largo){
 	char pp=(0x80>>(x%8)); // pixel inicial
 	int i;
@@ -223,6 +245,7 @@ void Put_line( int x, uint32_t y, uint32_t largo){
 	}
 }
 
+/* Crea una linea en la posición (x,y) relativa al origen (x0,y0) de longitud 'largo' */
 void Put_line_waddr(uint32_t x0, uint32_t y0, uint32_t x, uint32_t y, uint32_t largo){
 	// quiero darle una direccion base y que de ahí
 	x=x0+x;
@@ -250,9 +273,9 @@ void Put_line_waddr(uint32_t x0, uint32_t y0, uint32_t x, uint32_t y, uint32_t l
 
 }
 
-/*Inicializa el display segun el ejemplo de la pag 103 y alguna que otra config
-propia nuestra */
-
+/* inicializa el display con una configuración parecida al 15.1.2 Initialization Example (p.103)
+ *  del datasheet del controlador
+ */
 void Horno_Display_Init(void)
 {
 	CLR_CS;
@@ -360,6 +383,7 @@ void Horno_Display_Init(void)
 	Command_Write(CSR_DIR_R); //Set cursor shift direction to right.
 }
 
+/* Con esta funcion jugamos y testeamos el display */
 void Horno_Display_Test(void)
 {
 //	for(int i=0;i<20;i++){
@@ -368,6 +392,26 @@ void Horno_Display_Test(void)
 /*Esto escribe una linea de píxeles en diagonal*/
 //	for(int i=0;i<239;i++){
 //		Put_pixel(i,i);}
+
+
+	/* Curva de trabajo estática*/
+		for (int i=0;i<50;i++){
+			/*primer rampa       --desde x0=10 y0=230 hasta x1=83 y1=181*/
+//			Put_pixel(1*i+10,230-i);
+			Put_line_waddr(10,230,i,-i,8);
+			/*Constante 1 */
+			/*segunda rampa      --desde x0=150 y0=181 hasta x1=223 y1=132*/
+//			Put_pixel(1.5*i+150,181-i);
+			Put_line_waddr(150,181,1.5*i,-i,8);
+		}
+		for(int j=0;j<3;j++){
+			Put_line_waddr(73,181+j,0,0,73);
+			Put_line_waddr(233,132+j,0,0,73);
+		}
+
+
+//	for (int i=0;i<50;i++){
+//	Put_line_waddr(0,80,1.5*i,-i,8);}
 
 /* Esto escribe el string prueba de en cascada y luego en ascendente*/
 //	char prueba[]="Hola MUNDO";
@@ -389,27 +433,26 @@ void Horno_Display_Test(void)
 //	Horno_udelay(50e3);
 //	}
 
-//	Inc_put_pixel(200,200);
 
 /*Con esto hacemos un gusanito de 8 pixels de largo*/
-
-	/*	int j=0;
-	for (int k=0;k<240;k++){
-		for(int i=0;i<320;i++){
-			j++;
-			if((j-1)%8==0){Clr_pixel(i-1,k);}
-			Inc_put_pixel(i,k);
-			Horno_udelay(500e2);
-	}}*/
+//		int j=0;
+//	for (int k=0;k<240;k++){
+//		for(int i=0;i<320;i++){
+//			j++;
+//			if((j-1)%8==0){Clr_pixel(i-1,k);}
+//			Inc_put_pixel(i,k);
+//			Horno_udelay(500e2);
+//	}}
 
 /* Escribir toda la pantalla con líneas de letras consecutivas.*/
-//    for(int k=0; k<30; k++) {
+//	Command_Write(MEM_WRITE);
+//	for(int k=0; k<30; k++) {
 //    	char c='A';
 //	for(int i=0; i<40; i++) {
 //    	Parameter_Write(c);
 //    	c++;
 ////    	Horno_udelay(500e3);   } //medio segundo
-//    }
+//    }	}
 
 /*Test de jugar con el put_line */
 //	int j=0;
@@ -433,14 +476,14 @@ void Horno_Display_Test(void)
 //	}
 
 /*Rectangulo de 20 x 10*/
-	int x0=0,y0=120;
-	for (int i=y0;i<=239;i++){
-		if(i==y0||i==239){
-			Put_line_waddr(x0,y0,0,i-y0,320);
-		}
-		Put_pixel(x0,i+1);
-		Put_pixel(319,i+1);
+//	int x0=0,y0=120;
+//	for (int i=y0;i<=239;i++){
+//		if(i==y0||i==239){
+//			Put_line_waddr(x0,y0,0,i-y0,320);
+//		}
+//		Put_pixel(x0,i+1);
+//		Put_pixel(319,i+1);
 //		Put_line_waddr(x0,y0,0,i,1);
 //		Put_line_waddr(310,y0,0,i,1);
-	}
+//	}
 }
