@@ -166,8 +166,9 @@ int main(void) {
     		DEBUGOUT(mensaje_menu);
     	}
     }
-
+	Board_LED_Set(0, true);
+	while(1){
     Horno_Display_Test();
-
+	}
     return 0;
 }
