@@ -273,6 +273,21 @@ void Put_line_waddr(int x0, uint32_t y0, uint32_t x, uint32_t y, uint32_t largo)
 
 }
 
+void static_curve(){
+	for (int i=0;i<50;i++){
+			/*primer rampa       --desde x0=10 y0=230 hasta x1=83 y1=181*/
+			/*segunda rampa      --desde x0=150 y0=181 hasta x1=223 y1=132*/
+			if (i>=46){
+				Put_line_waddr(10,230,i,-i,97);			/* Constante 1*/
+				Put_line_waddr(150,181,1.5*i,-i,90);	/* Constante 2*/
+			}
+			else{
+				Put_line_waddr(10,230,i,-i,8);
+				Put_line_waddr(150,180,1.5*i,-i,8);
+			}
+
+		}
+}
 /* inicializa el display con una configuración parecida al 15.1.2 Initialization Example (p.103)
  *  del datasheet del controlador
  */
@@ -394,26 +409,9 @@ void Horno_Display_Test(void)
 //		Put_pixel(i,i);}
 
 	/* Curva de trabajo estática*/
-		for (int i=0;i<50;i++){
-			/*primer rampa       --desde x0=10 y0=230 hasta x1=83 y1=181*/
-			/*segunda rampa      --desde x0=150 y0=181 hasta x1=223 y1=132*/
-//			Put_pixel(1*i+10,230-i);
-			if (i>=47){
-				Put_line_waddr(10,230,i+4,-i,97);			/* Constante 1*/
-				Put_line_waddr(150,181,1.5*i,-i,90);	/* Constante 2*/
-			}
-			else{
-				Put_line_waddr(10,230,i,-i,8);
-				Put_line_waddr(150,180,1.5*i,-i,8);
-			}
+	static_curve();
 
-		}
-		for(int j=0;j<3;j++){
-			/*Constante 1 */
-//			Put_line_waddr(233,132+j,0,0,73);
 
-//			Put_line_waddr(73,181+j,0,0,73);
-		}
 
 
 //	for (int i=0;i<50;i++){
@@ -482,14 +480,14 @@ void Horno_Display_Test(void)
 //	}
 
 /*Rectangulo de 20 x 10*/
-//	int x0=0,y0=120;
-//	for (int i=y0;i<=239;i++){
-//		if(i==y0||i==239){
-//			Put_line_waddr(x0,y0,0,i-y0,320);
-//		}
-//		Put_pixel(x0,i+1);
-//		Put_pixel(319,i+1);
-//		Put_line_waddr(x0,y0,0,i,1);
-//		Put_line_waddr(310,y0,0,i,1);
-//	}
+	int x0=0,y0=120;
+	for (int i=y0;i<=239;i++){
+		if(i==y0||i==239){
+			Put_line_waddr(x0,y0,0,i-y0,320);
+		}
+		Put_pixel(x0,i+1);
+		Put_pixel(319,i+1);
+		Put_line_waddr(x0,y0,0,i,1);
+		Put_line_waddr(310,y0,0,i,1);
+	}
 }
