@@ -48,7 +48,7 @@
 #define CSR_DIR_D   0x4F
 #define GRAYSCALE   0x60
 
-#define LCD_DELAY 100 /* retraso usado para comunicarse con la pantalla */
+#define LCD_DELAY 40 /* retraso usado para comunicarse con la pantalla */
 
 
 /* activo la pata de reset del display */
@@ -246,14 +246,14 @@ void Put_line( int x, uint32_t y, uint32_t largo){
 }
 
 /* Crea una linea en la posición (x,y) relativa al origen (x0,y0) de longitud 'largo' */
-void Put_line_waddr(uint32_t x0, uint32_t y0, uint32_t x, uint32_t y, uint32_t largo){
+void Put_line_waddr(int x0, uint32_t y0, uint32_t x, uint32_t y, uint32_t largo){
 	// quiero darle una direccion base y que de ahí
 	x=x0+x;
 	y=y0+y;
 	char pp=(0x80>>(x%8)); // pixel inicial
 	int i;
 	largo=x+largo;
-	for (i=1; i<=(8-largo%8); i++){
+	for (i=1; i<=(8-x%8); i++){
 		Set_graphic_position(x/8,y);
 		Command_Write(MEM_WRITE);
 		Parameter_Write(pp);
@@ -393,20 +393,26 @@ void Horno_Display_Test(void)
 //	for(int i=0;i<239;i++){
 //		Put_pixel(i,i);}
 
-
 	/* Curva de trabajo estática*/
 		for (int i=0;i<50;i++){
 			/*primer rampa       --desde x0=10 y0=230 hasta x1=83 y1=181*/
-//			Put_pixel(1*i+10,230-i);
-			Put_line_waddr(10,230,i,-i,8);
-			/*Constante 1 */
 			/*segunda rampa      --desde x0=150 y0=181 hasta x1=223 y1=132*/
-//			Put_pixel(1.5*i+150,181-i);
-			Put_line_waddr(150,181,1.5*i,-i,8);
+//			Put_pixel(1*i+10,230-i);
+			if (i>=47){
+				Put_line_waddr(10,230,i+4,-i,97);			/* Constante 1*/
+				Put_line_waddr(150,181,1.5*i,-i,90);	/* Constante 2*/
+			}
+			else{
+				Put_line_waddr(10,230,i,-i,8);
+				Put_line_waddr(150,180,1.5*i,-i,8);
+			}
+
 		}
 		for(int j=0;j<3;j++){
-			Put_line_waddr(73,181+j,0,0,73);
-			Put_line_waddr(233,132+j,0,0,73);
+			/*Constante 1 */
+//			Put_line_waddr(233,132+j,0,0,73);
+
+//			Put_line_waddr(73,181+j,0,0,73);
 		}
 
 
