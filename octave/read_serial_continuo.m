@@ -10,8 +10,7 @@ h = plot(t, v, '.');
 grid on
 
 log = fopen("registro.log", "a");
-fwrite(log, sprintf("-Inicio del registro de captura %s %s\r\n", date, 
-    strftime("%H:%M", localtime(time))));
+fwrite(log, sprintf("-Inicio del registro de captura %s\r\n", fecha()));
 
 srl_write(fd, "c"); % iniciar captura
 i = 1;
@@ -23,11 +22,11 @@ unwind_protect
     m = base2dec(str(13:16), 10);
     if (isnan(n) || isnan(m))
       printf("error en la lectura de datos\n");
-      continue
+      break;
     end
     t(i) = n * Tm;
     v(i) = m * LSB;
-    if (mod(i, 100) == 0)
+    if (mod(i, 10) == 0)
       % actualizar gráfico
       set(h, 'XData', t, 'YData', v);
       drawnow;
@@ -40,7 +39,7 @@ unwind_protect_cleanup
   % Ctrl-C, detener y cerrar la conección
   srl_write(fd, "c");
   fclose(fd);
-  fwrite(log, "-Fin de la captura\r\n");
+  fwrite(log, sprintf("-Fin de la captura %s\r\n", fecha()));
   fclose(log);
   % guardar los datos capturados
   if (length(t) != length(v))
@@ -49,5 +48,5 @@ unwind_protect_cleanup
     t = t(1:N);
     v = v(1:N);
   end
-  csvwrite(sprintf("captura_continua_%s-%s.csv", date, strftime("%H:%M", localtime(time))), [t' v']);
+  csvwrite(sprintf("captura_continua_%s.csv", fecha()), [t' v']);
 end
