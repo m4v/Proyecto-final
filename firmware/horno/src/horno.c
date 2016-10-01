@@ -24,15 +24,19 @@
 #include "320240.h"
 #include "delay.h"
 
+#define ADC_CHANNEL ADC_TH
+
 /* definitions and declarations here */
 #define NUM_MUESTRAS 1000
 
 static bool adc_enabled = false;
+static bool adc_continue = false;
+
 static int32_t pasos;
 static int32_t paso_inc = 0;
 static uint32_t time_ms = 0;
 
-static int muestras_i = 0;
+static uint32_t muestras_i = 0;
 static uint16_t muestras[NUM_MUESTRAS];
 
 /* mensaje de inicio para mandar por el UART */
@@ -41,7 +45,8 @@ static char mensaje_inicio[] =
 		"Proyecto Final Horno Dental\r\n"
 		"===========================\r\n"
 		"\r\n";
-static char mensaje_menu[] = "Presione la tecla 'c' iniciar la captura.\r\n";
+static char mensaje_menu[] = "- Presione 'c' para iniciar/detener la captura continua.\r\n"
+                             "- Presione 'm' para capturar N muestras.\r\n";
 
 /* rutina de interrupción del systick */
 void SysTick_Handler(void)
@@ -60,18 +65,25 @@ void SysTick_Handler(void)
 //	}
 
 	if (adc_enabled) {
-		if (muestras_i > NUM_MUESTRAS) {
-			adc_enabled = false;
-			Board_LED_Set(0, false);
+		if (!adc_continue) {
+			if (muestras_i > NUM_MUESTRAS) {
+				adc_enabled = false;
+				Board_LED_Set(0, false);
+			}
+			Chip_ADC_SetStartMode(LPC_ADC, ADC_START_NOW, ADC_TRIGGERMODE_RISING);
+			if(Chip_ADC_ReadStatus(LPC_ADC, ADC_CHANNEL, ADC_DR_DONE_STAT) == SET) {
+				Chip_ADC_ReadValue(LPC_ADC, ADC_CHANNEL, &muestras[muestras_i++]);
+			}
+		} else {
+			Chip_ADC_SetStartMode(LPC_ADC, ADC_START_NOW, ADC_TRIGGERMODE_RISING);
+			if(Chip_ADC_ReadStatus(LPC_ADC, ADC_CHANNEL, ADC_DR_DONE_STAT) == SET) {
+				uint16_t muestra;
+				Chip_ADC_ReadValue(LPC_ADC, ADC_CHANNEL, &muestra);
+				DEBUGOUT("%10d, %4d\r\n", muestras_i, muestra);
+				muestras_i++;
+			}
 		}
-		Chip_ADC_SetStartMode(LPC_ADC, ADC_START_NOW, ADC_TRIGGERMODE_RISING);
 	}
-}
-
-/* rutina de interrupción del ADC */
-void ADC_IRQHandler(void)
-{
-	Chip_ADC_ReadValue(LPC_ADC, ADC_CHANNEL, &muestras[muestras_i++]);
 }
 
 int main(void) {
@@ -90,28 +102,34 @@ int main(void) {
 
     /* código del horno empieza aquí */
 
-    /* SystemCoreClock es 96Mhz
-     * SysTick_Config usa el argumento para cargar un contador decreciente
-     * que cuando llega a cero genera una interrupción. El contador es de
-     * 24bits.
-     */
-    SysTick_Config(SystemCoreClock / 1000); // una interrupción cada 1 ms
     Horno_Init();
 
 
     DEBUGOUT(mensaje_inicio);
    	DEBUGOUT(mensaje_menu);
+
     while(1) {
     	charUART = DEBUGIN();
-    	if (charUART == 'c') {
+    	if (charUART == 'm') {
     		adc_enabled = true;
+    		adc_continue = false;
     		muestras_i = 0;
     		Board_LED_Set(0, true);
     		while(adc_enabled) {}
     		for (i=0; i < NUM_MUESTRAS; i++) {
-    			DEBUGOUT("%.1f, %4d\r\n", (float)i/10, muestras[i]); // tiempo en ms
+    			DEBUGOUT("%10d, %4d\r\n", i, muestras[i]);
     		}
     		Board_LED_Set(0, false);
+    	} else if (charUART == 'c') {
+    		adc_enabled = !adc_enabled;
+    		adc_continue = true;
+    		if (!adc_enabled) {
+    			DEBUGOUT("Conversión detenida.\r\n");
+    		} else {
+    			muestras_i = 0;
+    		}
+    	} else if (charUART == 'h') {
+    		DEBUGOUT(mensaje_menu);
     	}
     }
 
