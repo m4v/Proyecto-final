@@ -41,6 +41,6 @@ f(x) = A*(1 - exp(-a*(x*60 - t0)))
 # los datos ya estan escalados
 plot datos_3 using ($1/60):($2) title "escalón 50V" with points pt 7 lc rgb "blue", \
      datos_4 using ($1/60):($2) title "escalón 86V" with points pt 7 lc rgb "red", \
-     A=1.5946, a=1/5221.85, t0=70.52, f(x) title "Tmax=1,59V Tau=87 min" with lines lc rgb "purple", \
-     A=2.8363, a=1/3185.88, t0=95.12, f(x) title "Tmax=2,84V Tau=53 min" with lines lc rgb "orange"
+     A=1.5946, a=1/5221.85, t0=70.52, f(x) title "Tmax=1,59V {/Symbol t}=87 min" with lines lc rgb "purple", \
+     A=2.8363, a=1/3185.88, t0=95.12, f(x) title "Tmax=2,84V {/Symbol t}=53 min" with lines lc rgb "orange"
 

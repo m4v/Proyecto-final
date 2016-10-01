@@ -39,5 +39,5 @@ set key bottom right
 f(x) = A*(1 - exp(-a*(x*60 - t0)))
 
 plot datos_2 using ($1/60):($2) title "escalón 110V" with points pt 7 lc rgb "red", \
-     A=2.2212, a=1/1292.1559, t0=77.5, f(x) title "Tmax=2,22V Tau=22 min" with lines lc rgb "blue"
+     A=2.2212, a=1/1292.1559, t0=77.5, f(x) title "Tmax=2,22V {/Symbol t}=22 min" with lines lc rgb "blue"
 
