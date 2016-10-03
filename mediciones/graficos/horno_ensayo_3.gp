@@ -38,7 +38,6 @@ set key bottom right
 
 f(x) = A*(1 - exp(-a*(x*60 - t0)))
 
-# los datos ya estan escalados
 plot datos_3 using ($1/60):($2) title "escalón 50V" with points pt 7 lc rgb "blue", \
      datos_4 using ($1/60):($2) title "escalón 86V" with points pt 7 lc rgb "red", \
      A=1.5946, a=1/5221.85, t0=70.52, f(x) title "Tmax=1,59V {/Symbol t}=87 min" with lines lc rgb "purple", \
