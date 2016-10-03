@@ -27,7 +27,7 @@
 #define ADC_CHANNEL ADC_TH
 
 /* definitions and declarations here */
-#define NUM_MUESTRAS_CAPTURA 1000
+#define NUM_MUESTRAS_CAPTURA 100
 #define NUM_MUESTRAS_ADC 1000*PERIODO_PROMEDIO/PERIODO_MUESTREO
 
 static bool adc_enabled = false;
