@@ -13,6 +13,7 @@ log = fopen("registro.log", "a");
 fwrite(log, sprintf("-Inicio del registro de captura %s\r\n", fecha()));
 
 srl_write(fd, "c"); % iniciar captura
+Tm = 1; % en este modo el muestreo es cada seg
 i = 1;
 unwind_protect
   while(1)
@@ -26,14 +27,15 @@ unwind_protect
     end
     t(i) = n * Tm;
     v(i) = m * LSB;
-    if (mod(i, 10) == 0)
-      % actualizar gráfico
-      set(h, 'XData', t, 'YData', v);
-      drawnow;
-    end
+    % actualizar gráfico
+    set(h, 'XData', t, 'YData', v);
+    drawnow;
     %guardamos un registro
     fwrite(log, str);
     i++;
+    % hacemos una pausa proporcional al muestreo así no estamos esperando mucho 
+    % en srl_read que dificulta terminar el script con ctrl-c
+    pause(Tm*0.8);
   end
 unwind_protect_cleanup
   % Ctrl-C, detener y cerrar la conección
@@ -49,4 +51,5 @@ unwind_protect_cleanup
     v = v(1:N);
   end
   csvwrite(sprintf("captura_continua_%s.csv", fecha()), [t' v']);
+  printf("captura guardada\n")
 end
