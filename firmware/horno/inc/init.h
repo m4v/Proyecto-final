@@ -22,6 +22,7 @@ typedef struct {
 #define ADC_TH   ADC_CH0     // ADC termocupla
 #define ADC_LM35 ADC_CH6     // ADC LM35
 #define PERIODO_MUESTREO 100 // muestreo del ADC en ms
+#define PERIODO_PROMEDIO 1   // muestreo total en seg (tiempo promediando)
 
 void Horno_Init (void);
 

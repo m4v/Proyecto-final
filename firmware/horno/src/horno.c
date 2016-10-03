@@ -27,7 +27,8 @@
 #define ADC_CHANNEL ADC_TH
 
 /* definitions and declarations here */
-#define NUM_MUESTRAS 1000
+#define NUM_MUESTRAS_CAPTURA 1000
+#define NUM_MUESTRAS_ADC 1000*PERIODO_PROMEDIO/PERIODO_MUESTREO
 
 static bool adc_enabled = false;
 static bool adc_continue = false;
@@ -37,7 +38,9 @@ static int32_t paso_inc = 0;
 static uint32_t time_ms = 0;
 
 static uint32_t muestras_i = 0;
-static uint16_t muestras[NUM_MUESTRAS];
+static uint16_t muestras[NUM_MUESTRAS_CAPTURA];
+static uint32_t muestra_num = 0;
+static uint32_t acumulador_adc = 0;
 
 /* mensaje de inicio para mandar por el UART */
 static char mensaje_inicio[] =
@@ -66,7 +69,7 @@ void SysTick_Handler(void)
 
 	if (adc_enabled) {
 		if (!adc_continue) {
-			if (muestras_i > NUM_MUESTRAS) {
+			if (muestras_i > NUM_MUESTRAS_CAPTURA) {
 				adc_enabled = false;
 				Board_LED_Set(0, false);
 			}
@@ -75,12 +78,21 @@ void SysTick_Handler(void)
 				Chip_ADC_ReadValue(LPC_ADC, ADC_CHANNEL, &muestras[muestras_i++]);
 			}
 		} else {
+			/* captura continua */
 			Chip_ADC_SetStartMode(LPC_ADC, ADC_START_NOW, ADC_TRIGGERMODE_RISING);
 			if(Chip_ADC_ReadStatus(LPC_ADC, ADC_CHANNEL, ADC_DR_DONE_STAT) == SET) {
 				uint16_t muestra;
 				Chip_ADC_ReadValue(LPC_ADC, ADC_CHANNEL, &muestra);
-				DEBUGOUT("%10d, %4d\r\n", muestras_i, muestra);
-				muestras_i++;
+				//DEBUGOUT("%10d, %4d\r\n", muestras_i, muestra);
+				acumulador_adc += muestra;
+				muestra_num++;
+				if (muestra_num >= NUM_MUESTRAS_ADC) {
+					muestra = acumulador_adc / muestra_num;
+					DEBUGOUT("%10d, %4d\r\n", muestras_i, muestra);
+					acumulador_adc = 0;
+					muestra_num = 0;
+					muestras_i++;
+				}
 			}
 		}
 	}
@@ -116,7 +128,7 @@ int main(void) {
     		muestras_i = 0;
     		Board_LED_Set(0, true);
     		while(adc_enabled) {}
-    		for (i=0; i < NUM_MUESTRAS; i++) {
+    		for (i=0; i < NUM_MUESTRAS_CAPTURA; i++) {
     			DEBUGOUT("%10d, %4d\r\n", i, muestras[i]);
     		}
     		Board_LED_Set(0, false);
@@ -127,6 +139,8 @@ int main(void) {
     			DEBUGOUT("Conversión detenida.\r\n");
     		} else {
     			muestras_i = 0;
+    			muestra_num = 0;
+    			acumulador_adc = 0;
     		}
     	} else if (charUART == 'h') {
     		DEBUGOUT(mensaje_menu);
