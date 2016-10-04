@@ -111,8 +111,8 @@ void Horno_systick_init(uint32_t ms)
  * Se llama al principio del main
  */
 void Horno_Init (void) {
+	/* configurar puertos */
 	Chip_IOCON_SetPinMuxing(LPC_IOCON, pinmux, sizeof(pinmux) / sizeof(PINMUX_GRP_T));
-
 	GPIO_SetDirections(gpiodir, sizeof(gpiodir) / sizeof(GPIO_DIR_T));
 
 	/* Habilitar el timer para hacer retrasos */
@@ -123,7 +123,8 @@ void Horno_Init (void) {
 	/* ADC Init */
 	Chip_ADC_Init(LPC_ADC, &ADCSetup);
 	Chip_ADC_EnableChannel(LPC_ADC, ADC_TH, ENABLE);
-	//Chip_ADC_EnableChannel(LPC_ADC, ADC_LM35, ENABLE);
+	Chip_ADC_EnableChannel(LPC_ADC, ADC_LM35, ENABLE);
+	Chip_ADC_SetBurstCmd(LPC_ADC, ENABLE); // habilitar conversión continua
 
 	/*
 	 * Las interrupciones del SysTick son para muestrear con el ADC.

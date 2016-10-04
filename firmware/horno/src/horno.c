@@ -41,6 +41,9 @@ static uint32_t muestras_i = 0;
 static uint16_t muestras[NUM_MUESTRAS_CAPTURA];
 static uint32_t muestra_num = 0;
 static uint32_t acumulador_adc = 0;
+static uint32_t muestra_num2 = 0;
+static uint32_t acumulador_adc2 = 0;
+
 
 /* mensaje de inicio para mandar por el UART */
 static char mensaje_inicio[] =
@@ -79,21 +82,24 @@ void SysTick_Handler(void)
 			}
 		} else {
 			/* captura continua */
-			Chip_ADC_SetStartMode(LPC_ADC, ADC_START_NOW, ADC_TRIGGERMODE_RISING);
-			if(Chip_ADC_ReadStatus(LPC_ADC, ADC_CHANNEL, ADC_DR_DONE_STAT) == SET) {
+			if(Chip_ADC_ReadStatus(LPC_ADC, ADC_LM35, ADC_DR_DONE_STAT) == SET) {
 				uint16_t muestra;
-				Chip_ADC_ReadValue(LPC_ADC, ADC_CHANNEL, &muestra);
-				//DEBUGOUT("%10d, %4d\r\n", muestras_i, muestra);
+				Chip_ADC_ReadValue(LPC_ADC, ADC_TH, &muestra);
 				acumulador_adc += muestra;
+				Chip_ADC_ReadValue(LPC_ADC, ADC_LM35, &muestra);
+				acumulador_adc2 += muestra;
 				muestra_num++;
 				if (muestra_num >= NUM_MUESTRAS_ADC) {
 					muestra = acumulador_adc / muestra_num;
-					DEBUGOUT("%10d, %4d\r\n", muestras_i, muestra);
+					uint16_t muestra2 = acumulador_adc2 / muestra_num;
+					DEBUGOUT("%10d, %4d, %4d\r\n", muestras_i, muestra, muestra2);
 					acumulador_adc = 0;
+					acumulador_adc2 = 0;
 					muestra_num = 0;
 					muestras_i++;
 				}
 			}
+
 		}
 	}
 }
