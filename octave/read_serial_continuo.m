@@ -5,7 +5,7 @@ serial_init
 % creamos una figura
 clf
 clear t v w
-t(1) = 0; v(1) = 0;
+t(1) = 0; v(1) = 0; w(1) = 0;
 h1 = plot(t, v, 'xb');
 hold on
 h2 = plot(t, v, '+r');

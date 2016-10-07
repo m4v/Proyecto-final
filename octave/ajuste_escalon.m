@@ -16,7 +16,8 @@ y = @(G, a, t0, t) G*(1 - exp(-a*(t-t0)));
 % X(s) = A / s
 
 % leo los datos de la medición
-D = csvread("../mediciones/captura_continua_30-Sep-2016_19:32:35.csv");
+D = csvread("../mediciones/captura_continua_04-Oct-2016_15:16:34.csv");
+%D = csvread("../mediciones/captura_continua_30-Sep-2016_19:32:35.csv");
 %D = csvread("../mediciones/captura_continua_29-Sep-2016_20:00:26.csv");
 %D = csvread("../mediciones/captura_continua_28-Sep-2016.csv");
 tmed = D(:,1);
@@ -43,11 +44,12 @@ M0 = [3, 1/3500, 70];
 OPT = optimset("Display", "none", "TolX", 1e-18, "MaxFunEvals", 1000, "MaxIter", 1000);
 resultado = fminsearch(@error, M0, OPT);
 
-t2 = 0:3600*3;
 G = resultado(1);
 a = resultado(2);
 t0 = resultado(3);
 
+t2 = 0:(1/a)*6;
+
 printf("Resultado G:%.4f a:%.8f Tau:%.4f t0:%.4f\n", G, a, 1/a, t0);
 plot(tmed/3600, vmed, 'x', t2/3600, y(G, a, t0, t2), '-r')
-
+grid on
