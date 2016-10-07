@@ -48,7 +48,7 @@
 #define CSR_DIR_D   0x4F
 #define GRAYSCALE   0x60
 
-#define LCD_DELAY 40 /* retraso usado para comunicarse con la pantalla */
+#define LCD_DELAY 1 /* retraso usado para comunicarse con la pantalla */
 
 
 /* activo la pata de reset del display */
@@ -273,6 +273,34 @@ void Put_line_waddr(int x0, uint32_t y0, uint32_t x, uint32_t y, uint32_t largo)
 
 }
 
+void Clear_line_waddr(int x0, uint32_t y0, uint32_t x, uint32_t y, uint32_t largo){
+	// quiero darle una direccion base y que de ahí
+	x=x0+x;
+	y=y0+y;
+	char pp=(0x00>>(x%8));// 0x80  // pixel inicial
+	int i;
+	largo=x+largo;
+	for (i=1; i<=(8-x%8); i++){
+		Set_graphic_position(x/8,y);
+		Command_Write(MEM_WRITE);
+		Parameter_Write(pp);
+		pp=pp+((0x00>>(x%8))>>(i)); //0x80
+	}
+	x=x+i-1;
+
+	for(; x<(largo); x++){
+		Set_graphic_position(x/8,y);
+//		int temp= (7-(t%8));
+		Command_Write(MEM_WRITE);
+		char p=0x00; // 0x7F
+//		char q;
+//		q=~(p>>(x%8));
+		Parameter_Write(p);
+	}
+
+}
+
+
 /* Curva de trabajo estática con el recuadro*/
 void static_curve_wsqare(){
 	/* Esto pone la curva*/
@@ -301,6 +329,77 @@ void static_curve_wsqare(){
 		Put_line_waddr(310,y0,0,i,1);
 	}
 }
+
+/* Esta función posiblemente no nos sirve */
+//void static_curve_warrow(uint32_t position_arrow_x){
+////	/* Esto pone la curva*/
+////	for (int i=0;i<50;i++){
+////			/*primer rampa       --desde x0=10 y0=230 hasta x1=83 y1=181*/
+////			/*segunda rampa      --desde x0=150 y0=181 hasta x1=223 y1=132*/
+////			if (i>=46){
+////				Put_line_waddr(10,238,i,-i,97);			/* Constante 1*/
+////				Put_line_waddr(150,181,1.5*i,-i,90);	/* Constante 2*/
+////			}
+////			else{
+////				Put_line_waddr(10,230,i,-i,8);
+////				Put_line_waddr(150,180,1.5*i,-i,8);
+////			}
+////
+////		}
+////	/* Esto pone el recuadro */
+////	int x0=0,y0=120;
+////	for (int i=y0;i<=239;i++){
+////		if(i==y0||i==239){
+////			Put_line_waddr(x0,y0,0,i-y0,320);
+////		}
+////		Put_pixel(x0,i+1);
+////		Put_pixel(319,i+1);
+////		Put_line_waddr(x0,y0,0,i,1);
+////		Put_line_waddr(310,y0,0,i,1);
+////	}
+//
+//	static_curve_wsqare();
+//	uint32_t pax=position_arrow_x;
+//
+//
+//	int x,y,x0,y0;
+//	pax=x;
+//	x0=x;
+////	x0=0;
+//	y0=100;
+//	for(int i=0;i<5;i++){
+//		Put_line_waddr(x0,y0,x+2,i,4);
+//		int p=(12-2*(i));
+//		Put_line_waddr(x0,y0,(x-2+i),i+5,p);
+//	}
+//}
+
+void Set_arrow(int x0,int y0){
+	/* vuelvo a poner la posición en la 2da layer */
+	Command_Write(CSR_WRITE);
+	Parameter_Write(0x00);
+	Parameter_Write(0x10);
+	/* escribo la flecha */
+	for(int i=0;i<5;i++){
+		Put_line_waddr(x0,y0,x0+2,i,4);
+		int p=(12-2*(i));
+		Put_line_waddr(x0,y0,(x0-2+i),i+5,p);
+		}
+}
+void Clear_arrow(int x0,int y0){
+	/* vuelvo a poner la posición en la 2da layer */
+	Command_Write(CSR_WRITE);
+	Parameter_Write(0x00);
+	Parameter_Write(0x10);
+	for(int i=0;i<5;i++){
+		Clear_line_waddr(x0,y0,x0+2,i,4);
+		int p=(12-2*(i));
+		Clear_line_waddr(x0,y0,(x0-2+i),i+5,p);
+		}
+}
+
+
+
 /* inicializa el display con una configuración parecida al 15.1.2 Initialization Example (p.103)
  *  del datasheet del controlador
  */
@@ -412,55 +511,58 @@ void Horno_Display_Init(void)
 }
 
 /* Con esta funcion jugamos y testeamos el display */
-void Horno_Display_Test(void)
-{
+void Horno_Display_Test(void){
 
 	/* Curva de trabajo estática*/
 	static_curve_wsqare();
 
+	int y;
+	int x;
+
+	// 1er pendiente
+	for(int i=0;i<20;i++){
+		x=(2+i);
+		y=213-(1.8*i);
+		/* Pongo la flecha */
+		Set_arrow(x, y);
+		Horno_udelay(1e5);
+		/* Borro la flecha */
+		Clear_arrow(x,y);
+	}
+
+	// 1er constante
+	for(int i=0;i<35;i++){
+		x=(30+i);
+		y=170;
+		/* Pongo la flecha */
+		Set_arrow(x, y);
+		Horno_udelay(1e5);
+		/* Borro la flecha */
+		Clear_arrow(x,y);
+	}
 
 
-/* Esto escribe el string prueba de en cascada y luego en ascendente*/
-//	char prueba[]="Hola MUNDO";
-//	for(int i=0;i<30;i++){
-//	Set_text_position(i,i);
-//	Put_string(prueba);
-//	Horno_udelay(50e3);
-//	}
-//
-//	//	 clear data in first layer
-//		Command_Write(CSR_WRITE); // Ponemos el cursor en el comienzo del 1er layer
-//		Parameter_Write(0x00); //P1 -- LSB
-//		Parameter_Write(0x00); //P2 -- MSB
-//		Fill_text_layer(0x00);
-//
-//	for(int i=30;i>=0;i--){
-//	Set_text_position((-i+30),(i-1));
-//	Put_string(prueba);
-//	Horno_udelay(50e3);
-//	}
 
+	// 2da pendiente
+	for(int i=0;i<25;i++){
+		x=(70+1.4*i);
+		y=170-(1.8*i);
+		/* Pongo la flecha */
+		Set_arrow(x, y);
+		Horno_udelay(1e5);
+		/* Borro la flecha */
+		Clear_arrow(x,y);
+	}
 
-/*Con esto hacemos un gusanito de 8 pixels de largo*/
-//		int j=0;
-//	for (int k=0;k<240;k++){
-//		for(int i=0;i<320;i++){
-//			j++;
-//			if((j-1)%8==0){Clr_pixel(i-1,k);}
-//			Inc_put_pixel(i,k);
-//			Horno_udelay(500e2);
-//	}}
-
-/* Escribir toda la pantalla con líneas de letras consecutivas.*/
-//	Command_Write(MEM_WRITE);
-//	for(int k=0; k<30; k++) {
-//    	char c='A';
-//	for(int i=0; i<40; i++) {
-//    	Parameter_Write(c);
-//    	c++;
-////    	Horno_udelay(500e3);   } //medio segundo
-//    }	}
-
-
+	// 2da constante
+	for(int i=0;i<30;i++){
+		x=(110+i);
+		y=121;
+		/* Pongo la flecha */
+		Set_arrow(x, y);
+		Horno_udelay(1e5);
+		/* Borro la flecha */
+		Clear_arrow(x,y);
+	}
 
 }
