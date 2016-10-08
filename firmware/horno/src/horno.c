@@ -32,9 +32,8 @@
 static bool adc_enabled = false;
 static bool adc_continue = false;
 
-static int32_t pasos;
-static int32_t paso_inc = 0;
-static uint32_t time_ms = 0;
+static uint32_t time_ms = 2000;
+static bool motor_sentido;
 
 static uint16_t muestras[NUM_MUESTRAS_CAPTURA];
 
@@ -56,8 +55,14 @@ static char mensaje_inicio[] =
 		"Proyecto Final Horno Dental\r\n"
 		"===========================\r\n"
 		"\r\n";
-static char mensaje_menu[] = "- Presione 'c' para iniciar/detener la captura continua.\r\n"
-                             "- Presione 'm' para capturar N muestras.\r\n";
+static char mensaje_menu[] = "Controles:\r\n"
+							 " 'c' para iniciar/detener la captura continua.\r\n"
+							 " 'm' para capturar N muestras.\r\n"
+							 " 'i' para poner en marcha el motor.\r\n"
+							 " 'p' para detener el motor.\r\n"
+							 " '+' para aumentar la velocidad del motor.\r\n"
+							 " '-' para disminuir la velocidad del motor.\r\n"
+							 " 'l' para cambiar el sentido de giro.\r\n";
 
 /* rutina de interrupción del systick */
 void SysTick_Handler(void)
@@ -158,6 +163,24 @@ int main(void) {
     			horno_adc.lm_suma = 0;
     			horno_adc.lm_cantidad = 0;
     		}
+    	} else if (charUART == 'i') {
+    		Horno_motor_marcha(time_ms);
+    		DEBUGOUT("Motor encendido - periodo %dms\n", time_ms);
+    	} else if (charUART == 'p') {
+    		Horno_motor_detener();
+    		DEBUGOUT("Motor detenido\n");
+    	} else if (charUART == '-') {
+    		time_ms += 1000;
+    		Horno_motor_marcha(time_ms);
+    		DEBUGOUT("Motor periodo %dms\n", time_ms);
+    	} else if (charUART == '+') {
+    		time_ms -= 1000;
+    		Horno_motor_marcha(time_ms);
+    		DEBUGOUT("Motor periodo %dms\n", time_ms);
+    	} else if (charUART == 'l') {
+    		motor_sentido = !motor_sentido;
+    		Horno_motor_ascender(motor_sentido);
+    		DEBUGOUT("Motor sentido ascender %d\n", motor_sentido);
     	} else if (charUART == 'h') {
     		DEBUGOUT(mensaje_menu);
     	}

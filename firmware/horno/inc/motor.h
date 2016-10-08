@@ -8,7 +8,10 @@
 #ifndef MOTOR_H_
 #define MOTOR_H_
 
-void Horno_MotorPaso(uint32_t paso);
-void Horno_MotorApagar(void);
+void Horno_motor_paso(uint32_t paso);
+void Horno_motor_init(void);
+void Horno_motor_detener(void);
+void Horno_motor_marcha(uint32_t periodo);
+void Horno_motor_ascender(bool ascender);
 
 #endif /* MOTOR_H_ */

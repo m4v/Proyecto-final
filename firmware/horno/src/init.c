@@ -17,6 +17,7 @@
 #include "init.h"
 #include "delay.h"
 #include "320240.h"
+#include "motor.h"
 
 static ADC_CLOCK_SETUP_T ADCSetup;
 
@@ -26,10 +27,10 @@ static ADC_CLOCK_SETUP_T ADCSetup;
  */
 static const PINMUX_GRP_T pinmux[] = {
 	/* pines para motor paso a paso */
-	{0,   6,  IOCON_MODE_INACT | IOCON_FUNC0},
-	{0,   7,  IOCON_MODE_INACT | IOCON_FUNC0},
-	{0,   8,  IOCON_MODE_INACT | IOCON_FUNC0},
-	{0,   9,  IOCON_MODE_INACT | IOCON_FUNC0},
+	{0,  30,  IOCON_MODE_INACT | IOCON_FUNC0},
+	{0,   4,  IOCON_MODE_INACT | IOCON_FUNC0},
+	{0,   5,  IOCON_MODE_INACT | IOCON_FUNC0},
+	{0,  29,  IOCON_MODE_INACT | IOCON_FUNC0},
 	/* pines P0.0 y P0.1 reservados para la comunicación UART */
 	{0,   0,  IOCON_MODE_INACT | IOCON_FUNC2},
 	{0,   1,  IOCON_MODE_INACT | IOCON_FUNC2},
@@ -56,10 +57,10 @@ static const PINMUX_GRP_T pinmux[] = {
 /* Pin GPIO configuration */
 static const GPIO_DIR_T gpiodir[] = {
 	/* pines del motor como salidas */
-	{0,  6, true},
-	{0,  7, true},
-	{0,  8, true},
-	{0,  9, true},
+	{0, 30, true},
+	{0,  4, true},
+	{0,  5, true},
+	{0, 29, true},
 	/* pines de datos display como salida*/
 	{0,  4, true}, // /CS
 	{0,  5, true}, // A0
@@ -130,5 +131,7 @@ void Horno_Init (void) {
 	 * Las interrupciones del SysTick son para muestrear con el ADC.
 	 */
 	Horno_systick_init(PERIODO_MUESTREO);
+
+	Horno_motor_init();
 }
 
