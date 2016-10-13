@@ -315,8 +315,8 @@ void static_curve_wsqare(){
 				Put_line_waddr(10,230,i,-i,8);
 				Put_line_waddr(150,180,1.5*i,-i,8);
 			}
-
 		}
+
 	/* Esto pone los recuadros */
 	Put_line_waddr(0,0,0,0,320); // Linea horizontal al comienzo
 
@@ -347,6 +347,8 @@ void Set_arrow(int x0,int y0){
 		Put_line_waddr(x0,y0,(x0-2+i),i+5,p);
 		}
 }
+
+
 void Clear_arrow(int x0,int y0){
 	/* vuelvo a poner la posición en la 2da layer */
 	Command_Write(CSR_WRITE);
@@ -359,6 +361,55 @@ void Clear_arrow(int x0,int y0){
 		}
 }
 
+void Flechita_moviendose(void){
+	int y;
+	int x;
+	// 1er pendiente
+	for(int i=0;i<20;i++){
+		x=(2+i);
+		y=213-(1.8*i);
+		/* Pongo la flecha */
+		Set_arrow(x, y);
+		Horno_udelay(1e5);
+		/* Borro la flecha */
+		Clear_arrow(x,y);
+	}
+
+	// 1er constante
+	for(int i=0;i<35;i++){
+		x=(30+i);
+		y=170;
+		/* Pongo la flecha */
+		Set_arrow(x, y);
+		Horno_udelay(1e5);
+		/* Borro la flecha */
+		Clear_arrow(x,y);
+	}
+
+
+
+	// 2da pendiente
+	for(int i=0;i<25;i++){
+		x=(70+1.4*i);
+		y=170-(1.8*i);
+		/* Pongo la flecha */
+		Set_arrow(x, y);
+		Horno_udelay(1e5);
+		/* Borro la flecha */
+		Clear_arrow(x,y);
+	}
+
+	// 2da constante
+	for(int i=0;i<30;i++){
+		x=(110+i);
+		y=121;
+		/* Pongo la flecha */
+		Set_arrow(x, y);
+		Horno_udelay(1e5);
+		/* Borro la flecha */
+		Clear_arrow(x,y);
+	}
+}
 
 
 /* inicializa el display con una configuración parecida al 15.1.2 Initialization Example (p.103)
@@ -474,65 +525,17 @@ void Horno_Display_Init(void)
 /* Con esta funcion jugamos y testeamos el display */
 void Horno_Display_Test(void){
 
-	/* Curva de trabajo estática*/
-	static_curve_wsqare();
+	static_curve_wsqare();	// Curva de trabajo + recuadros
+	Flechita_moviendose();	// Con esto la flechita se mueve por toda la curva
 
-	int x0=0,y0=0;
-
-
-
-
-
-
+	/* Escribir en el 1er recuadro */
+	// Ponemos curso en el 1er layer (texto)
+	Command_Write(CSR_WRITE);
+	Parameter_Write(0x00);
+	Parameter_Write(0x00);
 
 
 
-	int y;
-	int x;
-	// 1er pendiente
-	for(int i=0;i<20;i++){
-		x=(2+i);
-		y=213-(1.8*i);
-		/* Pongo la flecha */
-		Set_arrow(x, y);
-		Horno_udelay(1e5);
-		/* Borro la flecha */
-		Clear_arrow(x,y);
-	}
 
-	// 1er constante
-	for(int i=0;i<35;i++){
-		x=(30+i);
-		y=170;
-		/* Pongo la flecha */
-		Set_arrow(x, y);
-		Horno_udelay(1e5);
-		/* Borro la flecha */
-		Clear_arrow(x,y);
-	}
-
-
-
-	// 2da pendiente
-	for(int i=0;i<25;i++){
-		x=(70+1.4*i);
-		y=170-(1.8*i);
-		/* Pongo la flecha */
-		Set_arrow(x, y);
-		Horno_udelay(1e5);
-		/* Borro la flecha */
-		Clear_arrow(x,y);
-	}
-
-	// 2da constante
-	for(int i=0;i<30;i++){
-		x=(110+i);
-		y=121;
-		/* Pongo la flecha */
-		Set_arrow(x, y);
-		Horno_udelay(1e5);
-		/* Borro la flecha */
-		Clear_arrow(x,y);
-	}
 
 }
