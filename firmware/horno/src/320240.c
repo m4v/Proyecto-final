@@ -317,62 +317,23 @@ void static_curve_wsqare(){
 			}
 
 		}
-	/* Esto pone el recuadro */
-	int x0=0,y0=120;
-	for (int i=y0;i<=239;i++){
-		if(i==y0||i==239){
-			Put_line_waddr(x0,y0,0,i-y0,320);
+	/* Esto pone los recuadros */
+	Put_line_waddr(0,0,0,0,320); // Linea horizontal al comienzo
+
+	/* esto pone las lineas verticales en los laterales */
+	for (int i=0;i<=239;i++){
+			Put_pixel(0,i+1);	// vertical en el costado izquierdo
+			Put_pixel(319,i+1);	// vertical en el costado derecho
 		}
-		Put_pixel(x0,i+1);
-		Put_pixel(319,i+1);
-		Put_line_waddr(x0,y0,0,i,1);
-		Put_line_waddr(310,y0,0,i,1);
-	}
+	for (int i=0; i<=119;i++){
+		Put_pixel(159,i+1);	// vertical en la mitad
+		}
+		Put_line_waddr(0,0,0,120,320);// Linea horizontal en el medio
+		Put_line_waddr(0,0,0,239,320);// Linea horizontal al final
 }
 
-/* Esta función posiblemente no nos sirve */
-//void static_curve_warrow(uint32_t position_arrow_x){
-////	/* Esto pone la curva*/
-////	for (int i=0;i<50;i++){
-////			/*primer rampa       --desde x0=10 y0=230 hasta x1=83 y1=181*/
-////			/*segunda rampa      --desde x0=150 y0=181 hasta x1=223 y1=132*/
-////			if (i>=46){
-////				Put_line_waddr(10,238,i,-i,97);			/* Constante 1*/
-////				Put_line_waddr(150,181,1.5*i,-i,90);	/* Constante 2*/
-////			}
-////			else{
-////				Put_line_waddr(10,230,i,-i,8);
-////				Put_line_waddr(150,180,1.5*i,-i,8);
-////			}
-////
-////		}
-////	/* Esto pone el recuadro */
-////	int x0=0,y0=120;
-////	for (int i=y0;i<=239;i++){
-////		if(i==y0||i==239){
-////			Put_line_waddr(x0,y0,0,i-y0,320);
-////		}
-////		Put_pixel(x0,i+1);
-////		Put_pixel(319,i+1);
-////		Put_line_waddr(x0,y0,0,i,1);
-////		Put_line_waddr(310,y0,0,i,1);
-////	}
-//
-//	static_curve_wsqare();
-//	uint32_t pax=position_arrow_x;
-//
-//
-//	int x,y,x0,y0;
-//	pax=x;
-//	x0=x;
-////	x0=0;
-//	y0=100;
-//	for(int i=0;i<5;i++){
-//		Put_line_waddr(x0,y0,x+2,i,4);
-//		int p=(12-2*(i));
-//		Put_line_waddr(x0,y0,(x-2+i),i+5,p);
-//	}
-//}
+
+
 
 void Set_arrow(int x0,int y0){
 	/* vuelvo a poner la posición en la 2da layer */
@@ -516,9 +477,18 @@ void Horno_Display_Test(void){
 	/* Curva de trabajo estática*/
 	static_curve_wsqare();
 
+	int x0=0,y0=0;
+
+
+
+
+
+
+
+
+
 	int y;
 	int x;
-
 	// 1er pendiente
 	for(int i=0;i<20;i++){
 		x=(2+i);
