@@ -406,6 +406,16 @@ void Flechita_moviendose(void){
 	}
 }
 
+void Put_string_waddr(int x, int y, char *str){
+	// Fijamos el comienzo del 1er layer
+	Command_Write(CSR_WRITE);
+	Parameter_Write(0x00);
+	Parameter_Write(0x00);
+	// Fijamos la posición del cursor
+	Set_text_position(x,y);
+	// Ponemos el string
+	Put_string(str);
+}
 
 /* inicializa el display con una configuración parecida al 15.1.2 Initialization Example (p.103)
  *  del datasheet del controlador
@@ -532,23 +542,10 @@ void Horno_Display_Test(void){
 	 * --- Dejando 1 linea de espacio, quedan 7 lineas utilizables
 	 *  */
 
-	Command_Write(CSR_WRITE);
-	Parameter_Write(0x00);
-	Parameter_Write(0x00);
-	Set_text_position(1,1);
-	Put_string("PRIMERA LINEA");
-	Set_text_position(1,3);
-	Put_string("2da");
-	Set_text_position(1,5);
-	Put_string("3ra");
-	Set_text_position(1,7);
-	Put_string("4ta");
-	Set_text_position(1,9);
-	Put_string("5ta");
-	Set_text_position(1,11);
-	Put_string("6ta");
-	Set_text_position(1,13);
-	Put_string("7ma y ultima");
+	/* Textos chicos */
+	Put_string_waddr(2,2,"Prbando");
+
+	/* Textos grandes */
 
 
 	Flechita_moviendose();	// Con esto la flechita se mueve por toda la curva
