@@ -300,7 +300,6 @@ void Clear_line_waddr(int x0, uint32_t y0, uint32_t x, uint32_t y, uint32_t larg
 
 }
 
-
 /* Curva de trabajo estática con el recuadro*/
 void static_curve_wsqare(){
 	/* Esto pone la curva*/
@@ -332,9 +331,6 @@ void static_curve_wsqare(){
 		Put_line_waddr(0,0,0,239,320);// Linea horizontal al final
 }
 
-
-
-
 void Set_arrow(int x0,int y0){
 	/* vuelvo a poner la posición en la 2da layer */
 	Command_Write(CSR_WRITE);
@@ -347,7 +343,6 @@ void Set_arrow(int x0,int y0){
 		Put_line_waddr(x0,y0,(x0-2+i),i+5,p);
 		}
 }
-
 
 void Clear_arrow(int x0,int y0){
 	/* vuelvo a poner la posición en la 2da layer */
@@ -526,16 +521,37 @@ void Horno_Display_Init(void)
 void Horno_Display_Test(void){
 
 	static_curve_wsqare();	// Curva de trabajo + recuadros
-	Flechita_moviendose();	// Con esto la flechita se mueve por toda la curva
 
 	/* Escribir en el 1er recuadro */
 	// Ponemos curso en el 1er layer (texto)
+	/* Cosas a tener en cuenta:
+	 * - Las tildes no están contempladas
+	 * - Máximo de (160/8)-1=20 caracteres. El '-1' es para no pisar la línea vertical.
+	 * - Máxima cantidad de líneas: (120/8)-1=15.
+	 * --- Considerar el espacio entre líneas, para mejor visibilidad.
+	 * --- Dejando 1 linea de espacio, quedan 7 lineas utilizables
+	 *  */
+
 	Command_Write(CSR_WRITE);
 	Parameter_Write(0x00);
 	Parameter_Write(0x00);
+	Set_text_position(1,1);
+	Put_string("PRIMERA LINEA");
+	Set_text_position(1,3);
+	Put_string("2da");
+	Set_text_position(1,5);
+	Put_string("3ra");
+	Set_text_position(1,7);
+	Put_string("4ta");
+	Set_text_position(1,9);
+	Put_string("5ta");
+	Set_text_position(1,11);
+	Put_string("6ta");
+	Set_text_position(1,13);
+	Put_string("7ma y ultima");
 
 
-
+	Flechita_moviendose();	// Con esto la flechita se mueve por toda la curva
 
 
 }
