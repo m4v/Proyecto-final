@@ -417,6 +417,49 @@ void Put_string_waddr(int x, int y, char *str){
 	Put_string(str);
 }
 
+void Put_Number(int number, int x0, int y0, int Xm, int Yi){
+	switch (number){
+	case 1:
+		for(int i=0;i<5; i++){
+		Put_line_waddr(x0,y0,Xm,Yi+i,8);
+		Put_line_waddr(x0,y0,Xm-8,Yi+5+i,8);
+		Put_line_waddr(x0,y0,Xm,Yi+10+1+i,8);
+		Put_line_waddr(x0,y0,Xm,Yi+15+2+i,8);
+		Put_line_waddr(x0,y0,Xm,Yi+20+3+i,8);
+		Put_line_waddr(x0,y0,Xm,Yi+25+4+i,8);
+		Put_line_waddr(x0,y0,Xm,Yi+30+5+i,8);
+		Put_line_waddr(x0,y0,Xm-8,Yi+30+5+i,8);
+		Put_line_waddr(x0,y0,Xm+8,Yi+30+5+i,8);
+	}
+		break;
+//	case 2:
+//	case 3:
+//	case 4:
+//	case 5:
+//	case 6:
+//	case 7:
+	case 8:
+	for(int i=0;i<5; i++){
+		Put_line_waddr(x0,y0,Xm,15+i,8);
+		Put_line_waddr(x0,y0,Xm-8,15+5+1+i,8);
+		Put_line_waddr(x0,y0,Xm+8,15+5+1+i,8);
+		Put_line_waddr(x0,y0,Xm-8,15+10+2+i,8);
+		Put_line_waddr(x0,y0,Xm+8,15+10+2+i,8);
+		Put_line_waddr(x0,y0,Xm,15+15+3+i,8);
+		Put_line_waddr(x0,y0,Xm-8,15+20+4+i,8);
+		Put_line_waddr(x0,y0,Xm+8,15+20+4+i,8);
+		Put_line_waddr(x0,y0,Xm-8,15+25+5+i,8);
+		Put_line_waddr(x0,y0,Xm+8,15+25+5+i,8);
+		Put_line_waddr(x0,y0,Xm,15+30+6+i,8);
+		}
+	break;
+//	case 9:
+//	case 0:
+
+	}
+}
+
+
 /* inicializa el display con una configuración parecida al 15.1.2 Initialization Example (p.103)
  *  del datasheet del controlador
  */
@@ -543,9 +586,26 @@ void Horno_Display_Test(void){
 	 *  */
 
 	/* Textos chicos */
-	Put_string_waddr(2,2,"Prbando");
+	Put_string_waddr(1,1,"Hola MUNDO :)");
 
 	/* Textos grandes */
+	Put_string_waddr(21,1,"TEMPERATURA: ");
+
+	int x0=160,y0=3;
+	int Xm=15;
+	int Yi=15;
+
+	Put_Number(1,x0,y0,Xm,Yi);
+	Xm=6*Xm;
+	Put_Number(1,x0,y0,Xm,Yi);
+
+	Put_string_waddr(21,8,"TIEMPO RESTANTE: ");
+	int Xtemp;
+	Xtemp=(15*6);
+	Put_Number(8,160,60,Xtemp,15);
+	Put_Number(1,160,60,15,15);
+
+
 
 
 	Flechita_moviendose();	// Con esto la flechita se mueve por toda la curva
