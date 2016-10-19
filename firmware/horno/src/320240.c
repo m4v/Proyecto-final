@@ -431,13 +431,88 @@ void Put_Number(int number, int x0, int y0, int Xm, int Yi){
 		Put_line_waddr(x0,y0,Xm-8,Yi+30+5+i,8);
 		Put_line_waddr(x0,y0,Xm+8,Yi+30+5+i,8);
 	}
-		break;
-//	case 2:
-//	case 3:
-//	case 4:
-//	case 5:
-//	case 6:
-//	case 7:
+	break;
+	case 2:
+	for(int i=0;i<5; i++){
+		Put_line_waddr(x0,y0,Xm,15+i,8);
+		Put_line_waddr(x0,y0,Xm-6,15+5+1+i,6);
+		Put_line_waddr(x0,y0,Xm+8,15+5+1+i,8);
+		Put_line_waddr(x0,y0,Xm+8,15+10+2+i,8);
+		Put_line_waddr(x0,y0,Xm,15+15+3+i,8);
+		Put_line_waddr(x0,y0,Xm-8,15+20+4+i,8);
+		Put_line_waddr(x0,y0,Xm-8,15+25+5+i,8);
+		Put_line_waddr(x0,y0,Xm+8,15+25+5+i,6);
+		Put_line_waddr(x0,y0,Xm,15+30+6+i,8);
+		}
+	break;
+	case 3:
+	for(int i=0;i<5; i++){
+		Put_line_waddr(x0,y0,Xm,15+i,8);
+		Put_line_waddr(x0,y0,Xm-8,15+5+1+i,8);
+		Put_line_waddr(x0,y0,Xm+8,15+5+1+i,8);
+		Put_line_waddr(x0,y0,Xm+8,15+10+2+i,8);
+		Put_line_waddr(x0,y0,Xm,15+15+3+i,8);
+		Put_line_waddr(x0,y0,Xm+8,15+20+4+i,8);
+		Put_line_waddr(x0,y0,Xm-8,15+25+5+i,8);
+		Put_line_waddr(x0,y0,Xm+8,15+25+5+i,8);
+		Put_line_waddr(x0,y0,Xm,15+30+6+i,8);
+		}
+	break;
+	case 4:
+	for(int i=0;i<5; i++){
+		Put_line_waddr(x0,y0,Xm-8,15+i,8);
+		Put_line_waddr(x0,y0,Xm+8,15+i,8);
+		Put_line_waddr(x0,y0,Xm-8,15+5+1+i,8);
+		Put_line_waddr(x0,y0,Xm+8,15+5+1+i,8);
+		Put_line_waddr(x0,y0,Xm-8,15+10+2+i,8);
+		Put_line_waddr(x0,y0,Xm+8,15+10+2+i,8);
+		Put_line_waddr(x0,y0,Xm-2,15+15+3+i,4);
+		Put_line_waddr(x0,y0,Xm+8,15+15+3+i,8);
+		Put_line_waddr(x0,y0,Xm+8,15+20+4+i,8);
+		Put_line_waddr(x0,y0,Xm+8,15+25+5+i,8);
+		Put_line_waddr(x0,y0,Xm+8,15+30+6+i,8);
+		}
+	break;
+	case 5:
+	for(int i=0;i<5; i++){
+		Put_line_waddr(x0,y0,Xm,15+i,8);
+		Put_line_waddr(x0,y0,Xm-8,15+5+1+i,8);
+		Put_line_waddr(x0,y0,Xm+8,15+5+1+i,6);
+		Put_line_waddr(x0,y0,Xm-8,15+10+2+i,8);
+		Put_line_waddr(x0,y0,Xm,15+15+3+i,8);
+		Put_line_waddr(x0,y0,Xm+8,15+20+4+i,8);
+		Put_line_waddr(x0,y0,Xm-6,15+25+5+i,6);
+		Put_line_waddr(x0,y0,Xm+8,15+25+5+i,8);
+		Put_line_waddr(x0,y0,Xm,15+30+6+i,8);
+		}
+	break;
+	case 6:
+	for(int i=0;i<5; i++){
+		Put_line_waddr(x0,y0,Xm-4,15+i,6);
+		Put_line_waddr(x0,y0,Xm+4,15+i,6);
+		Put_line_waddr(x0,y0,Xm-8,15+5+1+i,8);
+		Put_line_waddr(x0,y0,Xm-8,15+10+2+i,8);
+		Put_line_waddr(x0,y0,Xm,15+15+3+i,8);
+		Put_line_waddr(x0,y0,Xm-8,15+20+4+i,8);
+		Put_line_waddr(x0,y0,Xm+8,15+20+4+i,8);
+		Put_line_waddr(x0,y0,Xm-8,15+25+5+i,8);
+		Put_line_waddr(x0,y0,Xm+8,15+25+5+i,8);
+		Put_line_waddr(x0,y0,Xm,15+30+6+i,8);
+		}
+	break;
+	case 7:
+	for(int i=0;i<5; i++){
+		Put_line_waddr(x0,y0,Xm-4,15+i,4);
+		Put_line_waddr(x0,y0,Xm+2,15+i,14);
+		Put_line_waddr(x0,y0,Xm-8,15+5+1+i,6);
+		Put_line_waddr(x0,y0,Xm+8,15+5+1+i,8);
+		Put_line_waddr(x0,y0,Xm+8,15+10+2+i,8);
+		Put_line_waddr(x0,y0,Xm+8,15+15+3+i,8);
+		Put_line_waddr(x0,y0,Xm+8,15+20+4+i,8);
+		Put_line_waddr(x0,y0,Xm+8,15+25+5+i,8);
+		Put_line_waddr(x0,y0,Xm+8,15+30+6+i,8);
+		}
+	break;
 	case 8:
 	for(int i=0;i<5; i++){
 		Put_line_waddr(x0,y0,Xm,15+i,8);
@@ -453,9 +528,36 @@ void Put_Number(int number, int x0, int y0, int Xm, int Yi){
 		Put_line_waddr(x0,y0,Xm,15+30+6+i,8);
 		}
 	break;
-//	case 9:
-//	case 0:
-
+	case 9:
+	for(int i=0;i<5; i++){
+		Put_line_waddr(x0,y0,Xm,15+i,8);
+		Put_line_waddr(x0,y0,Xm-8,15+5+1+i,8);
+		Put_line_waddr(x0,y0,Xm+8,15+5+1+i,8);
+		Put_line_waddr(x0,y0,Xm-8,15+10+2+i,8);
+		Put_line_waddr(x0,y0,Xm+8,15+10+2+i,8);
+		Put_line_waddr(x0,y0,Xm-2,15+15+3+i,4);
+		Put_line_waddr(x0,y0,Xm+8,15+15+3+i,8);
+		Put_line_waddr(x0,y0,Xm+8,15+20+4+i,8);
+		Put_line_waddr(x0,y0,Xm+8,15+25+5+i,8);
+		Put_line_waddr(x0,y0,Xm+8,15+30+6+i,8);
+		}
+	break;
+	case 0:
+	for(int i=0;i<5; i++){
+		Put_line_waddr(x0,y0,Xm,15+i,8);
+		Put_line_waddr(x0,y0,Xm-8,15+5+1+i,8);
+		Put_line_waddr(x0,y0,Xm+8,15+5+1+i,8);
+		Put_line_waddr(x0,y0,Xm-8,15+10+2+i,8);
+		Put_line_waddr(x0,y0,Xm+8,15+10+2+i,8);
+		Put_line_waddr(x0,y0,Xm-8,15+15+3+i,8);
+		Put_line_waddr(x0,y0,Xm+8,15+15+3+i,8);
+		Put_line_waddr(x0,y0,Xm-8,15+20+4+i,8);
+		Put_line_waddr(x0,y0,Xm+8,15+20+4+i,8);
+		Put_line_waddr(x0,y0,Xm-8,15+25+5+i,8);
+		Put_line_waddr(x0,y0,Xm+8,15+25+5+i,8);
+		Put_line_waddr(x0,y0,Xm,15+30+6+i,8);
+		}
+	break;
 	}
 }
 
@@ -595,16 +697,20 @@ void Horno_Display_Test(void){
 	int Xm=15;
 	int Yi=15;
 
-	Put_Number(1,x0,y0,Xm,Yi);
-	Xm=6*Xm;
-	Put_Number(1,x0,y0,Xm,Yi);
+	Put_Number(0,x0,y0,Xm,Yi);
+	Put_Number(1,x0,y0,Xm*3,Yi);
+	Put_Number(2,x0,y0,Xm*5,Yi);
+	Put_Number(3,x0,y0,Xm*7,Yi);
+	Put_Number(4,x0,y0,Xm*9,Yi);
+
 
 	Put_string_waddr(21,8,"TIEMPO RESTANTE: ");
-	int Xtemp;
-	Xtemp=(15*6);
-	Put_Number(8,160,60,Xtemp,15);
-	Put_Number(1,160,60,15,15);
 
+	Put_Number(5,160,60,15,15);
+	Put_Number(6,160,60,15*3,15);
+	Put_Number(7,160,60,15*5,15);
+	Put_Number(8,160,60,15*7,15);
+	Put_Number(9,160,60,15*9,15);
 
 
 
