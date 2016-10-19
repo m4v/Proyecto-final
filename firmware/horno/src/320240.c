@@ -705,7 +705,66 @@ void clear_Number(int number, int x0, int y0, int Xm, int Yi){
 	}
 }
 
-
+void Num_grandes_test(void){
+	for(int i=0;i<10;i++){
+			Put_string_waddr(21,1,"TEMPERATURA: ");
+			Put_string_waddr(21,8,"TIEMPO RESTANTE: ");
+			int x0=160,y0=3;
+			int Xm=15;
+			int Yi=15;
+			switch (i){
+			case 0:
+				Put_Number(0,x0,y0,Xm,Yi);
+				Horno_udelay(4e5);
+				clear_Number(0,x0,y0,Xm,Yi);
+				break;
+			case 1:
+				Put_Number(1,x0,y0,Xm*3,Yi);
+				Horno_udelay(4e5);
+				clear_Number(1,x0,y0,Xm*3,Yi);
+				break;
+			case 2:
+				Put_Number(2,x0,y0,Xm*5,Yi);
+				Horno_udelay(4e5);
+				clear_Number(2,x0,y0,Xm*5,Yi);
+				break;
+			case 3:
+				Put_Number(3,x0,y0,Xm*7,Yi);
+				Horno_udelay(4e5);
+				clear_Number(3,x0,y0,Xm*7,Yi);
+				break;
+			case 4:
+				Put_Number(4,x0,y0,Xm*9,Yi);
+				Horno_udelay(4e5);
+				clear_Number(4,x0,y0,Xm*9,Yi);
+				break;
+			case 5:
+				Put_Number(5,160,60,15,15);
+				Horno_udelay(4e5);
+				clear_Number(5,160,60,15,15);
+				break;
+			case 6:
+				Put_Number(6,160,60,15*3,15);
+				Horno_udelay(4e5);
+				clear_Number(6,160,60,15*3,15);
+			case 7:
+				Put_Number(7,160,60,15*5,15);
+				Horno_udelay(4e5);
+				clear_Number(7,160,60,15*5,15);
+				break;
+			case 8:
+				Put_Number(8,160,60,15*7,15);
+				Horno_udelay(4e5);
+				clear_Number(8,160,60,15*7,15);
+				break;
+			case 9:
+				Put_Number(9,160,60,15*9,15);
+				Horno_udelay(4e5);
+				clear_Number(9,160,60,15*9,15);
+			break;
+		}
+	}
+}
 
 
 /* inicializa el display con una configuración parecida al 15.1.2 Initialization Example (p.103)
@@ -837,36 +896,14 @@ void Horno_Display_Test(void){
 	Put_string_waddr(1,1,"Hola MUNDO :)");
 
 	/* Textos grandes */
-	Put_string_waddr(21,1,"TEMPERATURA: ");
-
-	int x0=160,y0=3;
-	int Xm=15;
-	int Yi=15;
-
-	for(int i=0;i<10;i++){
-		Put_Number(i,x0,y0,Xm,Yi);
-		Horno_udelay(4e5);
-		clear_Number(i,x0,y0,Xm,Yi);
-	}
-
-//	Put_Number(0,x0,y0,Xm,Yi);
-//	Horno_udelay(1e6);
-//	clear_Number(0,x0,y0,Xm,Yi);
-//	Put_Number(1,x0,y0,Xm*3,Yi);
-//	Put_Number(2,x0,y0,Xm*5,Yi);
-//	Put_Number(3,x0,y0,Xm*7,Yi);
-//	Put_Number(4,x0,y0,Xm*9,Yi);
+//	Put_string_waddr(21,1,"TEMPERATURA: ");
+//	Put_string_waddr(21,8,"TIEMPO RESTANTE: ");
+//	int x0=160,y0=3;
+//	int Xm=15;
+//	int Yi=15;
 
 
-	Put_string_waddr(21,8,"TIEMPO RESTANTE: ");
-
-	Put_Number(5,160,60,15,15);
-	Put_Number(6,160,60,15*3,15);
-	Put_Number(7,160,60,15*5,15);
-	Put_Number(8,160,60,15*7,15);
-	Put_Number(9,160,60,15*9,15);
-
-
+	Num_grandes_test();
 
 	Flechita_moviendose();	// Con esto la flechita se mueve por toda la curva
 
