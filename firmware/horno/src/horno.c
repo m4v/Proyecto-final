@@ -32,9 +32,6 @@
 static bool adc_enabled = false;
 static bool adc_continue = false;
 
-static uint32_t time_ms = 2000;
-static bool motor_sentido;
-
 static uint16_t muestras[NUM_MUESTRAS_CAPTURA];
 
 typedef struct {
@@ -67,18 +64,6 @@ static char mensaje_menu[] = "Controles:\r\n"
 /* rutina de interrupción del systick */
 void SysTick_Handler(void)
 {
-//	time_ms++;
-//	if ((time_ms % 100) == 0) {
-//		/* parpadeo de 10hz */
-//		Board_LED_Toggle(0);
-//	}
-//	if (paso_inc == 0) {
-//		/* no queremos dejar el motor clavado con una bobina siempre encendida */
-//		Horno_MotorApagar();
-//	} else {
-//		pasos += paso_inc;
-//		Horno_MotorPaso(pasos);
-//	}
 	if (adc_enabled) {
 		if (!adc_continue) {
 			if (horno_adc.valor_n > NUM_MUESTRAS_CAPTURA) {
@@ -135,7 +120,6 @@ int main(void) {
 
     Horno_Init();
 
-
     DEBUGOUT(mensaje_inicio);
    	DEBUGOUT(mensaje_menu);
 
@@ -164,23 +148,20 @@ int main(void) {
     			horno_adc.lm_cantidad = 0;
     		}
     	} else if (charUART == 'i') {
-    		Horno_motor_marcha(time_ms);
-    		DEBUGOUT("Motor encendido - periodo %dms\n", time_ms);
+    		Horno_motor_marcha(horno_motor.periodo);
+    		DEBUGOUT("Motor encendido - periodo %dms\n", horno_motor.periodo);
     	} else if (charUART == 'p') {
     		Horno_motor_detener();
     		DEBUGOUT("Motor detenido\n");
-    	} else if (charUART == '-') {
-    		time_ms += 1000;
-    		Horno_motor_marcha(time_ms);
-    		DEBUGOUT("Motor periodo %dms\n", time_ms);
     	} else if (charUART == '+') {
-    		time_ms -= 1000;
-    		Horno_motor_marcha(time_ms);
-    		DEBUGOUT("Motor periodo %dms\n", time_ms);
+    		Horno_motor_marcha(horno_motor.periodo + 500);
+    		DEBUGOUT("Motor periodo %dms\n", horno_motor.periodo);
+    	} else if (charUART == '-') {
+    		Horno_motor_marcha(horno_motor.periodo - 500);
+    		DEBUGOUT("Motor periodo %dms\n", horno_motor.periodo);
     	} else if (charUART == 'l') {
-    		motor_sentido = !motor_sentido;
-    		Horno_motor_ascender(motor_sentido);
-    		DEBUGOUT("Motor sentido ascender %d\n", motor_sentido);
+    		Horno_motor_ascender(!horno_motor.ascender);
+    		DEBUGOUT("Motor sentido ascender %d\n", horno_motor.ascender);
     	} else if (charUART == 'h') {
     		DEBUGOUT(mensaje_menu);
     	}

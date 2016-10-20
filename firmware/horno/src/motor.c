@@ -17,8 +17,8 @@
 #include "motor.h"
 
 /* usar el TIMER1 para hacer los retrasos */
-#define _LPC_TIMER LPC_TIMER1
-#define _TIMER_IRQn TIMER1_IRQn
+#define _LPC_TIMER         LPC_TIMER1
+#define _TIMER_IRQn        TIMER1_IRQn
 #define _SYSCTL_PCLK_TIMER SYSCTL_PCLK_TIMER1
 
 #define PASOS 200 // pasos por vuelta
@@ -28,18 +28,13 @@
 #define MOTOR_P2(estado) Chip_GPIO_SetPinState(LPC_GPIO, 0,  5, estado);
 #define MOTOR_P3(estado) Chip_GPIO_SetPinState(LPC_GPIO, 0, 29, estado);
 
-static uint32_t motor_paso;
-static int32_t motor_incremento = 1;
-static uint32_t motor_periodo;
-static uint32_t ticks;
-
 /*
  * @brief traduce el número de paso actual a la sequencia correspondiente
  * @param paso: número de paso
  */
 
 void Horno_motor_paso(uint32_t paso) {
-	switch(paso % 4) {
+	switch(paso & 0b11) {
 	case 0:
 		MOTOR_P0(true);
 		MOTOR_P1(false);
@@ -90,12 +85,16 @@ void Horno_motor_marcha(uint32_t time_ms)
 	if (time_ms < 2000) {
 		time_ms = 2000;
 	}
+	horno_motor.periodo = time_ms;
 	/* poner todos los contadores a cero */
 	Chip_TIMER_Reset(_LPC_TIMER);
-	/* sacar el tiempo por paso */
-	uint32_t ms = time_ms / PASOS;
+
+	/* obtener la cantidad de ciclos por milisegundo */
+	uint32_t ticks = Chip_Clock_GetPeripheralClockRate(_SYSCTL_PCLK_TIMER) / 1e3;
+	/* sacar los ciclos por cada paso */
+	ticks = time_ms * ticks / PASOS;
 	/* configuramos la cantidad de ciclos a esperar y activamos el timer */
-	Chip_TIMER_SetMatch(_LPC_TIMER, 1, ms * ticks);
+	Chip_TIMER_SetMatch(_LPC_TIMER, 1, ticks);
 	Chip_TIMER_Enable(_LPC_TIMER);
 }
 
@@ -105,11 +104,7 @@ void Horno_motor_marcha(uint32_t time_ms)
  */
 
 void Horno_motor_ascender(bool ascender) {
-	if (ascender) {
-		motor_incremento = 1;
-	} else {
-		motor_incremento = -1;
-	}
+	horno_motor.ascender = ascender;
 }
 
 /*
@@ -122,8 +117,12 @@ void TIMER1_IRQHandler(void)
 	if (Chip_TIMER_MatchPending(_LPC_TIMER, 1)) {
 		Chip_TIMER_ClearMatch(_LPC_TIMER, 1);
 		Board_LED_Toggle(0);
-		motor_paso += motor_incremento;
-		Horno_motor_paso(motor_paso);
+		if (horno_motor.ascender) {
+			horno_motor.num_paso += 1;
+		} else {
+			horno_motor.num_paso -= 1;
+		}
+		Horno_motor_paso(horno_motor.num_paso);
 	}
 }
 
@@ -132,10 +131,6 @@ void TIMER1_IRQHandler(void)
  */
 
 void Horno_motor_init(void) {
-	/* obtener el clock que utiliza el timer */
-	uint32_t timer_clock = Chip_Clock_GetPeripheralClockRate(_SYSCTL_PCLK_TIMER);
-	ticks = timer_clock / 1e3; // cantidad de ciclos por milisegundo.
-
 	/* configurar timer */
 	Chip_TIMER_Init(_LPC_TIMER); // activa el clock del timer
 	/* Cuando el timer alcanza el valor en el match register, queremos una
@@ -146,4 +141,6 @@ void Horno_motor_init(void) {
 	/* Enable timer interrupt */
 	NVIC_ClearPendingIRQ(_TIMER_IRQn); // TODO: ver que hace esto y si es necesario.
 	NVIC_EnableIRQ(_TIMER_IRQn);
+
+	horno_motor.periodo = 2000;
 }
