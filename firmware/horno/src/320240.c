@@ -73,8 +73,8 @@ void Data_Write(uint8_t dato)
 	/* limpio los 8 bits del puerto y cambio sus datos */
 	port &= ~(0b01111111 << 2);
 	port &= ~(0b10000000 << 3);
-	port |= (dato & 0b01111111) << 2;  // bit 0 en la posición 2
-	port |= (dato & 0b10000000) << 3;  // bit 7 en la posición 10
+	port |= (dato & 0b01111111) << 2;  // mover bit 0-6 a la posición 2-8
+	port |= (dato & 0b10000000) << 3;  // mover bit 7 a la posición 10
 	Chip_GPIO_SetPortValue(LPC_GPIO, 2, port);
 }
 
@@ -111,9 +111,7 @@ void Command_Write(uint8_t cmd)
 /* escribe letra por letra, el contenido de una cadena */
 void Put_string(char str[]){
 	Command_Write(MEM_WRITE);
-	int str_length=0;
-	str_length=strlen(str);
-	for(int i=0; i<str_length;i++){
+	for(int i=0; i<strlen(str);i++){
 		Parameter_Write(str[i]);
 	}
 }
@@ -153,11 +151,11 @@ void Set_text_position(uint32_t x, uint32_t y){
 	Parameter_Write((uint8_t)(address >> 8));   // MSB
 }
 
-/* Fijamos las coordenadas para comenzar a escribir en el layer gráfico.
- * Configurado para el 2do layer es 0x1000.
- *
- * Acá hay que poner la dirección en un define
-*/
+/*
+ * @brief Fijamos las coordenadas para comenzar a escribir en el layer gráfico.
+ * @param x: posición x en bytes
+ * @param y: posición y en bits
+ */
 void Set_graphic_position(uint32_t x, uint32_t y){
 	uint32_t address=(LAYER2_ADDRESS + (y * 40) + x);
 	Command_Write(CSR_WRITE);
