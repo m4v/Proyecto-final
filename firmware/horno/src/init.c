@@ -18,6 +18,7 @@
 #include "delay.h"
 #include "320240.h"
 #include "motor.h"
+#include "pwm.h"
 
 static ADC_CLOCK_SETUP_T ADCSetup;
 
@@ -37,6 +38,8 @@ static const PINMUX_GRP_T pinmux[] = {
 	/* pines del ADC */
 	{0,  23,  IOCON_MODE_INACT | IOCON_FUNC1}, // Termocupla
 	{0,   3,  IOCON_MODE_INACT | IOCON_FUNC2}, // LM35
+	/* PWM */
+	{2,   0,  IOCON_MODE_INACT | IOCON_FUNC1},
 	/* pines del display */
 	{0,   4,  IOCON_MODE_INACT | IOCON_FUNC0}, // /CS
 	{0,   5,  IOCON_MODE_INACT | IOCON_FUNC0}, // A0
@@ -44,7 +47,6 @@ static const PINMUX_GRP_T pinmux[] = {
 	{0,  11,  IOCON_MODE_INACT | IOCON_FUNC0}, // /WR
 	{2,  12,  IOCON_MODE_INACT | IOCON_FUNC0}, // /RES
 	/* D[0-7] display */
-	{2,   0,  IOCON_MODE_INACT | IOCON_FUNC0},
 	{2,   1,  IOCON_MODE_INACT | IOCON_FUNC0},
 	{2,   2,  IOCON_MODE_INACT | IOCON_FUNC0},
 	{2,   3,  IOCON_MODE_INACT | IOCON_FUNC0},
@@ -133,5 +135,6 @@ void Horno_Init (void) {
 	Horno_systick_init(PERIODO_MUESTREO);
 
 	Horno_motor_init();
+	Horno_pwm_init();
 }
 
