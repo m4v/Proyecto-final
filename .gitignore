@@ -39,3 +39,10 @@
 *.swp
 *~
 *.kate-swp
+
+# kicad backup files
+*.kicad_pcb-bak
+
+octave-workspace
+octave/*.csv
+octave/*.log

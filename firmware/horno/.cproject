@@ -37,6 +37,7 @@
 								<option id="gnu.c.compiler.option.include.paths.787677206" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lpc_board_nxp_lpcxpresso_1769/inc}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lpc_chip_175x_6x/inc}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/inc}&quot;"/>
 								</option>
 								<inputType id="com.crt.advproject.compiler.input.1226095256" superClass="com.crt.advproject.compiler.input"/>
 							</tool>
@@ -74,7 +75,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lpc_board_nxp_lpcxpresso_1769/Debug}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lpc_chip_175x_6x/Debug}&quot;"/>
 								</option>
-								<option id="com.crt.advproject.link.crpenable.1921244367" name="Enable Code Read Protect" superClass="com.crt.advproject.link.crpenable" value="false" valueType="boolean"/>
+								<option id="com.crt.advproject.link.crpenable.1921244367" name="Enable Code Read Protection" superClass="com.crt.advproject.link.crpenable" value="false" valueType="boolean"/>
 								<option id="com.crt.advproject.link.gcc.multicore.slave.1167691853" name="Multicore configuration" superClass="com.crt.advproject.link.gcc.multicore.slave"/>
 								<inputType id="cdt.managedbuild.tool.gnu.c.linker.input.1836939657" superClass="cdt.managedbuild.tool.gnu.c.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
@@ -162,7 +163,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lpc_board_nxp_lpcxpresso_1769/Release}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lpc_chip_175x_6x/Release}&quot;"/>
 								</option>
-								<option id="com.crt.advproject.link.crpenable.195376081" name="Enable Code Read Protect" superClass="com.crt.advproject.link.crpenable" value="true" valueType="boolean"/>
+								<option id="com.crt.advproject.link.crpenable.195376081" name="Enable Code Read Protection" superClass="com.crt.advproject.link.crpenable" value="true" valueType="boolean"/>
 								<inputType id="cdt.managedbuild.tool.gnu.c.linker.input.2041767478" superClass="cdt.managedbuild.tool.gnu.c.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>
@@ -256,13 +257,20 @@
 &lt;/infoList&gt;&#13;
 &lt;/TargetConfig&gt;</projectStorage>
 	</storageModule>
-	<storageModule moduleId="refreshScope"/>
+	<storageModule moduleId="refreshScope" versionNumber="2">
+		<configuration configurationName="Debug">
+			<resource resourceType="PROJECT" workspacePath="/horno"/>
+		</configuration>
+		<configuration configurationName="Release">
+			<resource resourceType="PROJECT" workspacePath="/horno"/>
+		</configuration>
+	</storageModule>
 	<storageModule moduleId="scannerConfiguration">
 		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		<scannerConfigBuildInfo instanceId="com.crt.advproject.config.exe.debug.368801146;com.crt.advproject.config.exe.debug.368801146.;com.crt.advproject.gas.exe.debug.1066897134;com.crt.advproject.assembler.input.943468051">
+		<scannerConfigBuildInfo instanceId="com.crt.advproject.config.exe.debug.368801146;com.crt.advproject.config.exe.debug.368801146.;com.crt.advproject.gcc.exe.debug.751942597;com.crt.advproject.compiler.input.1226095256">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.crt.advproject.GCCManagedMakePerProjectProfile"/>
 		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="com.crt.advproject.config.exe.debug.368801146;com.crt.advproject.config.exe.debug.368801146.;com.crt.advproject.gcc.exe.debug.751942597;com.crt.advproject.compiler.input.1226095256">
+		<scannerConfigBuildInfo instanceId="com.crt.advproject.config.exe.debug.368801146;com.crt.advproject.config.exe.debug.368801146.;com.crt.advproject.gas.exe.debug.1066897134;com.crt.advproject.assembler.input.943468051">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.crt.advproject.GCCManagedMakePerProjectProfile"/>
 		</scannerConfigBuildInfo>
 	</storageModule>
