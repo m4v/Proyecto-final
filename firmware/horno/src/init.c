@@ -54,6 +54,17 @@ static const PINMUX_GRP_T pinmux[] = {
 	{2,   5,  IOCON_MODE_INACT | IOCON_FUNC0},
 	{2,   6,  IOCON_MODE_INACT | IOCON_FUNC0},
 	{2,   7,  IOCON_MODE_INACT | IOCON_FUNC0},
+	/*Pines del teclado */
+	// Esto hay que cmbiarlo con los valores que correspondan en el PCB
+	{1,  30,  IOCON_MODE_INACT | IOCON_FUNC0},
+	{1,  31,  IOCON_MODE_INACT | IOCON_FUNC0},
+	{0,   2,  IOCON_MODE_INACT | IOCON_FUNC0},
+	{0,   3,  IOCON_MODE_INACT | IOCON_FUNC0},
+	{0,  21,  IOCON_MODE_INACT | IOCON_FUNC0},
+	{0,  22,  IOCON_MODE_INACT | IOCON_FUNC0},
+	{0,  27,  IOCON_MODE_INACT | IOCON_FUNC0},
+	{0,  28,  IOCON_MODE_INACT | IOCON_FUNC0},
+
 };
 
 /* Pin GPIO configuration */
@@ -78,6 +89,16 @@ static const GPIO_DIR_T gpiodir[] = {
 	{2,  5, true},
 	{2,  6, true},
 	{2,  7, true},
+	/*Pines del teclado, como ENTRADAS*/
+	// Esto hay que cmbiarlo con los valores que correspondan en el PCB
+	{1, 30, false}, // KEYB1
+	{1, 31, false},
+	{0,  2, false},
+	{0,  3, false},
+	{0, 21, false},
+	{0, 22, false},
+	{0, 27, false},
+	{0, 28, false},// KEYB8
 };
 
 /*
