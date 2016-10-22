@@ -122,8 +122,8 @@ int main(void) {
 
     DEBUGOUT(mensaje_inicio);
    	DEBUGOUT(mensaje_menu);
-
-    while(1) {
+	while(1){
+    Horno_Display_Test();
     	charUART = DEBUGIN();
     	if (charUART == 'm') {
     		adc_enabled = true;
@@ -167,8 +167,6 @@ int main(void) {
     	}
     }
 	Board_LED_Set(0, true);
-	while(1){
-    Horno_Display_Test();
-	}
+
     return 0;
 }
