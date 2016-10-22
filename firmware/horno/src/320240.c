@@ -29,17 +29,6 @@
 #define SET_RST Chip_GPIO_SetPinState(LPC_GPIO, 2, 12, true)
 #define CLR_RST Chip_GPIO_SetPinState(LPC_GPIO, 2, 12, false)
 
-// Teclado - hay que cambiar con los datos correspondientes al PCB
-#define KEYA1 Chip_GPIO_GetPinState(LPC_GPIO, 1, 30)
-#define KEYA2 Chip_GPIO_GetPinState(LPC_GPIO, 1, 31)
-#define KEYA3 Chip_GPIO_GetPinState(LPC_GPIO, 0,  2)
-#define KEYA4 Chip_GPIO_GetPinState(LPC_GPIO, 0,  3)
-#define KEYB5 Chip_GPIO_GetPinState(LPC_GPIO, 0, 21)
-#define KEYB6 Chip_GPIO_GetPinState(LPC_GPIO, 0, 22)
-#define KEYB7 Chip_GPIO_GetPinState(LPC_GPIO, 0, 27)
-#define KEYB8 Chip_GPIO_GetPinState(LPC_GPIO, 0, 28)
-
-
 
 /* Datos D[7:0] P2.0:P2.7 */
 
