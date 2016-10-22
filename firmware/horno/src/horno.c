@@ -122,8 +122,11 @@ int main(void) {
 
     DEBUGOUT(mensaje_inicio);
    	DEBUGOUT(mensaje_menu);
+
+   	Horno_Display_Test();
+   	Horno_grafico_bloque();
+
 	while(1){
-    Horno_Display_Test();
     	charUART = DEBUGIN();
     	if (charUART == 'm') {
     		adc_enabled = true;

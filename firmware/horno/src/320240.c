@@ -17,6 +17,8 @@
 
 /* Defines */
 
+#define LAYER2_ADDRESS 0x1000
+
 /* mapeo de pines */
 #define SET_CS  Chip_GPIO_SetPinState(LPC_GPIO, 2, 11, true)
 #define CLR_CS  Chip_GPIO_SetPinState(LPC_GPIO, 2, 11, false)
@@ -39,23 +41,7 @@
 #define KEYB7 Chip_GPIO_GetPinState(LPC_GPIO, 0, 27)
 #define KEYB8 Chip_GPIO_GetPinState(LPC_GPIO, 0, 28)
 
-/* comandos */
-#define SYSTEM_SET  0x40
-#define MEM_WRITE   0x42
-#define MEM_READ    0x43
-#define SCROLL      0x44
-#define CSR_WRITE   0x46
-#define CSR_READ    0x47
-#define DISPLAY_OFF 0x58
-#define DISPLAY_ON  0x59
-#define HDOT_SCR    0x5A
-#define OVERLAY     0x5B
-#define CSR_FORM    0x5D
-#define CSR_DIR_R   0x4C
-#define CSR_DIR_L   0x4D
-#define CSR_DIR_U   0x4E
-#define CSR_DIR_D   0x4F
-#define GRAYSCALE   0x60
+
 
 #define LCD_DELAY 1 /* retraso usado para comunicarse con la pantalla */
 
@@ -173,7 +159,7 @@ void Set_text_position(uint32_t x, uint32_t y){
  * Acá hay que poner la dirección en un define
 */
 void Set_graphic_position(uint32_t x, uint32_t y){
-	uint32_t address=(0x1000 + (y * 40) + x);
+	uint32_t address=(LAYER2_ADDRESS + (y * 40) + x);
 	Command_Write(CSR_WRITE);
 	Parameter_Write((uint8_t)(address & 0xFF)); // LSB
 	Parameter_Write((uint8_t)(address >> 8));   // MSB
@@ -1045,7 +1031,7 @@ void Horno_Display_Test(void){
 
 	Poner_todo_num_grandes();
 //	Num_grandes_test();		// Con esto testeamos los numeros grandes sólo en la sección correspondiente
-	Flechita_moviendose();	// Con esto la flechita se mueve por toda la curva
+	//Flechita_moviendose();	// Con esto la flechita se mueve por toda la curva
 
 
 }
