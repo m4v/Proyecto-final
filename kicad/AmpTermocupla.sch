@@ -1,0 +1,538 @@
+EESchema Schematic File Version 2
+LIBS:power
+LIBS:device
+LIBS:transistors
+LIBS:conn
+LIBS:linear
+LIBS:regul
+LIBS:74xx
+LIBS:cmos4000
+LIBS:memory
+LIBS:microcontrollers
+LIBS:dsp
+LIBS:analog_switches
+LIBS:motorola
+LIBS:texas
+LIBS:intel
+LIBS:audio
+LIBS:interface
+LIBS:digital-audio
+LIBS:philips
+LIBS:display
+LIBS:siliconi
+LIBS:opto
+LIBS:contrib
+LIBS:valves
+LIBS:horno
+LIBS:sensors
+LIBS:stepper drivers
+LIBS:horno-cache
+EELAYER 25 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 3 5
+Title "Amplificador y filtro de la termocupla"
+Date "2016-09-11"
+Rev "2"
+Comp "Elián Hanisch - Rodrigo Oliver - Gastón Riera"
+Comment1 "Cátedra de Proyecto Final"
+Comment2 "Ingeniería Electrónica"
+Comment3 "Universidad Nacional de La Plata"
+Comment4 "Sistema de control digital para un horno de prótesis dentales"
+$EndDescr
+$Comp
+L OP07 U4
+U 1 1 57C55D27
+P 7800 3250
+F 0 "U4" H 7800 3500 50  0000 L CNN
+F 1 "OP07" H 7800 3400 50  0000 L CNN
+F 2 "Housings_DIP:DIP-8_W7.62mm_LongPads" H 7850 3300 50  0001 C CNN
+F 3 "" H 7950 3400 50  0000 C CNN
+	1    7800 3250
+	1    0    0    -1  
+$EndComp
+$Comp
+L -5V #PWR39
+U 1 1 57C55D2E
+P 7700 3550
+F 0 "#PWR39" H 7700 3650 50  0001 C CNN
+F 1 "-5V" H 7700 3700 50  0000 C CNN
+F 2 "" H 7700 3550 50  0000 C CNN
+F 3 "" H 7700 3550 50  0000 C CNN
+	1    7700 3550
+	-1   0    0    1   
+$EndComp
+$Comp
+L +5V #PWR021
+U 1 1 57C55D34
+P 7700 2950
+F 0 "#PWR021" H 7700 2800 50  0001 C CNN
+F 1 "+5V" H 7700 3090 50  0000 C CNN
+F 2 "" H 7700 2950 50  0000 C CNN
+F 3 "" H 7700 2950 50  0000 C CNN
+	1    7700 2950
+	1    0    0    -1  
+$EndComp
+Text HLabel 9200 3250 2    60   Output ~ 0
+TERMOCUPLA_OUT
+$Comp
+L R R8
+U 1 1 57C55D3C
+P 6800 3150
+F 0 "R8" V 6880 3150 50  0000 C CNN
+F 1 "330k" V 6800 3150 50  0000 C CNN
+F 2 "Resistors_ThroughHole:Resistor_Horizontal_RM10mm" V 6730 3150 50  0001 C CNN
+F 3 "" H 6800 3150 50  0000 C CNN
+	1    6800 3150
+	0    1    1    0   
+$EndComp
+$Comp
+L R R7
+U 1 1 57C55D43
+P 6150 3150
+F 0 "R7" V 6230 3150 50  0000 C CNN
+F 1 "56k" V 6150 3150 50  0000 C CNN
+F 2 "Resistors_ThroughHole:Resistor_Horizontal_RM10mm" V 6080 3150 50  0001 C CNN
+F 3 "" H 6150 3150 50  0000 C CNN
+	1    6150 3150
+	0    1    1    0   
+$EndComp
+$Comp
+L C C4
+U 1 1 57C55D4A
+P 7150 3700
+F 0 "C4" H 7175 3800 50  0000 L CNN
+F 1 "220nF" H 7175 3600 50  0000 L CNN
+F 2 "Capacitors_ThroughHole:C_Disc_D3_P2.5" H 7188 3550 50  0001 C CNN
+F 3 "" H 7150 3700 50  0000 C CNN
+	1    7150 3700
+	1    0    0    -1  
+$EndComp
+$Comp
+L C C3
+U 1 1 57C55D51
+P 6850 2450
+F 0 "C3" V 6800 2500 50  0000 L CNN
+F 1 "220nF" V 6900 2500 50  0000 L CNN
+F 2 "Capacitors_ThroughHole:C_Disc_D3_P2.5" H 6888 2300 50  0001 C CNN
+F 3 "" H 6850 2450 50  0000 C CNN
+	1    6850 2450
+	0    1    1    0   
+$EndComp
+$Comp
+L GNDA #PWR022
+U 1 1 57C55D64
+P 7150 4250
+F 0 "#PWR022" H 7150 4000 50  0001 C CNN
+F 1 "GNDA" H 7150 4100 50  0000 C CNN
+F 2 "" H 7150 4250 50  0000 C CNN
+F 3 "" H 7150 4250 50  0000 C CNN
+	1    7150 4250
+	1    0    0    -1  
+$EndComp
+$Comp
+L POT RV3
+U 1 1 57C55D6D
+P 8050 4450
+F 0 "RV3" H 8050 4370 50  0000 C CNN
+F 1 "POT" H 8050 4450 50  0001 C CNN
+F 2 "Potentiometers:Potentiometer_Bourns_3005_Angular_ScrewFront" H 8050 4450 50  0001 C CNN
+F 3 "" H 8050 4450 50  0000 C CNN
+	1    8050 4450
+	0    1    1    0   
+$EndComp
+$Comp
+L +5V #PWR023
+U 1 1 57C55D79
+P 8200 4150
+F 0 "#PWR023" H 8200 4000 50  0001 C CNN
+F 1 "+5V" H 8200 4290 50  0000 C CNN
+F 2 "" H 8200 4150 50  0000 C CNN
+F 3 "" H 8200 4150 50  0000 C CNN
+	1    8200 4150
+	1    0    0    -1  
+$EndComp
+$Comp
+L CONN_01X02 P3
+U 1 1 57C56440
+P 1100 3100
+F 0 "P3" H 1100 3250 50  0000 C CNN
+F 1 "Termocupla" V 1200 3100 50  0000 C CNN
+F 2 "Connect:bornier2" H 1100 3100 50  0001 C CNN
+F 3 "" H 1100 3100 50  0000 C CNN
+	1    1100 3100
+	-1   0    0    1   
+$EndComp
+$Comp
+L LTC1050 U3
+U 1 1 57C565D5
+P 4700 3150
+F 0 "U3" H 4700 3400 50  0000 L CNN
+F 1 "LTC1050" H 4700 3300 50  0000 L CNN
+F 2 "Housings_DIP:DIP-8_W7.62mm_LongPads" H 4750 3200 50  0001 C CNN
+F 3 "" H 4850 3300 50  0000 C CNN
+	1    4700 3150
+	1    0    0    -1  
+$EndComp
+$Comp
+L -5V #PWR34
+U 1 1 57C56636
+P 4600 3450
+F 0 "#PWR34" H 4600 3550 50  0001 C CNN
+F 1 "-5V" H 4600 3600 50  0000 C CNN
+F 2 "" H 4600 3450 50  0000 C CNN
+F 3 "" H 4600 3450 50  0000 C CNN
+	1    4600 3450
+	-1   0    0    1   
+$EndComp
+$Comp
+L +5V #PWR024
+U 1 1 57C56763
+P 4600 2850
+F 0 "#PWR024" H 4600 2700 50  0001 C CNN
+F 1 "+5V" H 4600 2990 50  0000 C CNN
+F 2 "" H 4600 2850 50  0000 C CNN
+F 3 "" H 4600 2850 50  0000 C CNN
+	1    4600 2850
+	1    0    0    -1  
+$EndComp
+$Comp
+L GNDA #PWR025
+U 1 1 57C56A5D
+P 1300 3250
+F 0 "#PWR025" H 1300 3000 50  0001 C CNN
+F 1 "GNDA" H 1300 3100 50  0000 C CNN
+F 2 "" H 1300 3250 50  0000 C CNN
+F 3 "" H 1300 3250 50  0000 C CNN
+	1    1300 3250
+	1    0    0    -1  
+$EndComp
+$Comp
+L R R5
+U 1 1 57C56AC8
+P 3750 3900
+F 0 "R5" V 3830 3900 50  0000 C CNN
+F 1 "1,5k" V 3750 3900 50  0000 C CNN
+F 2 "Resistors_ThroughHole:Resistor_Horizontal_RM10mm" V 3680 3900 50  0001 C CNN
+F 3 "" H 3750 3900 50  0000 C CNN
+F 4 "1%" V 3650 3900 60  0000 C CNN "Tol"
+	1    3750 3900
+	0    1    1    0   
+$EndComp
+$Comp
+L R R6
+U 1 1 57C56B39
+P 4750 3900
+F 0 "R6" V 4830 3900 50  0000 C CNN
+F 1 "120k" V 4750 3900 50  0000 C CNN
+F 2 "Resistors_ThroughHole:Resistor_Horizontal_RM10mm" V 4680 3900 50  0001 C CNN
+F 3 "" H 4750 3900 50  0000 C CNN
+F 4 "1%" V 4650 3900 60  0000 C CNN "Tol"
+	1    4750 3900
+	0    1    1    0   
+$EndComp
+$Comp
+L GNDA #PWR026
+U 1 1 57C56C1B
+P 3450 4150
+F 0 "#PWR026" H 3450 3900 50  0001 C CNN
+F 1 "GNDA" H 3450 4000 50  0000 C CNN
+F 2 "" H 3450 4150 50  0000 C CNN
+F 3 "" H 3450 4150 50  0000 C CNN
+	1    3450 4150
+	1    0    0    -1  
+$EndComp
+NoConn ~ 4700 3450
+Text Notes 1000 2850 0    60   ~ 0
+Conexión de \nla termocupla
+Text Notes 6500 2200 0    60   ~ 0
+Filtro pasa-bajos\nfc = 2Hz\nAtt@50hz = 40dB
+Text Notes 4150 2550 0    60   ~ 0
+Amplificador de zero drift\nG = 81
+$Comp
+L C C11
+U 1 1 57C5B8B6
+P 7550 5500
+F 0 "C11" H 7575 5600 50  0000 L CNN
+F 1 "0,1uF" H 7575 5400 50  0000 L CNN
+F 2 "Capacitors_ThroughHole:C_Disc_D3_P2.5" H 7588 5350 50  0001 C CNN
+F 3 "" H 7550 5500 50  0000 C CNN
+	1    7550 5500
+	1    0    0    -1  
+$EndComp
+$Comp
+L C C12
+U 1 1 57C5B90B
+P 7950 5500
+F 0 "C12" H 7975 5600 50  0000 L CNN
+F 1 "0.1uF" H 7975 5400 50  0000 L CNN
+F 2 "Capacitors_ThroughHole:C_Disc_D3_P2.5" H 7988 5350 50  0001 C CNN
+F 3 "" H 7950 5500 50  0000 C CNN
+	1    7950 5500
+	1    0    0    -1  
+$EndComp
+$Comp
+L GNDA #PWR027
+U 1 1 57C5BA90
+P 7550 5650
+F 0 "#PWR027" H 7550 5400 50  0001 C CNN
+F 1 "GNDA" H 7550 5500 50  0000 C CNN
+F 2 "" H 7550 5650 50  0000 C CNN
+F 3 "" H 7550 5650 50  0000 C CNN
+	1    7550 5650
+	1    0    0    -1  
+$EndComp
+$Comp
+L GNDA #PWR028
+U 1 1 57C5BABC
+P 7950 5650
+F 0 "#PWR028" H 7950 5400 50  0001 C CNN
+F 1 "GNDA" H 7950 5500 50  0000 C CNN
+F 2 "" H 7950 5650 50  0000 C CNN
+F 3 "" H 7950 5650 50  0000 C CNN
+	1    7950 5650
+	1    0    0    -1  
+$EndComp
+$Comp
+L +5V #PWR029
+U 1 1 57C5BAE8
+P 7550 5350
+F 0 "#PWR029" H 7550 5200 50  0001 C CNN
+F 1 "+5V" H 7550 5490 50  0000 C CNN
+F 2 "" H 7550 5350 50  0000 C CNN
+F 3 "" H 7550 5350 50  0000 C CNN
+	1    7550 5350
+	1    0    0    -1  
+$EndComp
+$Comp
+L -5V #PWR40
+U 1 1 57C5BB14
+P 7950 5350
+F 0 "#PWR40" H 7950 5450 50  0001 C CNN
+F 1 "-5V" H 7950 5500 50  0000 C CNN
+F 2 "" H 7950 5350 50  0000 C CNN
+F 3 "" H 7950 5350 50  0000 C CNN
+	1    7950 5350
+	1    0    0    -1  
+$EndComp
+Text Notes 7500 6050 0    60   ~ 0
+Capacitores de desacople\nDeben estar junto a U4
+$Comp
+L C C9
+U 1 1 57C5C537
+P 4150 5400
+F 0 "C9" H 4175 5500 50  0000 L CNN
+F 1 "0,1uF" H 4175 5300 50  0000 L CNN
+F 2 "Capacitors_ThroughHole:C_Disc_D3_P2.5" H 4188 5250 50  0001 C CNN
+F 3 "" H 4150 5400 50  0000 C CNN
+	1    4150 5400
+	1    0    0    -1  
+$EndComp
+$Comp
+L C C10
+U 1 1 57C5C53D
+P 4550 5400
+F 0 "C10" H 4575 5500 50  0000 L CNN
+F 1 "0.1uF" H 4575 5300 50  0000 L CNN
+F 2 "Capacitors_ThroughHole:C_Disc_D3_P2.5" H 4588 5250 50  0001 C CNN
+F 3 "" H 4550 5400 50  0000 C CNN
+	1    4550 5400
+	1    0    0    -1  
+$EndComp
+$Comp
+L GNDA #PWR030
+U 1 1 57C5C543
+P 4150 5550
+F 0 "#PWR030" H 4150 5300 50  0001 C CNN
+F 1 "GNDA" H 4150 5400 50  0000 C CNN
+F 2 "" H 4150 5550 50  0000 C CNN
+F 3 "" H 4150 5550 50  0000 C CNN
+	1    4150 5550
+	1    0    0    -1  
+$EndComp
+$Comp
+L GNDA #PWR031
+U 1 1 57C5C549
+P 4550 5550
+F 0 "#PWR031" H 4550 5300 50  0001 C CNN
+F 1 "GNDA" H 4550 5400 50  0000 C CNN
+F 2 "" H 4550 5550 50  0000 C CNN
+F 3 "" H 4550 5550 50  0000 C CNN
+	1    4550 5550
+	1    0    0    -1  
+$EndComp
+$Comp
+L +5V #PWR032
+U 1 1 57C5C54F
+P 4150 5250
+F 0 "#PWR032" H 4150 5100 50  0001 C CNN
+F 1 "+5V" H 4150 5390 50  0000 C CNN
+F 2 "" H 4150 5250 50  0000 C CNN
+F 3 "" H 4150 5250 50  0000 C CNN
+	1    4150 5250
+	1    0    0    -1  
+$EndComp
+$Comp
+L -5V #PWR31
+U 1 1 57C5C555
+P 4550 5250
+F 0 "#PWR31" H 4550 5350 50  0001 C CNN
+F 1 "-5V" H 4550 5400 50  0000 C CNN
+F 2 "" H 4550 5250 50  0000 C CNN
+F 3 "" H 4550 5250 50  0000 C CNN
+	1    4550 5250
+	1    0    0    -1  
+$EndComp
+Text Notes 4100 5950 0    60   ~ 0
+Capacitores de desacople\nDeben estar junto a U3
+Wire Wire Line
+	9200 3250 8100 3250
+Wire Wire Line
+	6300 3150 6650 3150
+Wire Wire Line
+	6950 3150 7500 3150
+Wire Wire Line
+	6450 3150 6450 2450
+Connection ~ 6450 3150
+Wire Wire Line
+	7000 2450 8700 2450
+Connection ~ 8700 3250
+Connection ~ 7150 3150
+Wire Wire Line
+	7500 3350 7350 3350
+Wire Wire Line
+	7350 3350 7350 2450
+Connection ~ 7350 2450
+Wire Wire Line
+	6450 2450 6700 2450
+Wire Wire Line
+	8700 2450 8700 3250
+Wire Wire Line
+	7150 3150 7150 3550
+Wire Wire Line
+	7150 3850 7150 4250
+Wire Wire Line
+	5000 3150 6000 3150
+Wire Wire Line
+	7800 3550 7800 4700
+Wire Wire Line
+	7800 4700 8050 4700
+Wire Wire Line
+	8050 4700 8050 4600
+Wire Wire Line
+	7900 4300 8050 4300
+Wire Wire Line
+	7900 3550 7900 4300
+Wire Wire Line
+	8200 4150 8200 4450
+Wire Wire Line
+	1300 3150 1300 3250
+Wire Wire Line
+	4600 3900 3900 3900
+Wire Wire Line
+	4400 3250 4200 3250
+Wire Wire Line
+	4200 3250 4200 3900
+Connection ~ 4200 3900
+Wire Wire Line
+	5300 3900 4900 3900
+Wire Wire Line
+	5300 2950 5300 3900
+Connection ~ 5300 3150
+Wire Wire Line
+	3450 4150 3450 3900
+Wire Wire Line
+	3450 3900 3600 3900
+$Comp
+L R R10
+U 1 1 57D1CEDD
+P 2400 3050
+F 0 "R10" V 2480 3050 50  0000 C CNN
+F 1 "R" V 2400 3050 50  0001 C CNN
+F 2 "Resistors_ThroughHole:Resistor_Horizontal_RM10mm" V 2330 3050 50  0001 C CNN
+F 3 "" H 2400 3050 50  0000 C CNN
+	1    2400 3050
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	2250 3050 1300 3050
+Wire Wire Line
+	2550 3050 4400 3050
+$Comp
+L C C15
+U 1 1 57D1CF9B
+P 2700 3300
+F 0 "C15" H 2725 3400 50  0000 L CNN
+F 1 "C" H 2725 3200 50  0001 L CNN
+F 2 "Capacitors_ThroughHole:C_Disc_D3_P2.5" H 2738 3150 50  0001 C CNN
+F 3 "" H 2700 3300 50  0000 C CNN
+	1    2700 3300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2700 3050 2700 3150
+Connection ~ 2700 3050
+$Comp
+L GNDA #PWR033
+U 1 1 57D1D0C7
+P 2700 3600
+F 0 "#PWR033" H 2700 3350 50  0001 C CNN
+F 1 "GNDA" H 2700 3450 50  0000 C CNN
+F 2 "" H 2700 3600 50  0000 C CNN
+F 3 "" H 2700 3600 50  0000 C CNN
+	1    2700 3600
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2700 3600 2700 3450
+Wire Notes Line
+	2150 2900 2150 3850
+Wire Notes Line
+	2150 3850 3000 3850
+Wire Notes Line
+	3000 3850 3000 2900
+Wire Notes Line
+	3000 2900 2150 2900
+Text Notes 1350 4250 0    60   ~ 0
+Filtro pasa-bajos opcional.\nDe no ser necesario dejar C15 sin\ninstalar y reemplazar R10 por un cable.
+$Comp
+L TEST_1P W4
+U 1 1 57D452C6
+P 1850 2900
+F 0 "W4" H 1850 3170 50  0000 C CNN
+F 1 "Th1" H 1850 3100 50  0000 C CNN
+F 2 "Measurement_Points:Measurement_Point_Round-SMD-Pad_Big" H 2050 2900 50  0001 C CNN
+F 3 "" H 2050 2900 50  0000 C CNN
+	1    1850 2900
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1850 2900 1850 3050
+Connection ~ 1850 3050
+$Comp
+L TEST_1P W5
+U 1 1 57D45750
+P 5300 2950
+F 0 "W5" H 5300 3220 50  0000 C CNN
+F 1 "Th2" H 5300 3150 50  0000 C CNN
+F 2 "Measurement_Points:Measurement_Point_Round-SMD-Pad_Big" H 5500 2950 50  0001 C CNN
+F 3 "" H 5500 2950 50  0000 C CNN
+	1    5300 2950
+	1    0    0    -1  
+$EndComp
+$Comp
+L TEST_1P W6
+U 1 1 57D4BDA5
+P 9050 3050
+F 0 "W6" H 9050 3320 50  0000 C CNN
+F 1 "Th3" H 9050 3250 50  0000 C CNN
+F 2 "Measurement_Points:Measurement_Point_Round-SMD-Pad_Big" H 9250 3050 50  0001 C CNN
+F 3 "" H 9250 3050 50  0000 C CNN
+	1    9050 3050
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	9050 3050 9050 3250
+Connection ~ 9050 3250
+$EndSCHEMATC
