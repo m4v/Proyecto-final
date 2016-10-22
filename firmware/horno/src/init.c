@@ -41,19 +41,20 @@ static const PINMUX_GRP_T pinmux[] = {
 	/* PWM */
 	{2,   0,  IOCON_MODE_INACT | IOCON_FUNC1},
 	/* pines del display */
-	{0,   4,  IOCON_MODE_INACT | IOCON_FUNC0}, // /CS
-	{0,   5,  IOCON_MODE_INACT | IOCON_FUNC0}, // A0
+	{2,  11,  IOCON_MODE_INACT | IOCON_FUNC0}, // /CS
+	{2,   1,  IOCON_MODE_INACT | IOCON_FUNC0}, // A0
 	{0,  10,  IOCON_MODE_INACT | IOCON_FUNC0}, // /RD
 	{0,  11,  IOCON_MODE_INACT | IOCON_FUNC0}, // /WR
 	{2,  12,  IOCON_MODE_INACT | IOCON_FUNC0}, // /RES
 	/* D[0-7] display */
-	{2,   1,  IOCON_MODE_INACT | IOCON_FUNC0},
 	{2,   2,  IOCON_MODE_INACT | IOCON_FUNC0},
 	{2,   3,  IOCON_MODE_INACT | IOCON_FUNC0},
 	{2,   4,  IOCON_MODE_INACT | IOCON_FUNC0},
 	{2,   5,  IOCON_MODE_INACT | IOCON_FUNC0},
 	{2,   6,  IOCON_MODE_INACT | IOCON_FUNC0},
 	{2,   7,  IOCON_MODE_INACT | IOCON_FUNC0},
+	{2,   8,  IOCON_MODE_INACT | IOCON_FUNC0},
+	{2,  10,  IOCON_MODE_INACT | IOCON_FUNC0},
 	/*Pines del teclado */
 	// Esto hay que cmbiarlo con los valores que correspondan en el PCB
 	{1,  30,  IOCON_MODE_INACT | IOCON_FUNC0},
@@ -64,7 +65,6 @@ static const PINMUX_GRP_T pinmux[] = {
 	{0,  22,  IOCON_MODE_INACT | IOCON_FUNC0},
 	{0,  27,  IOCON_MODE_INACT | IOCON_FUNC0},
 	{0,  28,  IOCON_MODE_INACT | IOCON_FUNC0},
-
 };
 
 /* Pin GPIO configuration */
@@ -75,20 +75,20 @@ static const GPIO_DIR_T gpiodir[] = {
 	{0,  5, true},
 	{0, 29, true},
 	/* pines de datos display como salida*/
-	{0,  4, true}, // /CS
-	{0,  5, true}, // A0
-	{0,  10, true}, // /RD
-	{0,  11, true}, // /WR
-	{2,  12, true}, // /RES
+	{2, 11, true}, // /CS
+	{2,  1, true}, // A0
+	{0, 10, true}, // /RD
+	{0, 11, true}, // /WR
+	{2, 12, true}, // /RES
 	/* D[0-7] display */
-	{2,  0, true},
-	{2,  1, true},
 	{2,  2, true},
 	{2,  3, true},
 	{2,  4, true},
 	{2,  5, true},
 	{2,  6, true},
 	{2,  7, true},
+	{2,  8, true},
+	{2, 10, true},
 	/*Pines del teclado, como ENTRADAS*/
 	// Esto hay que cmbiarlo con los valores que correspondan en el PCB
 	{1, 30, false}, // KEYB1
@@ -142,7 +142,7 @@ void Horno_Init (void) {
 	/* Habilitar el timer para hacer retrasos */
 	Horno_delay_timer_Init();
 
-	//Horno_Display_Init();
+	Horno_Display_Init();
 
 	/* ADC Init */
 	Chip_ADC_Init(LPC_ADC, &ADCSetup);

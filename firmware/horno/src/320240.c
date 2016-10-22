@@ -18,10 +18,10 @@
 /* Defines */
 
 /* mapeo de pines */
-#define SET_CS  Chip_GPIO_SetPinState(LPC_GPIO, 0,  4, true)
-#define CLR_CS  Chip_GPIO_SetPinState(LPC_GPIO, 0,  4, false)
-#define SET_A0  Chip_GPIO_SetPinState(LPC_GPIO, 0,  5, true)
-#define CLR_A0  Chip_GPIO_SetPinState(LPC_GPIO, 0,  5, false)
+#define SET_CS  Chip_GPIO_SetPinState(LPC_GPIO, 2, 11, true)
+#define CLR_CS  Chip_GPIO_SetPinState(LPC_GPIO, 2, 11, false)
+#define SET_A0  Chip_GPIO_SetPinState(LPC_GPIO, 2,  1, true)
+#define CLR_A0  Chip_GPIO_SetPinState(LPC_GPIO, 2,  1, false)
 #define SET_WR  Chip_GPIO_SetPinState(LPC_GPIO, 0, 11, true)
 #define CLR_WR  Chip_GPIO_SetPinState(LPC_GPIO, 0, 11, false)
 #define SET_RD  Chip_GPIO_SetPinState(LPC_GPIO, 0, 10, true)
@@ -38,10 +38,6 @@
 #define KEYB6 Chip_GPIO_GetPinState(LPC_GPIO, 0, 22)
 #define KEYB7 Chip_GPIO_GetPinState(LPC_GPIO, 0, 27)
 #define KEYB8 Chip_GPIO_GetPinState(LPC_GPIO, 0, 28)
-
-
-
-/* Datos D[7:0] P2.0:P2.7 */
 
 /* comandos */
 #define SYSTEM_SET  0x40
@@ -74,12 +70,25 @@ void Display_Reset(void)
 }
 
 /* escribir un byte en el bus de datos */
-void Data_Write(uint8_t pmtr)
+void Data_Write(uint8_t dato)
 {
+	/*
+	 * pines de datos
+	 * D0 P2.2
+	 * D1 P2.3
+	 * D2 P2.4
+	 * D3 P2.5
+	 * D4 P2.6
+	 * D5 P2.7
+	 * D6 P2.8
+	 * D7 P2.10
+	 */
 	uint32_t port = Chip_GPIO_GetPortValue(LPC_GPIO, 2);
 	/* limpio los 8 bits del puerto y cambio sus datos */
-	port &= ~0xFF;
-	port |= pmtr;
+	port &= ~(0b01111111 << 2);
+	port &= ~(0b10000000 << 3);
+	port |= (dato & 0b01111111) << 2;  // bit 0 en la posición 2
+	port |= (dato & 0b10000000) << 3;  // bit 7 en la posición 10
 	Chip_GPIO_SetPortValue(LPC_GPIO, 2, port);
 }
 
