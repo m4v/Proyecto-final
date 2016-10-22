@@ -28,6 +28,19 @@
 #define CLR_RD  Chip_GPIO_SetPinState(LPC_GPIO, 0, 10, false)
 #define SET_RST Chip_GPIO_SetPinState(LPC_GPIO, 2, 12, true)
 #define CLR_RST Chip_GPIO_SetPinState(LPC_GPIO, 2, 12, false)
+
+// Teclado - hay que cambiar con los datos correspondientes al PCB
+#define KEYA1 Chip_GPIO_GetPinState(LPC_GPIO, 1, 30)
+#define KEYA2 Chip_GPIO_GetPinState(LPC_GPIO, 1, 31)
+#define KEYA3 Chip_GPIO_GetPinState(LPC_GPIO, 0,  2)
+#define KEYA4 Chip_GPIO_GetPinState(LPC_GPIO, 0,  3)
+#define KEYB5 Chip_GPIO_GetPinState(LPC_GPIO, 0, 21)
+#define KEYB6 Chip_GPIO_GetPinState(LPC_GPIO, 0, 22)
+#define KEYB7 Chip_GPIO_GetPinState(LPC_GPIO, 0, 27)
+#define KEYB8 Chip_GPIO_GetPinState(LPC_GPIO, 0, 28)
+
+
+
 /* Datos D[7:0] P2.0:P2.7 */
 
 /* comandos */
@@ -765,7 +778,23 @@ void Num_grandes_test(void){
 		}
 	}
 }
-
+void Poner_todo_num_grandes(void){
+	Put_string_waddr(21,1,"TEMPERATURA: ");
+	Put_string_waddr(21,8,"TIEMPO RESTANTE: ");
+	int x0=160,y0=3;
+	int Xm=15;
+	int Yi=15;
+	Put_Number(0,x0,y0,Xm,Yi);
+	Put_Number(1,x0,y0,Xm*3,Yi);
+	Put_Number(2,x0,y0,Xm*5,Yi);
+	Put_Number(3,x0,y0,Xm*7,Yi);
+	Put_Number(4,x0,y0,Xm*9,Yi);
+	Put_Number(5,160,60,15,15);
+	Put_Number(6,160,60,15*3,15);
+	Put_Number(7,160,60,15*5,15);
+	Put_Number(8,160,60,15*7,15);
+	Put_Number(9,160,60,15*9,15);
+}
 
 /* inicializa el display con una configuración parecida al 15.1.2 Initialization Example (p.103)
  *  del datasheet del controlador
@@ -882,6 +911,105 @@ void Horno_Display_Test(void){
 
 	static_curve_wsqare();	// Curva de trabajo + recuadros
 
+	Put_string_waddr(21,1,"TEMPERATURA: ");
+	Put_string_waddr(21,8,"TIEMPO RESTANTE: ");
+	int x0=160,y0=3;
+	int Xm=15;
+	int Yi=15;
+	int c=0;
+//do{
+//		if(KEYA1==1){
+//			if(KEYB5==1){
+//				Put_Number(1,x0,y0,Xm,Yi);
+//				c=1;
+//			}
+//			else if(KEYB6==1){
+//				Put_Number(2,x0,y0,Xm,Yi);
+//				c=1;
+//			}
+//			else if(KEYB7==1){
+//				Put_Number(3,x0,y0,Xm,Yi);
+//				c=1;
+//			}
+//			else if(KEYB8==1){
+//				Put_Number(8,x0,y0,Xm,Yi);// Corresponde al A
+//				c=1;
+//			}
+//		}
+//		else if(KEYA2==1){
+//			if(KEYB5==1){
+//				Put_Number(4,x0,y0,Xm,Yi);
+//				c=1;
+//			}
+//			else if(KEYB6==1){
+//				Put_Number(5,x0,y0,Xm,Yi);
+//				c=1;
+//			}
+//			else if(KEYB7==1){
+//				Put_Number(6,x0,y0,Xm,Yi);
+//				c=1;
+//			}
+//			else if(KEYB8==1){
+//				Put_Number(8,x0,y0,Xm,Yi);// Corresponde al B
+//				c=1;
+//			}
+//		}
+//		else if(KEYA3==1){
+//			if(KEYB5==1){
+//				Put_Number(7,x0,y0,Xm,Yi);
+//				c=1;
+//			}
+//			else if(KEYB6==1){
+//				Put_Number(8,x0,y0,Xm,Yi);
+//				c=1;
+//			}
+//			else if(KEYB7==1){
+//				Put_Number(9,x0,y0,Xm,Yi);
+//				c=1;
+//			}
+//			else if(KEYB8==1){
+//				Put_Number(8,x0,y0,Xm,Yi);// Corresponde al C
+//				c=1;
+//			}
+//		}
+//
+//		else if(KEYA4==1){
+//			if(KEYB5==1){
+//				Put_Number(8,x0,y0,Xm,Yi); // Esto es el ASTERISCO
+//				c=1;
+//			}
+//			else if(KEYB6==1){
+//				Put_Number(0,x0,y0,Xm,Yi);
+//				c=1;
+//			}
+//			else if(KEYB7==1){
+//				Put_Number(8,x0,y0,Xm,Yi); // Esto es el NUMERAL
+//				c=1;
+//			}
+//			else if(KEYB8==1){
+//				Put_Number(8,x0,y0,Xm,Yi);// Corresponde al D
+//				c=1;
+//			}
+//		}
+//
+//}while(c==0);
+
+//	int x=0;
+//while(1){
+////	x=Chip_GPIO_GetPinState(LPC_GPIO, 0, 21);
+//	if(Chip_GPIO_GetPinState(LPC_GPIO, 0, 21)==1){
+//		Put_Number(2,x0,y0,Xm,Yi);
+////		c=1;
+//	}
+//	else if(Chip_GPIO_GetPinState(LPC_GPIO, 0, 21)==0){
+//		Put_Number(3,x0,y0,Xm,Yi);
+//	}
+//
+//}
+//c=0;
+//clear_Number(2,x0,y0,Xm,Yi);
+
+
 	/* Escribir en el 1er recuadro */
 	// Ponemos curso en el 1er layer (texto)
 	/* Cosas a tener en cuenta:
@@ -893,18 +1021,21 @@ void Horno_Display_Test(void){
 	 *  */
 
 	/* Textos chicos */
-	Put_string_waddr(1,1,"Hola MUNDO :)");
+	Put_string_waddr(1,1,"DATOS del PROGRAMA");
+	Put_string_waddr(1,2,"==================");
+	Put_string_waddr(1,4,"Pend. Max:");
+	Put_string_waddr(16,4,"1111");
+	Put_string_waddr(1,6,"Temp. Ascenso:");
+	Put_string_waddr(16,6,"2222");
+	Put_string_waddr(1,8,"Tiem. Coccion:");
+	Put_string_waddr(16,8,"3333");
+	Put_string_waddr(1,10,"Temp. Secado:");
+	Put_string_waddr(16,10,"4444");
+	Put_string_waddr(1,12,"Temp. Coccion:");
+	Put_string_waddr(16,12,"9999");
 
-	/* Textos grandes */
-//	Put_string_waddr(21,1,"TEMPERATURA: ");
-//	Put_string_waddr(21,8,"TIEMPO RESTANTE: ");
-//	int x0=160,y0=3;
-//	int Xm=15;
-//	int Yi=15;
-
-
-	Num_grandes_test();
-
+	Poner_todo_num_grandes();
+//	Num_grandes_test();		// Con esto testeamos los numeros grandes sólo en la sección correspondiente
 	Flechita_moviendose();	// Con esto la flechita se mueve por toda la curva
 
 
