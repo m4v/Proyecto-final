@@ -116,7 +116,6 @@ void TIMER1_IRQHandler(void)
 	/* limpiar la interrupción */
 	if (Chip_TIMER_MatchPending(_LPC_TIMER, 1)) {
 		Chip_TIMER_ClearMatch(_LPC_TIMER, 1);
-		Board_LED_Toggle(0);
 		if (horno_motor.ascender) {
 			horno_motor.num_paso += 1;
 		} else {

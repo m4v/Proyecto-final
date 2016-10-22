@@ -34,7 +34,7 @@ void Horno_pwm_init(void) {
 	Chip_PWM_Init(LPC_PWM1);
 	Chip_PWM_Enable(LPC_PWM1);
 
-	Chip_PWM_MatchEnableInt(LPC_PWM1, 0);
-	Chip_PWM_MatchEnableInt(LPC_PWM1, 1);
-	NVIC_EnableIRQ(PWM1_IRQn);
+	//Chip_PWM_MatchEnableInt(LPC_PWM1, 0);
+	//Chip_PWM_MatchEnableInt(LPC_PWM1, 1);
+	//NVIC_EnableIRQ(PWM1_IRQn);
 }
