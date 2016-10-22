@@ -62,7 +62,7 @@ static const PINMUX_GRP_T pinmux[] = {
 	{0,   2,  IOCON_MODE_INACT | IOCON_FUNC0},
 	{0,   3,  IOCON_MODE_INACT | IOCON_FUNC0},
 	{0,  21,  IOCON_MODE_INACT | IOCON_FUNC0},
-	{0,  22,  IOCON_MODE_INACT | IOCON_FUNC0},
+	//{0,  22,  IOCON_MODE_INACT | IOCON_FUNC0},
 	{0,  27,  IOCON_MODE_INACT | IOCON_FUNC0},
 	{0,  28,  IOCON_MODE_INACT | IOCON_FUNC0},
 };
@@ -96,7 +96,7 @@ static const GPIO_DIR_T gpiodir[] = {
 	{0,  2, false},
 	{0,  3, false},
 	{0, 21, false},
-	{0, 22, false},
+	//{0, 22, false},
 	{0, 27, false},
 	{0, 28, false},// KEYB8
 };
