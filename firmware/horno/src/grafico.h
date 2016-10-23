@@ -10,4 +10,7 @@
 
 void Horno_grafico_digito(uint32_t x, uint32_t y, uint32_t num);
 
+void Horno_grafico_CLR_digito(uint32_t x, uint32_t y, uint32_t num);
+
+
 #endif /* GRAFICO_H_ */
