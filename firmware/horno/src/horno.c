@@ -24,6 +24,7 @@
 #include "320240.h"
 #include "grafico.h"
 #include "delay.h"
+#include "pwm.h"
 
 /* definitions and declarations here */
 #define ADC_CHANNEL ADC_TH  // canal de captura del comando 'm'
