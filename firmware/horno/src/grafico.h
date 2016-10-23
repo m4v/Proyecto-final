@@ -8,6 +8,6 @@
 #ifndef GRAFICO_H_
 #define GRAFICO_H_
 
-void Horno_grafico_bloque(void);
+void Horno_grafico_digito(uint32_t x, uint32_t y, uint32_t num);
 
 #endif /* GRAFICO_H_ */

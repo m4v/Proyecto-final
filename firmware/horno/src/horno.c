@@ -22,6 +22,7 @@
 #include "init.h"
 #include "motor.h"
 #include "320240.h"
+#include "grafico.h"
 #include "delay.h"
 
 /* definitions and declarations here */
@@ -124,7 +125,7 @@ int main(void) {
    	DEBUGOUT(mensaje_menu);
 
    	Horno_Display_Test();
-   	Horno_grafico_bloque();
+   	Horno_grafico_digito(160, 60, 0);
 
 	while(1){
     	charUART = DEBUGIN();
