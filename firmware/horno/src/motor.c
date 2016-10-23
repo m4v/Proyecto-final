@@ -138,7 +138,7 @@ void Horno_motor_init(void) {
 	Chip_TIMER_ResetOnMatchEnable(_LPC_TIMER, 1);
 
 	/* Enable timer interrupt */
-	NVIC_ClearPendingIRQ(_TIMER_IRQn); // TODO: ver que hace esto y si es necesario.
+	NVIC_ClearPendingIRQ(_TIMER_IRQn);
 	NVIC_EnableIRQ(_TIMER_IRQn);
 
 	horno_motor.periodo = 2000;
