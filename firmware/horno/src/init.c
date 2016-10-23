@@ -19,6 +19,7 @@
 #include "320240.h"
 #include "motor.h"
 #include "pwm.h"
+#include "teclado.h"
 
 static ADC_CLOCK_SETUP_T ADCSetup;
 
@@ -65,6 +66,7 @@ static const PINMUX_GRP_T pinmux[] = {
 	//{0,  22,  IOCON_MODE_INACT | IOCON_FUNC0},
 	{0,  27,  IOCON_MODE_INACT | IOCON_FUNC0},
 	{0,  28,  IOCON_MODE_INACT | IOCON_FUNC0},
+	{2,  14,  IOCON_MODE_INACT | IOCON_FUNC0},
 };
 
 /* Pin GPIO configuration */
@@ -91,14 +93,15 @@ static const GPIO_DIR_T gpiodir[] = {
 	{2, 10, true},
 	/*Pines del teclado, como ENTRADAS*/
 	// Esto hay que cmbiarlo con los valores que correspondan en el PCB
-	{1, 30, false}, // KEYB1
-	{1, 31, false},
-	{0,  2, false},
-	{0,  3, false},
+	{1, 30, true}, // KEYA1
+	{1, 31, true},
+	{0,  2, true},
+	{0,  3, true},
 	{0, 21, false},
 	//{0, 22, false},
 	{0, 27, false},
-	{0, 28, false},// KEYB8
+	{0, 28, false},
+	{2, 14, false},// KEYB8
 };
 
 /*
@@ -154,6 +157,8 @@ void Horno_Init (void) {
 	 * Las interrupciones del SysTick son para muestrear con el ADC.
 	 */
 	Horno_systick_init(PERIODO_MUESTREO);
+
+	Horno_teclado_init();
 
 	Horno_motor_init();
 	Horno_pwm_init();
