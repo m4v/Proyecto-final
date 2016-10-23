@@ -58,15 +58,19 @@ static const PINMUX_GRP_T pinmux[] = {
 	{2,  10,  IOCON_MODE_INACT | IOCON_FUNC0},
 	/*Pines del teclado */
 	// Esto hay que cmbiarlo con los valores que correspondan en el PCB
+	/* filas */
 	{1,  30,  IOCON_MODE_INACT | IOCON_FUNC0},
 	{1,  31,  IOCON_MODE_INACT | IOCON_FUNC0},
 	{0,   2,  IOCON_MODE_INACT | IOCON_FUNC0},
 	{0,   3,  IOCON_MODE_INACT | IOCON_FUNC0},
-	{0,  21,  IOCON_MODE_INACT | IOCON_FUNC0},
-	//{0,  22,  IOCON_MODE_INACT | IOCON_FUNC0},
-	{0,  27,  IOCON_MODE_INACT | IOCON_FUNC0},
-	{0,  28,  IOCON_MODE_INACT | IOCON_FUNC0},
-	{2,  14,  IOCON_MODE_INACT | IOCON_FUNC0},
+	/* columnas, entradas con R de pulldown para reducir el ruido cuando
+	 * estan en alta impedancia */
+	{0,  21,  IOCON_MODE_PULLDOWN | IOCON_FUNC0},
+	{0,  27,  IOCON_MODE_PULLDOWN | IOCON_FUNC0},
+	{0,  28,  IOCON_MODE_PULLDOWN | IOCON_FUNC0},
+	{2,  13,  IOCON_MODE_PULLDOWN | IOCON_FUNC0},
+	/* LED */
+	{0,  22,  IOCON_MODE_INACT | IOCON_FUNC0},
 };
 
 /* Pin GPIO configuration */
@@ -91,17 +95,20 @@ static const GPIO_DIR_T gpiodir[] = {
 	{2,  7, true},
 	{2,  8, true},
 	{2, 10, true},
-	/*Pines del teclado, como ENTRADAS*/
+	/*Pines del teclado */
 	// Esto hay que cmbiarlo con los valores que correspondan en el PCB
-	{1, 30, true}, // KEYA1
+	/* filas */
+	{1, 30, true},
 	{1, 31, true},
 	{0,  2, true},
 	{0,  3, true},
+	/* columnas como entradas */
 	{0, 21, false},
-	//{0, 22, false},
 	{0, 27, false},
 	{0, 28, false},
-	{2, 14, false},// KEYB8
+	{2, 13, false},
+	/* LED */
+	{0, 22, true},
 };
 
 /*

@@ -49,27 +49,19 @@ typedef struct {
 static HORNO_PROMEDIO_T horno_adc;
 
 /* mensaje de inicio para mandar por el UART */
-//static char mensaje_inicio[] =
-//		"\r\n"
-//		"Proyecto Final Horno Dental\r\n"
-//		"===========================\r\n"
-//		"\r\n";
-//static char mensaje_menu[] = "Controles:\r\n"
-//							 " 'c' para iniciar/detener la captura continua.\r\n"
-//							 " 'm' para capturar N muestras.\r\n"
-//							 " 'i' para poner en marcha el motor.\r\n"
-//							 " 'p' para detener el motor.\r\n"
-//							 " '+' para aumentar la velocidad del motor.\r\n"
-//							 " '-' para disminuir la velocidad del motor.\r\n"
-//							 " 'l' para cambiar el sentido de giro.\r\n";
-
-static char mensaje_inicio2[] =
+static char mensaje_inicio[] =
 		"\r\n"
 		"Proyecto Final Horno Dental\r\n"
 		"===========================\r\n"
-		"\r\n"
-		"Numeros del teclado"
 		"\r\n";
+static char mensaje_menu[] = "Controles:\r\n"
+							 " 'c' para iniciar/detener la captura continua.\r\n"
+							 " 'm' para capturar N muestras.\r\n"
+							 " 'i' para poner en marcha el motor.\r\n"
+							 " 'p' para detener el motor.\r\n"
+							 " '+' para aumentar la velocidad del motor.\r\n"
+							 " '-' para disminuir la velocidad del motor.\r\n"
+							 " 'l' para cambiar el sentido de giro.\r\n";
 
 /* rutina de interrupción del systick */
 void SysTick_Handler(void)

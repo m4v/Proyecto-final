@@ -10,23 +10,30 @@
 #define _LPC_TIMER         LPC_TIMER0
 #define _TIMER_IRQn        TIMER0_IRQn
 #define _SYSCTL_PCLK_TIMER SYSCTL_PCLK_TIMER0
-#define TIMER_IRQHandler   TIMER0_IRQHandler
+#define _TIMER_IRQHandler   TIMER0_IRQHandler
 
-#define KEYA1UP  Chip_GPIO_SetPinState(LPC_GPIO, 1,  30, true)
-#define KEYA2UP  Chip_GPIO_SetPinState(LPC_GPIO, 1,  31, true)
-#define KEYA3UP  Chip_GPIO_SetPinState(LPC_GPIO, 0,  2, true)
-#define KEYA4UP  Chip_GPIO_SetPinState(LPC_GPIO, 0,  3, true)
-#define KEYA1DOWN  Chip_GPIO_SetPinState(LPC_GPIO, 1,  30, false)
-#define KEYA2DOWN  Chip_GPIO_SetPinState(LPC_GPIO, 1,  31, false)
-#define KEYA3DOWN  Chip_GPIO_SetPinState(LPC_GPIO, 0,  2, false)
-#define KEYA4DOWN  Chip_GPIO_SetPinState(LPC_GPIO, 0,  3, false)
+#define DEBOUNCE_COUNT 10
 
-#define KEYB5 Chip_GPIO_GetPinState(LPC_GPIO, 0, 21)
-#define KEYB6 Chip_GPIO_GetPinState(LPC_GPIO, 0, 27)
-#define KEYB7 Chip_GPIO_GetPinState(LPC_GPIO, 0, 28)
-#define KEYB8 Chip_GPIO_GetPinState(LPC_GPIO, 2, 13)
+#define SET_FILA1  Chip_GPIO_SetPinState(LPC_GPIO, 1, 30, true)
+#define SET_FILA2  Chip_GPIO_SetPinState(LPC_GPIO, 1, 31, true)
+#define SET_FILA3  Chip_GPIO_SetPinState(LPC_GPIO, 0,  2, true)
+#define SET_FILA4  Chip_GPIO_SetPinState(LPC_GPIO, 0,  3, true)
+#define CLR_FILA1  Chip_GPIO_SetPinState(LPC_GPIO, 1, 30, false)
+#define CLR_FILA2  Chip_GPIO_SetPinState(LPC_GPIO, 1, 31, false)
+#define CLR_FILA3  Chip_GPIO_SetPinState(LPC_GPIO, 0,  2, false)
+#define CLR_FILA4  Chip_GPIO_SetPinState(LPC_GPIO, 0,  3, false)
 
-//STATIC uint32_t teclado[4][4];
+#define COL1 Chip_GPIO_GetPinState(LPC_GPIO, 0, 21)
+#define COL2 Chip_GPIO_GetPinState(LPC_GPIO, 0, 27)
+#define COL3 Chip_GPIO_GetPinState(LPC_GPIO, 0, 28)
+#define COL4 Chip_GPIO_GetPinState(LPC_GPIO, 2, 13)
+
+static uint32_t tecla[4][4] = {
+		{0, 0, 0, 0},
+		{0, 0, 0, 0},
+		{0, 0, 0, 0},
+		{0, 0, 0, 0}
+};
 
 
 //void Horno_teclado_marcha(void){
@@ -40,12 +47,27 @@
 //}
 
 
+void TECLA1_Handler(void) {
+	DEBUGOUT("1");
+}
+
+void TECLA2_Handler(void) {
+	DEBUGOUT("2");
+}
+
+void TECLA3_Handler(void) {
+	DEBUGOUT("3");
+}
+
+void TECLAA_Handler(void) {
+	DEBUGOUT("A");
+}
 
 void Horno_teclado_init(void) {
 	/* configurar timer */
 	Chip_TIMER_Init(_LPC_TIMER); // activa el clock del timer
 	/* obtener la cantidad de ciclos por milisegundo */
-	uint32_t ticks = Chip_Clock_GetPeripheralClockRate(_SYSCTL_PCLK_TIMER) ;
+	uint32_t ticks = Chip_Clock_GetPeripheralClockRate(_SYSCTL_PCLK_TIMER) / 1e3;
 	Chip_TIMER_Reset(_LPC_TIMER);
 	Chip_TIMER_SetMatch(_LPC_TIMER, 1, ticks);
 	/* Cuando el timer alcanza el valor en el match register, queremos una
@@ -140,23 +162,63 @@ void Horno_teclado_init(void) {
 //	}
 
 void Horno_tecla(void){
-	KEYA1UP;
-	KEYA2DOWN;
-	KEYA3DOWN;
-	KEYA4DOWN;
-	if(KEYB5==true){
-		//teclado[1][1]++;
-		DEBUGOUT("\r\n 1\r\n");
-	}else if(KEYB6==true){
-		DEBUGOUT("\r\n 2\r\n");
-		//teclado[1][2]++;
-	}else if(KEYB7==true){
-		DEBUGOUT("\r\n 3\r\n");
-		//teclado[1][3]++;
-	}else if(KEYB8==true){
-		DEBUGOUT("\r\n A\r\n");
-		//teclado[1][4]++;
-	}else{ DEBUGOUT("\rnada\n");}
+	SET_FILA1;
+	CLR_FILA2;
+	CLR_FILA3;
+	CLR_FILA4;
+	//Horno_udelay(1000);
+	int i = 0;
+	/* tecla 1 */
+	if(COL1 == true) {
+		tecla[1][1]++;
+		if (tecla[1][1] > DEBOUNCE_COUNT) {
+			TECLA1_Handler();
+			tecla[1][1] = 0;
+		}
+		i = 1;
+	} else {
+		tecla[1][1] = 0;
+	}
+	/* tecla 2 */
+	if (COL2 == true){
+		i = 1;
+		tecla[1][2]++;
+		if (tecla[1][2] > DEBOUNCE_COUNT)
+		{
+			TECLA2_Handler();
+			tecla[1][2] = 0;
+		}
+	} else {
+		tecla[1][2] = 0;
+	}
+	/* tecla 3 */
+	if (COL3 == true){
+		i = 1;
+		tecla[1][3]++;
+		if (tecla[1][3] > DEBOUNCE_COUNT)
+		{
+			TECLA3_Handler();
+			tecla[1][3] = 0;
+		}
+	} else {
+		tecla[1][3] = 0;
+	}
+	/* tecla A */
+	if (COL4 == true){
+		i = 1;
+		tecla[1][4]++;
+		if (tecla[1][4] > DEBOUNCE_COUNT)
+		{
+			TECLAA_Handler();
+			tecla[1][4] = 0;
+		}
+	} else {
+		tecla[1][4] = 0;
+	}
+
+//	if (i == 0) {
+//		DEBUGOUT(" ");
+//	}
 //	KEYA1DOWN;
 //	KEYA2UP;
 //	KEYA3DOWN;
@@ -220,10 +282,6 @@ void Horno_tecla(void){
 //				return 0;
 //					//teclado[4][4]++;
 //				}
-		KEYA1DOWN;
-		KEYA2DOWN;
-		KEYA3DOWN;
-		KEYA4DOWN;
 }
 
 //void Horno_tecla_check(void){
@@ -236,12 +294,11 @@ void Horno_tecla(void){
 //					}
 //			}
 //}
-void TIMER_IRQHandler(void)
+void _TIMER_IRQHandler(void)
 {
 	/* limpiar la interrupción */
 	if (Chip_TIMER_MatchPending(_LPC_TIMER, 1)) {
 		Chip_TIMER_ClearMatch(_LPC_TIMER, 1);
-		Board_LED_Toggle(0);
 		Horno_tecla();
 	//	Horno_tecla_check();
 	}
