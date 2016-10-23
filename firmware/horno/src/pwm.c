@@ -14,7 +14,6 @@
 #include "pwm.h"
 
 #define PWM_PERIODO 500
-#define PWM_PERIODO_MAX ((1<<32)-1)/1000
 
 void PWM1_IRQHandler(void){
 	if (Chip_PWM_MatchPending(LPC_PWM1, 1)) {
@@ -43,7 +42,7 @@ void Horno_pwm_parar(void)
 	/* activamos la interrupción en MR1 para asegurar apagar el PWM cuando
 	 * su salida está en un nivel bajo. */
 	Chip_PWM_SetMatch(LPC_PWM1, 1, Chip_Clock_GetPeripheralClockRate(SYSCTL_PCLK_PWM1) / 1e3);
-	Chip_PWM_LatchEnable(LPC_PWM1, 1, PWM_OUT_ENABLED);
+	Chip_PWM_LatchEnable(LPC_PWM1, 1);
 	Chip_PWM_MatchEnableInt(LPC_PWM1, 1);
 	NVIC_ClearPendingIRQ(PWM1_IRQn);
 	NVIC_EnableIRQ(PWM1_IRQn);
@@ -58,7 +57,7 @@ void Horno_pwm_periodo(uint32_t ms)
 	horno_pwm.periodo = ms;
 	uint32_t ticks = Chip_Clock_GetPeripheralClockRate(SYSCTL_PCLK_PWM1) / 1e3;
 	Chip_PWM_SetMatch(LPC_PWM1, 0, ms*ticks);
-	Chip_PWM_LatchEnable(LPC_PWM1, 0, PWM_OUT_ENABLED);
+	Chip_PWM_LatchEnable(LPC_PWM1, 0);
 }
 
 /*
@@ -75,7 +74,7 @@ void Horno_pwm_ciclo(float dc) {
 	horno_pwm.dc = dc;
 	uint32_t pd = LPC_PWM1->MR0;
 	Chip_PWM_SetMatch(LPC_PWM1, 1, (uint32_t)(pd * dc));
-	Chip_PWM_LatchEnable(LPC_PWM1, 1, PWM_OUT_ENABLED);
+	Chip_PWM_LatchEnable(LPC_PWM1, 1);
 }
 
 /*

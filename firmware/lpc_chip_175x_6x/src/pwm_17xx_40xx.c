@@ -24,8 +24,7 @@ STATIC CHIP_SYSCTL_CLOCK_T Chip_Pwm_GetClockIndex(LPC_PWM_T *pTMR)
 {
         CHIP_SYSCTL_CLOCK_T clkTMR;
 
-                clkTMR = SYSCTL_CLOCK_PWM1;
-
+        clkTMR = SYSCTL_CLOCK_PWM1;
         return clkTMR;
 }
 
@@ -39,7 +38,7 @@ void Chip_PWM_Init(LPC_PWM_T *pTMR)
         Chip_Clock_EnablePeriphClock(Chip_Pwm_GetClockIndex(pTMR));
 }
 
-/*      Shutdown a pwm */
+/* Shutdown a pwm */
 void Chip_PWM_DeInit(LPC_PWM_T *pTMR)
 {
         Chip_Clock_DisablePeriphClock(Chip_Pwm_GetClockIndex(pTMR));
@@ -89,17 +88,9 @@ void Chip_PWM_SetControlMode(LPC_PWM_T *pTMR, uint8_t pwmChannel,PWM_EDGE_CONTRO
     }
 }
 
-void Chip_PWM_LatchEnable(LPC_PWM_T *pTMR, uint8_t pwmChannel, PWM_OUT_CMD pwmCmd )
+void Chip_PWM_LatchEnable(LPC_PWM_T *pTMR, uint8_t pwmChannel)
 {
-
-        if(pwmCmd)
-        {
-            pTMR->LER |= (1<<(pwmChannel));
-        }
-        else
-        {
-            pTMR->LER &= ~(1<<(pwmChannel));
-        }
+	pTMR->LER |= (1<<(pwmChannel));
 }
 
 
