@@ -120,14 +120,13 @@ int main(void) {
 
     /* código del horno empieza aquí */
 
+    DEBUGOUT(mensaje_inicio);
     Horno_Init();
 
-    DEBUGOUT(mensaje_inicio);
-   	DEBUGOUT(mensaje_menu);
-
-   	Horno_Display_Test();
+    Horno_Display_Test();
    	Horno_grafico_digito(160, 60, 0);
 
+   	DEBUGOUT(mensaje_menu);
 	while(1){
     	charUART = DEBUGIN();
     	if (charUART == 'm') {
