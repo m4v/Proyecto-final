@@ -107,7 +107,7 @@ void TECLAD_Handler(void) {
 
 /* tecla asterisco */
 void TECLAE_Handler(void) {
-	DEBUGOUT("*");
+	DEBUGOUT("\b");
 }
 
 /* tecla numeral */
