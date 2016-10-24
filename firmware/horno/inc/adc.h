@@ -25,15 +25,15 @@ typedef struct {
 	uint32_t th_suma;			// suma accumulada del valor del AD (para hacer el promedio)
 	uint32_t th_cantidad;       // cantidad de valores sumados
 	uint16_t th_valor;          // valor del AD promediado
-	uint32_t lm_suma;
+	uint32_t lm_suma;			// lo mismo para lm
 	uint32_t lm_cantidad;
 	uint16_t lm_valor;
 	uint32_t valor_n;           // número del último valor obtenido
-	float    th_valor_mv;
-	float    th_valor_c;
-	float    lm_valor_v;
+	float    th_valor_mv;		// valor del temperatura de termocupla actual en mv
+	float    th_valor_c;		// valor de temperatura de termocupla actual en gr C
+	float    lm_valor_v;		// mismo para lm
 	float 	 lm_valor_c;
-	float 	 valor_c;
+	float 	 valor_c;			// valor de temperatura actual en gr C
 } HORNO_PROMEDIO_T;
 
 static HORNO_PROMEDIO_T horno_adc;
