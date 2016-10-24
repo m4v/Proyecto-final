@@ -59,16 +59,19 @@ static const PINMUX_GRP_T pinmux[] = {
 	/*Pines del teclado */
 	// Esto hay que cmbiarlo con los valores que correspondan en el PCB
 	/* filas */
-	{1,  30,  IOCON_MODE_INACT | IOCON_FUNC0},
-	{1,  31,  IOCON_MODE_INACT | IOCON_FUNC0},
-	{0,   2,  IOCON_MODE_INACT | IOCON_FUNC0},
-	{0,   3,  IOCON_MODE_INACT | IOCON_FUNC0},
-	/* columnas, entradas con R de pulldown para reducir el ruido cuando
-	 * estan en alta impedancia */
+	{0,  9,  IOCON_MODE_INACT | IOCON_FUNC0},
+	{0,  8,  IOCON_MODE_INACT | IOCON_FUNC0},
+	{0,  7,  IOCON_MODE_INACT | IOCON_FUNC0},
+	{0,  6,  IOCON_MODE_INACT | IOCON_FUNC0},
+	/* columnas, entradas con R de pull-down para reducir el ruido cuando
+	 * estan en alta impedancia.
+	 * ATENCION pines P0.27 a P0.30 no admiten R de pull-up/down.
+	 * tabla 89 del manual de usuario del LPC1769 */
+	{0,   2,  IOCON_MODE_PULLDOWN | IOCON_FUNC0},
 	{0,  21,  IOCON_MODE_PULLDOWN | IOCON_FUNC0},
-	{0,  27,  IOCON_MODE_PULLDOWN | IOCON_FUNC0},
-	{0,  28,  IOCON_MODE_PULLDOWN | IOCON_FUNC0},
-	{2,  13,  IOCON_MODE_PULLDOWN | IOCON_FUNC0},
+	{0,  24,  IOCON_MODE_PULLDOWN | IOCON_FUNC0},
+	{0,  25,  IOCON_MODE_PULLDOWN | IOCON_FUNC0},
+
 	/* LED */
 	{0,  22,  IOCON_MODE_INACT | IOCON_FUNC0},
 };
@@ -98,15 +101,15 @@ static const GPIO_DIR_T gpiodir[] = {
 	/*Pines del teclado */
 	// Esto hay que cmbiarlo con los valores que correspondan en el PCB
 	/* filas */
-	{1, 30, true},
-	{1, 31, true},
-	{0,  2, true},
-	{0,  3, true},
+	{0,  9, true},
+	{0,  8, true},
+	{0,  7, true},
+	{0,  6, true},
 	/* columnas como entradas */
+	{0,  2, false},
 	{0, 21, false},
-	{0, 27, false},
-	{0, 28, false},
-	{2, 13, false},
+	{0, 24, false},
+	{0, 25, false},
 	/* LED */
 	{0, 22, true},
 };
