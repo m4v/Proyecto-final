@@ -19,6 +19,7 @@ typedef struct {
 	uint32_t linea[42];
 } BLOQUE42_T;
 
+
 const BLOQUE42_T HORNO_DIGITO[] = {
 	{{ /* número 0*/
 		 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00003E00,
@@ -132,14 +133,11 @@ void Horno_grafico_digito(uint32_t x, uint32_t y, uint32_t num) {
 }
 
 
-void Horno_grafico_CLR_digito(uint32_t x, uint32_t y, uint32_t num) {
-	BLOQUE42_T bloque = HORNO_DIGITO[num];
+void Horno_grafico_CLR_digito(uint32_t x, uint32_t y) {
 	for (uint32_t i=0; i < 42; i++) {
 		Set_graphic_position(x/8, y+i);
-		uint32_t linea = bloque.linea[i];
 		for (uint32_t p=3; p>0;p--) { // p cuenta para atrás para no deformar el gráfico
-			/* separo los 32 bits en bloques de 8 */
-			uint8_t byte = (linea & (0x00<<((p-1)*8)))>>((p-1)*8);
+			uint8_t byte = 0x00;
 			Command_Write(MEM_WRITE);
 			Parameter_Write(byte);
 		}
