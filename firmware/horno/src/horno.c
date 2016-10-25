@@ -125,24 +125,18 @@ int main(void) {
     DEBUGOUT(mensaje_inicio);
    	DEBUGOUT(mensaje_menu);
 
+//   	// TODO acá fuerzo el led a apagarse
+//   	Chip_GPIO_SetPinState(LPC_GPIO,0,22,1);
+//
+//
+
    	Horno_Display_Test();
-   	int x0,x1,x2,x3;
-   	int y1, y2;
-   	x0=160; x1=x0+25; x2=x1+25; x3=x2+25;
-   	y1=20; y2=75;
-   	int pos[4]={160, 185, 210, 235};
 
-   	for(int i=0;i<4;i++){
-   		for(int j=0; j<10; j++){
-   		Horno_grafico_digito(pos[i], y1, j);
-   	   	Horno_udelay(5e5);
-   	   	Horno_grafico_CLR_digito(pos[i],y1,j);
-   	}
-   	}
-
-
-
+   	int cc=0;
    	while(1){
+   		Horno_grafico_temperatura(cc);
+   		Horno_udelay(5e5);
+   		cc++;
     	charUART = DEBUGIN();
     	if (charUART == 'm') {
     		adc_enabled = true;
