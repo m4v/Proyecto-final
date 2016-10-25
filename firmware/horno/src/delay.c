@@ -18,6 +18,7 @@
 #define _LPC_TIMER LPC_TIMER3
 #define _TIMER_IRQn TIMER3_IRQn
 #define _SYSCTL_PCLK_TIMER SYSCTL_PCLK_TIMER3
+#define _TIMER_IRQHandler TIMER3_IRQHandler
 
 static bool delay_enabled;
 static uint32_t timer_clock;
@@ -27,7 +28,7 @@ static uint32_t ticks;
  * @brief	Handle interrupt from 32-bit timer
  * @return	Nothing
  */
-void TIMER3_IRQHandler(void)
+void _TIMER_IRQHandler(void)
 {
 	/* limpiar la interrupción y detener el delay */
 	if (Chip_TIMER_MatchPending(_LPC_TIMER, 1)) {

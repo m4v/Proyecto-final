@@ -20,6 +20,7 @@
 #define _LPC_TIMER         LPC_TIMER1
 #define _TIMER_IRQn        TIMER1_IRQn
 #define _SYSCTL_PCLK_TIMER SYSCTL_PCLK_TIMER1
+#define _TIMER_IRQHandler  TIMER1_IRQHandler
 
 #define PASOS 200 // pasos por vuelta
 
@@ -111,7 +112,7 @@ void Horno_motor_ascender(bool ascender) {
  * @brief	Handle interrupt from 32-bit timer
  */
 
-void TIMER1_IRQHandler(void)
+void _TIMER_IRQHandler(void)
 {
 	/* limpiar la interrupción */
 	if (Chip_TIMER_MatchPending(_LPC_TIMER, 1)) {
