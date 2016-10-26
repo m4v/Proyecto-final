@@ -2,7 +2,7 @@
  * control.h
  *
  *  Created on: 23 de oct. de 2016
- *      Author: Nico
+ *
  */
 
 #ifndef CONTROL_H_
@@ -17,16 +17,15 @@ typedef struct{
 	float PI_Out;		// valor de control -  esto es lo que traducir en ciclos de pwm
 } HORNO_CONTROL;
 
-static HORNO_CONTROL horno_control;
+ HORNO_CONTROL horno_control;
 
-/* estructura con valores de PI discreto */
+/* estructura con valores de PI */
 typedef struct{
-	float K;
-	float Ti;
-	float I;
+	float Kp;
+	float Ki;
 } HORNO_PI;
 
-static HORNO_PI horno_pi;
+HORNO_PI horno_pi;
 
 
 void Horno_PI(void);
