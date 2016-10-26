@@ -14,6 +14,8 @@
 #include "320240.h"
 #include "grafico.h"
 
+#include <stdlib.h>
+
 /* estructura para guardar bloques de 32x42 píxeles */
 typedef struct {
 	uint32_t linea[42];
@@ -145,9 +147,6 @@ const BLOQUE42_T HORNO_DIGITO[] = {
 
 
 
-
-
-
 /*
  * @brief grafica un número de 24x42 pixeles
  * @param x: posición X en pixels
@@ -168,7 +167,6 @@ void Horno_grafico_digito(uint32_t x, uint32_t y, uint32_t num) {
 	}
 }
 
-
 void Horno_grafico_CLR_digito(uint32_t x, uint32_t y) {
 	for (uint32_t i=0; i < 42; i++) {
 		Set_graphic_position(x/8, y+i);
@@ -179,7 +177,6 @@ void Horno_grafico_CLR_digito(uint32_t x, uint32_t y) {
 		}
 	}
 }
-
 
 void Horno_grafico_entero(uint32_t y, uint32_t dato){
    	uint32_t pos[4]={245, 220, 195, 170};
@@ -210,5 +207,27 @@ void Horno_grafico_entero(uint32_t y, uint32_t dato){
 
 	}
 
+void Horno_grafico_datos(uint32_t x, uint32_t y, uint32_t dato) {
+	/* x igual para todos
+	 * y=1, Pend max.
+	 * y=2, Tiempo ascenso.
+	 * y=3, Tiempo cocción.
+	 * y=4, Temperatura Secado.
+	 * y=5, Temperatura coccion.
+	 */
+	uint32_t numero=dato;
+
+	if (numero >9999){
+		Put_string_waddr(x,y,"ERR");
+	}
+	else if (numero ==0){
+		Put_string_waddr(x,y,"0");
+	}
+	else{
+		char str[4];
+		itoa(numero,str,10);
+		Put_string_waddr(x,y,str);
+	}
+}
 
 
