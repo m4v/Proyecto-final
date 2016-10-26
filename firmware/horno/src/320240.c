@@ -521,12 +521,6 @@ void Horno_Display_Test(void){
 
 	Put_string_waddr(21,1,"TEMPERATURA: ");
 	Put_string_waddr(21,8,"TIEMPO RESTANTE: ");
-	int x0=160,y0=3;
-	int Xm=15;
-	int Yi=15;
-	int c=0;
-
-
 	/* Escribir en el 1er recuadro */
 	// Ponemos curso en el 1er layer (texto)
 	/* Cosas a tener en cuenta:
@@ -541,20 +535,16 @@ void Horno_Display_Test(void){
 	Put_string_waddr(1,1,"DATOS del PROGRAMA");
 	Put_string_waddr(1,2,"==================");
 	Put_string_waddr(1,4,"Pend. Max.:");
-//	Horno_grafico_datos(16,4,14634);
-	Horno_grafico_datos_pendiente(247);
+	Horno_grafico_datos_pendiente(0);
 	Put_string_waddr(1,6,"Temp. Asc.:");
-//	Put_string_waddr(16,6,"2222");
 	Horno_grafico_datos_temperatura_ascenso(345);
 	Put_string_waddr(1,8,"Tiem. Cocc.:");
-//	Put_string_waddr(16,8,"3333");
 	Horno_grafico_datos_tiempo_coccion(987);
 	Put_string_waddr(1,10,"Temp. Sec.:");
-//	Put_string_waddr(16,10,"4444");
 	Horno_grafico_datos_temperatura_secado(999);
 	Put_string_waddr(1,12,"Temp. Cocc.:");
-//	Put_string_waddr(16,12,"9999");
 	Horno_grafico_datos_temperatura_coccion(6543);
+
 //	Flechita_moviendose();	// Con esto la flechita se mueve por toda la curva
 
 
