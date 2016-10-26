@@ -15,7 +15,7 @@
 #include "delay.h"
 #include "320240.h"
 #include "grafico.h"
-
+#include "pwm.h"
 /* Defines */
 
 #define LAYER2_ADDRESS 0x1000
@@ -532,18 +532,41 @@ void Horno_Display_Test(void){
 	 *  */
 
 	/* Textos chicos */
+//	Put_string_waddr(1,1,"DATOS del PROGRAMA");
+//	Put_string_waddr(1,2,"==================");
+//	Put_string_waddr(1,4,"Pend. Max.:");
+//	Horno_grafico_datos_pendiente(7665);
+//	Put_string_waddr(18,4,"m/s");
+//	Put_string_waddr(1,6,"Temp. Asc.:");
+//	Horno_grafico_datos_temperatura_ascenso(345);
+//	Put_string_waddr(18,6,"`C");
+//	Put_string_waddr(1,8,"Tiem. Cocc.:");
+//	Horno_grafico_datos_tiempo_coccion(987);
+//	Put_string_waddr(18,8,"m");
+//	Put_string_waddr(1,10,"Temp. Sec.:");
+//	Horno_grafico_datos_temperatura_secado(999);
+//	Put_string_waddr(18,10,"`C");
+//	Put_string_waddr(1,12,"Temp. Cocc.:");
+//	Horno_grafico_datos_temperatura_coccion(6543);
+//	Put_string_waddr(18,12,"`C");
+
 	Put_string_waddr(1,1,"DATOS del PROGRAMA");
 	Put_string_waddr(1,2,"==================");
-	Put_string_waddr(1,4,"Pend. Max.:");
-	Horno_grafico_datos_pendiente(0);
-	Put_string_waddr(1,6,"Temp. Asc.:");
-	Horno_grafico_datos_temperatura_ascenso(345);
-	Put_string_waddr(1,8,"Tiem. Cocc.:");
-	Horno_grafico_datos_tiempo_coccion(987);
-	Put_string_waddr(1,10,"Temp. Sec.:");
-	Horno_grafico_datos_temperatura_secado(999);
-	Put_string_waddr(1,12,"Temp. Cocc.:");
-	Horno_grafico_datos_temperatura_coccion(6543);
+
+	Put_string_waddr(1,4,"PWM:");
+	if(horno_pwm.activo==1){
+		Put_string_waddr(14,4,"ON");
+		}
+	else if(horno_pwm.activo==0){
+		Put_string_waddr(14,4,"OFF");
+	}
+	Put_string_waddr(1,6,"Periodo:");
+	Horno_grafico_datos_temperatura_ascenso(horno_pwm.periodo);
+	Put_string_waddr(18,6,"ms");
+	Put_string_waddr(1,8,"C. Trabajo:");
+	Horno_grafico_datos_tiempo_coccion((int)100*(horno_pwm.dc));
+	Put_string_waddr(18,8,"%");
+
 
 //	Flechita_moviendose();	// Con esto la flechita se mueve por toda la curva
 
