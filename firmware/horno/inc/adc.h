@@ -16,8 +16,8 @@
 #define ADC_CHANNEL ADC_TH  // canal de captura del comando 'm'
 #define NUM_MUESTRAS_CAPTURA 100
 #define NUM_MUESTRAS_ADC 1000*PERIODO_PROMEDIO/PERIODO_MUESTREO
-bool adc_enabled = false;
-bool adc_continue = false;
+bool adc_enabled;
+bool adc_continue;
 uint16_t muestras[NUM_MUESTRAS_CAPTURA];
 
 
