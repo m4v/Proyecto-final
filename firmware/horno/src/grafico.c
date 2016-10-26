@@ -19,6 +19,38 @@ typedef struct {
 	uint32_t linea[42];
 } BLOQUE42_T;
 
+/* estructura para guardar bloques de 12x12 píxeles */
+//typedef struct {
+//	uint8_t linea[12];
+//} BLOQUE12_T;
+//
+//const BLOQUE12_T Flechita[] = {
+//		{{ /* */
+//				0xF0,0xF0,0xF0,0xF0,0xF0,0x00,0x80,0xC0,0xE0,
+//				0xF0,0xF8,0xFD
+//		}}
+//	};
+
+uint8_t flecha[12]= {0xF0,0xF0,0xF0,0xF0,0xF0,0x00,0x80,0xC0,0xE0,0xF0,0xF8,0xFD};
+
+void Horno_grafico_flecha(uint32_t x, uint32_t y) {
+	for (uint32_t i=0; i < 12; i++) {
+		Set_graphic_position(x/8, y+i);
+			Command_Write(MEM_WRITE);
+			Parameter_Write((~flecha[i]));
+	}
+}
+
+void Horno_grafico_CLR_flecha(uint32_t x, uint32_t y) {
+	for (uint32_t i=0; i < 12; i++) {
+		Set_graphic_position(x/8, y+i);
+			Command_Write(MEM_WRITE);
+			Parameter_Write(0X00);
+	}
+}
+
+
+
 const BLOQUE42_T HORNO_DIGITO[] = {
 	{{ /* número 0*/
 		 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00003E00,
@@ -111,6 +143,11 @@ const BLOQUE42_T HORNO_DIGITO[] = {
 	}}
 };
 
+
+
+
+
+
 /*
  * @brief grafica un número de 24x42 pixeles
  * @param x: posición X en pixels
@@ -130,3 +167,48 @@ void Horno_grafico_digito(uint32_t x, uint32_t y, uint32_t num) {
 		}
 	}
 }
+
+
+void Horno_grafico_CLR_digito(uint32_t x, uint32_t y) {
+	for (uint32_t i=0; i < 42; i++) {
+		Set_graphic_position(x/8, y+i);
+		for (uint32_t p=3; p>0;p--) { // p cuenta para atrás para no deformar el gráfico
+			uint8_t byte = 0x00;
+			Command_Write(MEM_WRITE);
+			Parameter_Write(byte);
+		}
+	}
+}
+
+
+void Horno_grafico_entero(uint32_t y, uint32_t dato){
+   	uint32_t pos[4]={245, 220, 195, 170};
+	uint32_t numero;
+	numero=dato;
+
+	// Caso que sea dato>9999 ya muestro 9999
+	if (numero>=9999){
+		// Poner er 9999
+	   	for(int i=0;i<4;i++){
+	   		Horno_grafico_digito(pos[i], y, 9);
+	   	}
+	}
+	else if(numero==0){
+   		Horno_grafico_digito(pos[0], y, 0);
+	}
+	else {
+		int i=0;
+		while(numero!=0)
+		{
+			int temp=numero%10;
+	   		Horno_grafico_digito(pos[i], y, temp);
+	   		i++;
+	   		numero=numero/10;
+
+			}
+		}
+
+	}
+
+
+
