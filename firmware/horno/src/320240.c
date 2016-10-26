@@ -14,6 +14,7 @@
 #include <string.h>
 #include "delay.h"
 #include "320240.h"
+#include "grafico.h"
 
 /* Defines */
 
@@ -30,7 +31,6 @@
 #define CLR_RD  Chip_GPIO_SetPinState(LPC_GPIO, 0, 10, false)
 #define SET_RST Chip_GPIO_SetPinState(LPC_GPIO, 2, 12, true)
 #define CLR_RST Chip_GPIO_SetPinState(LPC_GPIO, 2, 12, false)
-
 
 #define LCD_DELAY 1 /* retraso usado para comunicarse con la pantalla */
 
@@ -540,17 +540,21 @@ void Horno_Display_Test(void){
 	/* Textos chicos */
 	Put_string_waddr(1,1,"DATOS del PROGRAMA");
 	Put_string_waddr(1,2,"==================");
-	Put_string_waddr(1,4,"Pend. Max:");
-	Put_string_waddr(16,4,"1111");
-	Put_string_waddr(1,6,"Temp. Ascenso:");
-	Put_string_waddr(16,6,"2222");
-	Put_string_waddr(1,8,"Tiem. Coccion:");
-	Put_string_waddr(16,8,"3333");
-	Put_string_waddr(1,10,"Temp. Secado:");
-	Put_string_waddr(16,10,"4444");
-	Put_string_waddr(1,12,"Temp. Coccion:");
-	Put_string_waddr(16,12,"9999");
-
+	Put_string_waddr(1,4,"Pend. Max.:");
+//	Horno_grafico_datos(16,4,14634);
+	Horno_grafico_datos_pendiente(247);
+	Put_string_waddr(1,6,"Temp. Asc.:");
+//	Put_string_waddr(16,6,"2222");
+	Horno_grafico_datos_temperatura_ascenso(345);
+	Put_string_waddr(1,8,"Tiem. Cocc.:");
+//	Put_string_waddr(16,8,"3333");
+	Horno_grafico_datos_tiempo_coccion(987);
+	Put_string_waddr(1,10,"Temp. Sec.:");
+//	Put_string_waddr(16,10,"4444");
+	Horno_grafico_datos_temperatura_secado(999);
+	Put_string_waddr(1,12,"Temp. Cocc.:");
+//	Put_string_waddr(16,12,"9999");
+	Horno_grafico_datos_temperatura_coccion(6543);
 //	Flechita_moviendose();	// Con esto la flechita se mueve por toda la curva
 
 
