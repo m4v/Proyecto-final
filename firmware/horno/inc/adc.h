@@ -29,20 +29,11 @@ typedef struct {
 	uint32_t lm_cantidad;
 	uint16_t lm_valor;
 	uint32_t valor_n;           // número del último valor obtenido
-	float    th_valor_mv;		// valor del temperatura de termocupla actual en mv
 	float    th_temperatura;		// valor de temperatura de termocupla actual en gr C
-	float    lm_valor_v;		// mismo para lm
 	float 	 lm_temperatura;
 	float 	 temperatura;			// valor de temperatura actual en gr C
 } HORNO_PROMEDIO_T;
 
 HORNO_PROMEDIO_T horno_adc;
-
-void Horno_th_lineseg1(void);
-void Horno_th_lineseg2(void);
-void Horno_th_lineseg3(void);
-void Horno_th_adctomv(void);
-void Horno_lm_line(void);
-
 
 #endif /* ADC_H_ */
