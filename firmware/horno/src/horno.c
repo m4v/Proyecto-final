@@ -54,14 +54,22 @@ static char mensaje_inicio[] =
 		"Proyecto Final Horno Dental\r\n"
 		"===========================\r\n"
 		"\r\n";
-static char mensaje_menu[] = "Controles:\r\n"
-							 " 'c' para iniciar/detener la captura continua.\r\n"
-							 " 'm' para capturar N muestras.\r\n"
-							 " 'i' para poner en marcha el motor.\r\n"
-							 " 'p' para detener el motor.\r\n"
-							 " '+' para aumentar la velocidad del motor.\r\n"
-							 " '-' para disminuir la velocidad del motor.\r\n"
-							 " 'l' para cambiar el sentido de giro.\r\n";
+static char mensaje_menu[] =
+		"Controles UART:\r\n"
+		" 'c' para iniciar/detener la captura continua.\r\n"
+		" 'm' para capturar N muestras.\r\n"
+		" 'i' para poner en marcha el motor.\r\n"
+		" 'p' para detener el motor.\r\n"
+		" '+' para aumentar la velocidad del motor.\r\n"
+		" '-' para disminuir la velocidad del motor.\r\n"
+		" 'l' para cambiar el sentido de giro.\r\n"
+		"Teclado:\r\n"
+		" A inicia el PWM\r\n"
+		" B detiene el PWM\r\n"
+		" C configura el ciclo de trabajo del PWM\r\n"
+		" D configura el periodo del PWM\r\n"
+		" # enter\r\n"
+		" * retroceso\r\n";
 
 /* rutina de interrupción del systick */
 void SysTick_Handler(void)
@@ -123,11 +131,20 @@ int main(void) {
     DEBUGOUT(mensaje_inicio);
     Horno_Init();
 
-    Horno_Display_Test();
-   	Horno_grafico_digito(160, 60, 0);
+//   	// TODO acá fuerzo el led a apagarse
+//   	Chip_GPIO_SetPinState(LPC_GPIO,0,22,1);
+//
+//
 
+   	Horno_Display_Test();
+
+   	int cc=0;
    	DEBUGOUT(mensaje_menu);
-	while(1){
+
+   	while(1){
+   		Horno_grafico_temperatura(cc);
+   		Horno_udelay(5e5);
+   		cc++;
     	charUART = DEBUGIN();
     	if (charUART == 'm') {
     		adc_enabled = true;

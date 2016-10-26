@@ -5,6 +5,7 @@
 #endif
 
 #include "delay.h"
+#include "pwm.h"
 
 #define _LPC_TIMER         LPC_TIMER0
 #define _TIMER_IRQn        TIMER0_IRQn
@@ -47,72 +48,121 @@
 #define COL3  GETCOL3(Chip_GPIO_GetPortValue(LPC_GPIO, 0))
 #define COL4  GETCOL4(Chip_GPIO_GetPortValue(LPC_GPIO, 0))
 
+typedef struct {
+	uint32_t dato;
+	uint32_t dato_ingresado;
+} HORNO_TECLADO_T;
+
+static HORNO_TECLADO_T horno_keypad = { 0, 0 };
 static uint32_t counter;
 
 void TECLA1_Handler(void) {
 	DEBUGOUT("1");
+	horno_keypad.dato *= 10;
+	horno_keypad.dato += 1;
 }
 
 void TECLA2_Handler(void) {
 	DEBUGOUT("2");
+	horno_keypad.dato *= 10;
+	horno_keypad.dato += 2;
 }
 
 void TECLA3_Handler(void) {
 	DEBUGOUT("3");
+	horno_keypad.dato *= 10;
+	horno_keypad.dato += 3;
 }
 
 void TECLA4_Handler(void) {
 	DEBUGOUT("4");
+	horno_keypad.dato *= 10;
+	horno_keypad.dato += 4;
 }
 
 void TECLA5_Handler(void) {
 	DEBUGOUT("5");
+	horno_keypad.dato *= 10;
+	horno_keypad.dato += 5;
 }
 
 void TECLA6_Handler(void) {
 	DEBUGOUT("6");
+	horno_keypad.dato *= 10;
+	horno_keypad.dato += 6;
 }
 
 void TECLA7_Handler(void) {
 	DEBUGOUT("7");
+	horno_keypad.dato *= 10;
+	horno_keypad.dato += 7;
 }
 
 void TECLA8_Handler(void) {
 	DEBUGOUT("8");
+	horno_keypad.dato *= 10;
+	horno_keypad.dato += 8;
 }
 
 void TECLA9_Handler(void) {
 	DEBUGOUT("9");
+	horno_keypad.dato *= 10;
+	horno_keypad.dato += 9;
 }
 
 void TECLA0_Handler(void) {
 	DEBUGOUT("0");
+	horno_keypad.dato *= 10;
+}
+
+/* funcion temporal, debería ir a otra parte */
+void estado_pwm(void) {
+	DEBUGOUT("\n"
+			"PWM %s\n"
+			"PWM ciclo de trabajo: %.2f %\n"
+			"PWM periodo: %d ms\n",
+			horno_pwm.activo ? "ACTIVO" : "INACTIVO",
+			horno_pwm.dc*100, horno_pwm.periodo);
 }
 
 void TECLAA_Handler(void) {
-	DEBUGOUT("A");
+	DEBUGOUT("A - inicio PWM\n");
+	Horno_pwm_ciclo(horno_pwm.dc);
+	Horno_pwm_inicio();
+	estado_pwm();
 }
 
 void TECLAB_Handler(void) {
-	DEBUGOUT("B");
+	DEBUGOUT("B - parar PWM\n");
+	Horno_pwm_parar();
+	estado_pwm(); // el estado lo reporta mal porque en realidad se apaga en la
+	              // siguiente interrupción
 }
 
 void TECLAC_Handler(void) {
-	DEBUGOUT("C");
+	DEBUGOUT("C - ciclo de trabajo\n");
+	Horno_pwm_ciclo((float)(horno_keypad.dato_ingresado)/100.0);
+	estado_pwm();
 }
 
 void TECLAD_Handler(void) {
-	DEBUGOUT("D");
+	DEBUGOUT("D - periodo\n");
+	Horno_pwm_periodo(horno_keypad.dato_ingresado);
+	estado_pwm();
 }
 
 /* tecla asterisco */
 void TECLAE_Handler(void) {
-	DEBUGOUT("\b");
+	DEBUGOUT("\b"); /* \b -> backspace */
+	horno_keypad.dato /= 10;
 }
 
 /* tecla numeral */
 void TECLAF_Handler(void) {
 	DEBUGOUT("\n");
+	horno_keypad.dato_ingresado = horno_keypad.dato;
+	horno_keypad.dato = 0;
+	DEBUGOUT("dato ingresado: %d\n", horno_keypad.dato_ingresado);
 }
 
 void COLUMN1_Handler(void) {

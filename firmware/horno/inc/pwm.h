@@ -9,6 +9,7 @@
 #define PWM_H_
 
 typedef struct {
+	bool activo;
 	uint32_t periodo;
 	float dc;
 } HORNO_PWM_T;

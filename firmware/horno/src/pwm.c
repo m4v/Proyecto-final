@@ -22,6 +22,7 @@ void PWM1_IRQHandler(void){
 		Chip_PWM_MatchDisableInt(LPC_PWM1, 1);
 		Chip_PWM_Disable(LPC_PWM1);
 		NVIC_DisableIRQ(PWM1_IRQn);
+		horno_pwm.activo = false;
 	}
 	NVIC_ClearPendingIRQ(PWM1_IRQn);
 }
@@ -32,6 +33,7 @@ void PWM1_IRQHandler(void){
 void Horno_pwm_inicio(void)
 {
 	Chip_PWM_Enable(LPC_PWM1);
+	horno_pwm.activo = true;
 }
 
 /*
