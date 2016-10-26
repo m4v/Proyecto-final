@@ -46,15 +46,15 @@ void horno_th_line(void){
  */
 void Horno_th_lineseg1(void){
 		float temp=horno_adc.th_valor_mv;
-		horno_adc.th_valor_c= a1*temp*temp*temp + b1*temp*temp + c1*temp + d1;
+		horno_adc.temperatura= a1*temp*temp*temp + b1*temp*temp + c1*temp + d1;
 				}
 void Horno_th_lineseg2(void){
 		float temp=horno_adc.th_valor_mv;
-		horno_adc.th_valor_c= a2*temp*temp*temp + b2*temp*temp + c2*temp + d2;
+		horno_adc.th_temperatura= a2*temp*temp*temp + b2*temp*temp + c2*temp + d2;
 }
 void Horno_th_lineseg3(void){
 		float temp=horno_adc.th_valor_mv;
-		horno_adc.th_valor_c= a3*temp*temp + b3*temp + c3;
+		horno_adc.th_temperatura= a3*temp*temp + b3*temp + c3;
 }
 
 /*
@@ -69,7 +69,7 @@ void Horno_th_adctomv(void){
  */
 void Horno_lm_line(void){
 		horno_adc.lm_valor_v=horno_adc.lm_valor*ADC_REF/(ADC_SIZE*LM_GAIN);
-		horno_adc.lm_valor_c=a4*horno_adc.lm_valor_v+b4;
+		horno_adc.lm_temperatura=a4*horno_adc.lm_valor_v+b4;
 }
 
 
