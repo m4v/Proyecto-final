@@ -13,7 +13,6 @@
 
 #include "adc.h"
 
-
 #define ADC_SIZE 4096		//tamaño del ADC
 #define ADC_REF  3.3		//tension de referencia de ADC
 #define TH_GAIN  80.2 		//ganancia de la etapa de termocupla
@@ -26,7 +25,6 @@ float a1=-0.007245, b1=0.15911, c1=23.6212, d1=1.0999; 		//coeficientes de polin
 float a2=0.00252, b2=-0.164398, c2=27.02517, d2=-10.04204;	// a.x^3+b.x^2+c.x+d
 float a3=0.078896, b3=19.13545, c3=75.8309;					// a.x^2+b.x+d
 float a4=16.09, b4=-3.429325;								//coeficientes de lm35, a4.x+b
-
 
 /*
  * @brief Elige polinomio de linealizacion correspondiente para el calculo de temperatura de termocupla
