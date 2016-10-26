@@ -180,12 +180,8 @@ void Horno_grafico_CLR_digito(uint32_t x, uint32_t y) {
 
 void Horno_grafico_entero(uint32_t y, uint32_t dato){
    	uint32_t pos[4]={245, 220, 195, 170};
-	uint32_t numero;
-	numero=dato;
-
-	// Caso que sea dato>9999 ya muestro 9999
+	uint32_t numero=dato;
 	if (numero>=9999){
-		// Poner er 9999
 	   	for(int i=0;i<4;i++){
 	   		Horno_grafico_digito(pos[i], y, 9);
 	   	}
@@ -201,27 +197,15 @@ void Horno_grafico_entero(uint32_t y, uint32_t dato){
 	   		Horno_grafico_digito(pos[i], y, temp);
 	   		i++;
 	   		numero=numero/10;
-
 			}
 		}
 
 	}
 
 void Horno_grafico_datos(uint32_t x, uint32_t y, uint32_t dato) {
-	/* x igual para todos
-	 * y=1, Pend max.
-	 * y=2, Tiempo ascenso.
-	 * y=3, Tiempo cocción.
-	 * y=4, Temperatura Secado.
-	 * y=5, Temperatura coccion.
-	 */
 	uint32_t numero=dato;
-
 	if (numero >9999){
 		Put_string_waddr(x,y,"ERR");
-	}
-	else if (numero ==0){
-		Put_string_waddr(x,y,"0");
 	}
 	else{
 		char str[4];
