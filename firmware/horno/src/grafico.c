@@ -13,6 +13,7 @@
 
 #include "320240.h"
 #include "grafico.h"
+#include "pwm.h"
 
 #include <stdlib.h>
 
@@ -221,4 +222,20 @@ void Horno_grafico_datos(uint32_t x, uint32_t y, uint32_t dato) {
 	}
 }
 
+/* Esta funcion pone los datos del programa en la parte izquierda */
+void Horno_grafico_datos_pwm( bool activo, uint32_t periodo, uint32_t dc){
+	Put_string_waddr(1,4,"PWM:");
+	if(activo==1){
+		Put_string_waddr(14,4,"ON");
+		}
+	else if(activo==0){
+		Put_string_waddr(14,4,"OFF");
+	}
+	Put_string_waddr(1,6,"Periodo:");
+	Horno_grafico_datos_temperatura_ascenso(periodo);
+	Put_string_waddr(18,6,"ms");
+	Put_string_waddr(1,8,"C. Trabajo:");
+	Horno_grafico_datos_tiempo_coccion((int)100*(dc));
+	Put_string_waddr(18,8,"%");
+}
 
