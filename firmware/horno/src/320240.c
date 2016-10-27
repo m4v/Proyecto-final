@@ -532,8 +532,9 @@ void Horno_Display_Test(void){
 	 *  */
 
 	/* Textos chicos */
-//	Put_string_waddr(1,1,"DATOS del PROGRAMA");
-//	Put_string_waddr(1,2,"==================");
+	Put_string_waddr(1,1,"DATOS del PROGRAMA");
+	Put_string_waddr(1,2,"==================");
+
 //	Put_string_waddr(1,4,"Pend. Max.:");
 //	Horno_grafico_datos_pendiente(7665);
 //	Put_string_waddr(18,4,"m/s");
@@ -550,22 +551,7 @@ void Horno_Display_Test(void){
 //	Horno_grafico_datos_temperatura_coccion(6543);
 //	Put_string_waddr(18,12,"`C");
 
-	Put_string_waddr(1,1,"DATOS del PROGRAMA");
-	Put_string_waddr(1,2,"==================");
-
-	Put_string_waddr(1,4,"PWM:");
-	if(horno_pwm.activo==1){
-		Put_string_waddr(14,4,"ON");
-		}
-	else if(horno_pwm.activo==0){
-		Put_string_waddr(14,4,"OFF");
-	}
-	Put_string_waddr(1,6,"Periodo:");
-	Horno_grafico_datos_temperatura_ascenso(horno_pwm.periodo);
-	Put_string_waddr(18,6,"ms");
-	Put_string_waddr(1,8,"C. Trabajo:");
-	Horno_grafico_datos_tiempo_coccion((int)100*(horno_pwm.dc));
-	Put_string_waddr(18,8,"%");
+	Horno_grafico_datos_pwm( horno_pwm.activo,horno_pwm.periodo, horno_pwm.dc);
 
 
 //	Flechita_moviendose();	// Con esto la flechita se mueve por toda la curva
