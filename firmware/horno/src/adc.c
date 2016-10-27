@@ -84,10 +84,13 @@ void SysTick_Handler(void)
 					horno_adc.th_temperatura = th_line((float)horno_adc.th_valor);
 					horno_adc.temperatura = horno_adc.lm_temperatura + horno_adc.th_temperatura;
 
-					DEBUGOUT("%10d, %.2f, %.2f, %.2f\r\n", horno_adc.valor_n,
+
+					DEBUGOUT("%10d, %.2f, %.2f, %.2f, %d, %d\r\n", horno_adc.valor_n,
 														   horno_adc.temperatura,
 							                               horno_adc.th_temperatura,
-							                               horno_adc.lm_temperatura);
+							                               horno_adc.lm_temperatura,
+														   horno_adc.th_valor,
+														   horno_adc.lm_valor);
 					horno_adc.th_suma = 0;
 					horno_adc.th_cantidad = 0;
 					horno_adc.lm_suma = 0;
