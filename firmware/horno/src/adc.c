@@ -21,8 +21,8 @@
 #define TH_SEG2  2869		//limite del segundo segmento (300-700°C)
 #define TH_SEG3  4096		//limite del tercero (700-1000°C)
 
-#define K_LM ADC_REF/(ADC_SIZE*LM_GAIN) // factor de escala del ADC del LM35
-#define K_TH ADC_REF/(ADC_SIZE*TH_GAIN) // factor de escala del ADC de la termocupla
+#define K_LM ADC_REF/ADC_SIZE // factor de escala del ADC del LM35
+#define K_TH ADC_REF/(ADC_SIZE*TH_GAIN*1e-3) // factor de escala del ADC de la termocupla
 
 float a1=-0.007245, b1= 0.15911,  c1=23.6212,  d1=  1.0999;     //coeficientes de polinomios de linealizacion
 float a2= 0.00252,  b2=-0.164398, c2=27.02517, d2=-10.04204;	// a.x^3+b.x^2+c.x+d
