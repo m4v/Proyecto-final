@@ -81,6 +81,8 @@ int main(void) {
    	int cc=0;
    	DEBUGOUT(mensaje_menu);
 
+   	Horno_grafico_digito(270,20,10);
+
    	while(1){
    		Horno_grafico_temperatura(cc);
    		Horno_udelay(5e5);

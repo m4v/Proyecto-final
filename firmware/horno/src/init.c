@@ -57,7 +57,6 @@ static const PINMUX_GRP_T pinmux[] = {
 	{2,   8,  IOCON_MODE_INACT | IOCON_FUNC0},
 	{2,  10,  IOCON_MODE_INACT | IOCON_FUNC0},
 	/*Pines del teclado */
-	// Esto hay que cmbiarlo con los valores que correspondan en el PCB
 	/* filas */
 	{0,  9,  IOCON_MODE_INACT | IOCON_FUNC0},
 	{0,  8,  IOCON_MODE_INACT | IOCON_FUNC0},
