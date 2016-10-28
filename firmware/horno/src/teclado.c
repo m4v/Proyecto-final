@@ -14,8 +14,6 @@
 #define _SYSCTL_PCLK_TIMER SYSCTL_PCLK_TIMER0
 #define _TIMER_IRQHandler  TIMER0_IRQHandler
 
-#define BORRAR_STRING "                                    "
-
 /* bits del P0 para las columnas */
 #define bCOL1 2
 #define bCOL2 21
@@ -62,100 +60,60 @@ static uint32_t counter;
 
 void TECLA1_Handler(void) {
 	DEBUGOUT("1");
-	Put_string_waddr(1,12,"Tecla presionada:");
-	Put_string_waddr(18,12,"1");
-	Horno_udelay(5e5);
-	Put_string_waddr(1,12,BORRAR_STRING);
 	horno_keypad.dato *= 10;
 	horno_keypad.dato += 1;
 }
 
 void TECLA2_Handler(void) {
 	DEBUGOUT("2");
-	Put_string_waddr(1,12,"Tecla presionada:");
-	Put_string_waddr(18,12,"2");
-	Horno_udelay(5e5);
-	Put_string_waddr(1,12,BORRAR_STRING);
 	horno_keypad.dato *= 10;
 	horno_keypad.dato += 2;
 }
 
 void TECLA3_Handler(void) {
 	DEBUGOUT("3");
-	Put_string_waddr(1,12,"Tecla presionada:");
-	Put_string_waddr(18,12,"3");
-	Horno_udelay(5e5);
-	Put_string_waddr(1,12,BORRAR_STRING);
 	horno_keypad.dato *= 10;
 	horno_keypad.dato += 3;
 }
 
 void TECLA4_Handler(void) {
 	DEBUGOUT("4");
-	Put_string_waddr(1,12,"Tecla presionada:");
-	Put_string_waddr(18,12,"4");
-	Horno_udelay(5e5);
-	Put_string_waddr(1,12,BORRAR_STRING);
 	horno_keypad.dato *= 10;
 	horno_keypad.dato += 4;
 }
 
 void TECLA5_Handler(void) {
 	DEBUGOUT("5");
-	Put_string_waddr(1,12,"Tecla presionada:");
-	Put_string_waddr(18,12,"5");
-	Horno_udelay(5e5);
-	Put_string_waddr(1,12,BORRAR_STRING);
 	horno_keypad.dato *= 10;
 	horno_keypad.dato += 5;
 }
 
 void TECLA6_Handler(void) {
 	DEBUGOUT("6");
-	Put_string_waddr(1,12,"Tecla presionada:");
-	Put_string_waddr(18,12,"6");
-	Horno_udelay(5e5);
-	Put_string_waddr(1,12,BORRAR_STRING);
 	horno_keypad.dato *= 10;
 	horno_keypad.dato += 6;
 }
 
 void TECLA7_Handler(void) {
 	DEBUGOUT("7");
-	Put_string_waddr(1,12,"Tecla presionada:");
-	Put_string_waddr(18,12,"7");
-	Horno_udelay(5e5);
-	Put_string_waddr(1,12,BORRAR_STRING);
 	horno_keypad.dato *= 10;
 	horno_keypad.dato += 7;
 }
 
 void TECLA8_Handler(void) {
 	DEBUGOUT("8");
-	Put_string_waddr(1,12,"Tecla presionada:");
-	Put_string_waddr(18,12,"8");
-	Horno_udelay(5e5);
-	Put_string_waddr(1,12,BORRAR_STRING);
 	horno_keypad.dato *= 10;
 	horno_keypad.dato += 8;
 }
 
 void TECLA9_Handler(void) {
 	DEBUGOUT("9");
-	Put_string_waddr(1,12,"Tecla presionada:");
-	Put_string_waddr(18,12,"9");
-	Horno_udelay(5e5);
-	Put_string_waddr(1,12,BORRAR_STRING);
 	horno_keypad.dato *= 10;
 	horno_keypad.dato += 9;
 }
 
 void TECLA0_Handler(void) {
 	DEBUGOUT("0");
-	Put_string_waddr(1,12,"Tecla presionada:");
-	Put_string_waddr(18,12,"0");
-	Horno_udelay(5e5);
-	Put_string_waddr(1,12,BORRAR_STRING);
 	horno_keypad.dato *= 10;
 }
 
@@ -167,27 +125,17 @@ void estado_pwm(void) {
 			"PWM periodo: %d ms\n",
 			horno_pwm.activo ? "ACTIVO" : "INACTIVO",
 			horno_pwm.dc*100, horno_pwm.periodo);
-	Horno_grafico_datos_pwm(horno_pwm.activo,horno_pwm.periodo, horno_pwm.dc);
 }
 
 void TECLAA_Handler(void) {
 	DEBUGOUT("A - inicio PWM\n");
-	Put_string_waddr(1,12,"A - inicio PWM");
-	Put_string_waddr(18,12,"A");
-	Horno_udelay(5e5);
-	Put_string_waddr(1,12,BORRAR_STRING);
 	Horno_pwm_ciclo(horno_pwm.dc);
-
 	Horno_pwm_inicio();
 	estado_pwm();
 }
 
 void TECLAB_Handler(void) {
 	DEBUGOUT("B - parar PWM\n");
-	Put_string_waddr(1,12,"B - parar PWM");
-	Horno_udelay(5e5);
-	Put_string_waddr(1,12,BORRAR_STRING);
-
 	Horno_pwm_parar();
 	estado_pwm(); // el estado lo reporta mal porque en realidad se apaga en la
 	              // siguiente interrupción
@@ -195,20 +143,12 @@ void TECLAB_Handler(void) {
 
 void TECLAC_Handler(void) {
 	DEBUGOUT("C - ciclo de trabajo\n");
-	Put_string_waddr(1,12,"C - ciclo de trabajo:");
-	Horno_udelay(5e5);
-	Put_string_waddr(1,12,BORRAR_STRING);
-
 	Horno_pwm_ciclo((float)(horno_keypad.dato_ingresado)/100.0);
 	estado_pwm();
 }
 
 void TECLAD_Handler(void) {
 	DEBUGOUT("D - periodo\n");
-	Put_string_waddr(1,12,"D - periodo:");
-	Horno_udelay(5e5);
-	Put_string_waddr(1,12,BORRAR_STRING);
-
 	Horno_pwm_periodo(horno_keypad.dato_ingresado);
 	estado_pwm();
 }
@@ -216,29 +156,14 @@ void TECLAD_Handler(void) {
 /* tecla asterisco */
 void TECLAE_Handler(void) {
 	DEBUGOUT("\b"); /* \b -> backspace */
-	Put_string_waddr(1,12,"Tecla presionada:");
-	Put_string_waddr(18,12,"*");
-	Horno_udelay(5e5);
-	Put_string_waddr(1,12,BORRAR_STRING);
-
 	horno_keypad.dato /= 10;
 }
 
 /* tecla numeral */
 void TECLAF_Handler(void) {
 	DEBUGOUT("\n");
-	Put_string_waddr(1,12,"Tecla presionada:");
-	Put_string_waddr(18,12,"#");
-	Horno_udelay(5e5);
-	Put_string_waddr(1,12,BORRAR_STRING);
-
 	horno_keypad.dato_ingresado = horno_keypad.dato;
 	horno_keypad.dato = 0;
-
-	Put_string_waddr(1,13,"Dato ingresado:");
-	Horno_grafico_datos(18,13,horno_keypad.dato_ingresado);
-	Horno_udelay(5e5);
-	Put_string_waddr(1,13,BORRAR_STRING);
 	DEBUGOUT("dato ingresado: %d\n", horno_keypad.dato_ingresado);
 }
 
