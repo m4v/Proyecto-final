@@ -99,7 +99,6 @@ static const GPIO_DIR_T gpiodir[] = {
 	{2,  8, true},
 	{2, 10, true},
 	/*Pines del teclado */
-	// Esto hay que cmbiarlo con los valores que correspondan en el PCB
 	/* filas */
 	{0,  9, true},
 	{0,  8, true},
@@ -172,7 +171,6 @@ void Horno_Init (void) {
 	Horno_systick_init(PERIODO_MUESTREO);
 
 	Horno_teclado_init();
-
 	Horno_motor_init();
 	Horno_pwm_init();
 }
