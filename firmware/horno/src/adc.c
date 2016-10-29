@@ -99,9 +99,6 @@ void Horno_adc_muestreo(void)
 						horno_pwm.activo ? horno_pwm.dc : 0);
 			}
 
-			/* usar el LED para indicar que tomamos una muestra */
-			Board_LED_Toggle(0);
-
 			Horno_adc_muestra_Handler(horno_adc.temperatura);
 
 			horno_adc.th_suma = 0;
