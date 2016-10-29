@@ -57,6 +57,7 @@ void Horno_pwm_periodo(uint32_t ms)
 	uint32_t ticks = Chip_Clock_GetPeripheralClockRate(SYSCTL_PCLK_PWM1) / 1e3;
 	Chip_PWM_SetMatch(LPC_PWM1, 0, ms*ticks);
 	Chip_PWM_LatchEnable(LPC_PWM1, 0);
+	Horno_pwm_ciclo(horno_pwm.dc); // actualizamos el valor del MR1
 }
 
 /*
