@@ -101,6 +101,14 @@ int main(void) {
     		Horno_motor_ascender(!horno_motor.ascender);
     		DEBUGOUT("Motor sentido ascender %d\n", horno_motor.ascender);
     		break;
+    	case 'P':
+    		if (horno_pwm.activo) {
+    			Horno_pwm_parar();
+    		} else {
+    			Horno_pwm_ciclo(0.5);
+    			Horno_pwm_inicio();
+    		}
+    		break;
     	case 'h':
     		DEBUGOUT(mensaje_menu);
     		break;
