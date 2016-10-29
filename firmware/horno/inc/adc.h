@@ -11,15 +11,7 @@
 #include "board.h"
 #include "init.h"
 
-
-
-#define ADC_CHANNEL ADC_TH  // canal de captura del comando 'm'
-#define NUM_MUESTRAS_CAPTURA 100
 #define NUM_MUESTRAS_ADC 1000*PERIODO_PROMEDIO/PERIODO_MUESTREO
-bool adc_enabled;
-bool adc_continue;
-uint16_t muestras[NUM_MUESTRAS_CAPTURA];
-
 
 typedef struct {
 	bool     salida_uart;       // si imprime los datos del AD al UART
@@ -30,9 +22,9 @@ typedef struct {
 	uint32_t lm_cantidad;
 	uint16_t lm_valor;
 	uint32_t valor_n;           // número del último valor obtenido
-	float    th_temperatura;		// valor de temperatura de termocupla actual en gr C
+	float    th_temperatura;	// valor de temperatura de termocupla actual en gr C
 	float 	 lm_temperatura;
-	float 	 temperatura;			// valor de temperatura actual en gr C
+	float 	 temperatura;		// valor de temperatura actual en gr C
 } HORNO_PROMEDIO_T;
 
 HORNO_PROMEDIO_T horno_adc;
