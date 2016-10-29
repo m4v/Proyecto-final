@@ -40,8 +40,10 @@ static const PINMUX_GRP_T pinmux[] = {
 	/* pines del ADC */
 	{0,  23,  IOCON_MODE_INACT | IOCON_FUNC1}, // Termocupla
 	{0,   3,  IOCON_MODE_INACT | IOCON_FUNC2}, // LM35
-	/* PWM */
-	{2,   0,  IOCON_MODE_INACT | IOCON_FUNC1},
+	/* PWM
+	 * Lo utilizamos como GPIO con R de pull-down, desde pwm.c se cambia a IOCON_FUNC1
+	 * cuando es necesario. */
+	{2,   0,  IOCON_MODE_PULLDOWN | IOCON_FUNC0},
 	/* pines del display */
 	{2,  11,  IOCON_MODE_INACT | IOCON_FUNC0}, // /CS
 	{2,   1,  IOCON_MODE_INACT | IOCON_FUNC0}, // A0

@@ -15,23 +15,21 @@
 
 #define PWM_PERIODO 500
 
-void PWM1_IRQHandler(void){
-	if (Chip_PWM_MatchPending(LPC_PWM1, 1)) {
-		/* apagamos el PWM */
-		Chip_PWM_ClearMatch(LPC_PWM1, 1);
-		Chip_PWM_MatchDisableInt(LPC_PWM1, 1);
-		Chip_PWM_Disable(LPC_PWM1);
-		NVIC_DisableIRQ(PWM1_IRQn);
-		horno_pwm.activo = false;
-	}
-	NVIC_ClearPendingIRQ(PWM1_IRQn);
-}
+typedef struct {
+	uint32_t puerto:3;
+	uint32_t pin:5;
+} PUERTO_T;
+
+static PUERTO_T puerto_pwm = {2, 0};
 
 /*
  * @brief Inicia el PWM
  */
 void Horno_pwm_inicio(void)
 {
+	Chip_IOCON_PinMuxSet(LPC_IOCON, puerto_pwm.puerto, puerto_pwm.pin,
+			             IOCON_MODE_INACT | IOCON_FUNC1);
+
 	Chip_PWM_Enable(LPC_PWM1);
 	horno_pwm.activo = true;
 }
@@ -41,13 +39,13 @@ void Horno_pwm_inicio(void)
  */
 void Horno_pwm_parar(void)
 {
-	/* activamos la interrupción en MR1 para asegurar apagar el PWM cuando
-	 * su salida está en un nivel bajo. */
-	Chip_PWM_SetMatch(LPC_PWM1, 1, Chip_Clock_GetPeripheralClockRate(SYSCTL_PCLK_PWM1) / 1e3);
-	Chip_PWM_LatchEnable(LPC_PWM1, 1);
-	Chip_PWM_MatchEnableInt(LPC_PWM1, 1);
-	NVIC_ClearPendingIRQ(PWM1_IRQn);
-	NVIC_EnableIRQ(PWM1_IRQn);
+	Chip_PWM_Disable(LPC_PWM1);
+	horno_pwm.activo = false;
+
+	/* para asegurar apagar el PWM lo pasamos a GPIO con r de pulldown.
+	 * de lo contrario la salida puede quedar en alto cuando no es lo que queremos */
+	Chip_IOCON_PinMuxSet(LPC_IOCON, puerto_pwm.puerto, puerto_pwm.pin,
+			             IOCON_MODE_PULLDOWN | IOCON_FUNC0);
 }
 
 /*
