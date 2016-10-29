@@ -15,6 +15,7 @@
 #include "adc.h"
 #include "pwm.h"
 #include "grafico.h"
+#include "control.h"
 
 #define ADC_SIZE 4096		//tamaño del ADC
 #define ADC_REF  3.3		//tension de referencia de ADC
@@ -65,6 +66,9 @@ void Horno_adc_muestra_Handler(float temperatura) {
 
 	/* actualizar la pantalla */
 	Horno_grafico_temperatura((uint32_t)temperatura);
+	if (horno_pwm.activo) {
+		Horno_control_pi(temperatura);
+	}
 }
 
 /*
@@ -90,19 +94,22 @@ void Horno_adc_muestreo(void)
 			horno_adc.th_temperatura = th_line((float)horno_adc.th_valor);
 			horno_adc.temperatura = horno_adc.lm_temperatura + horno_adc.th_temperatura;
 
+			/* utilizamos la muestra */
+			Horno_adc_muestra_Handler(horno_adc.temperatura);
+
 			if (horno_adc.salida_uart) {
-				DEBUGOUT("%10d, %.2f, %.2f, %.2f, %d, %d, %.2f\r\n",
+				DEBUGOUT("%10d, %.2f, %.2f, %.2f, %d, %d, %.2f, %.2f, %.2f, %.2f\r\n",
 						horno_adc.valor_n,
 						horno_adc.temperatura,
 						horno_adc.th_temperatura,
 						horno_adc.lm_temperatura,
 						horno_adc.th_valor,
 						horno_adc.lm_valor,
-						horno_pwm.activo ? horno_pwm.dc : 0);
+						horno_pwm.activo ? horno_pwm.dc : 0,
+						horno_control.referencia,
+						horno_control.entrada,
+						horno_control.salida);
 			}
-
-			/* utilizamos la muestra */
-			Horno_adc_muestra_Handler(horno_adc.temperatura);
 
 			horno_adc.th_suma = 0;
 			horno_adc.lm_suma = 0;

@@ -26,7 +26,7 @@
 #include "delay.h"
 #include "pwm.h"
 #include "adc.h"
-
+#include "control.h"
 
 /* mensaje de inicio para mandar por el UART */
 static char mensaje_inicio[] =
@@ -105,7 +105,8 @@ int main(void) {
     		if (horno_pwm.activo) {
     			Horno_pwm_parar();
     		} else {
-    			Horno_pwm_ciclo(0.5);
+    			Horno_control_init();
+    			Horno_control_referencia(200);
     			Horno_pwm_inicio();
     		}
     		break;

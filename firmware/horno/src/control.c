@@ -5,42 +5,55 @@
  *      Author: Nico
  */
 
+#if defined(NO_BOARD_LIB)
+#include "chip.h"
+#else
+#include "board.h"
+#endif
+
+#include "control.h"
+#include "pwm.h"
+
 /* valores del PI */
 #define KP 5.23			// constante proporcional
 #define KI 9.9e-5		// constante integrador
-#define TS 0.1			// periodo de muestreo
+#define TS 1			// periodo de muestreo (segundos)
 
-#include "control.h"
-#include "adc.h"
-#include "pwm.h"
-
-
-
-/*
- * @brief se define PI discreto
- *
- * PI= Kp + Ki * Ts
- */
-void Horno_PI(void){
-	horno_pi.Kp= KP;
-	horno_pi.Ki= KI*TS;
-}
+/* constantes del PI discreto, usando la transformación bilineal */
+static const float kx = KI*TS*0.5 + KP, kx1 = KI*TS*0.5 - KP;
 
 /*
  * @brief Lazo de control PI
  */
-void Horno_control_pi(void){
-	horno_control.Err= horno_control.temp_set - horno_adc.temperatura ; // calculo de error
-	horno_control.PI_K= horno_pi.Kp*horno_control.Err;				// calculo de termino proporcional
-	horno_control.PI_I= horno_pi.Ki*horno_control.Err;				// calculo de termino integrador
-	horno_control.PI_Out= horno_control.PI_K + horno_control.PI_I;	// calculo de salida de PI
+void Horno_control_pi(float entrada) {
+	horno_control.entrada = horno_control.referencia - entrada;
+	horno_control.salida = horno_control.entrada * kx
+						   + horno_control.entrada_1 * kx1
+			               + horno_control.salida_1;
+
+	/* Actualizamos el PWM
+	 * Dado nuestro modelo de la planta, la salida es en tensión.
+	 * Escalamos para que 220V sean 100% del ciclo de trabajo del PWM */
+	Horno_pwm_ciclo(horno_control.salida / 220);
+
+	/* actualizamos las muestras anteriores */
+	horno_control.entrada_1 = horno_control.entrada;
+	horno_control.salida_1 = horno_control.salida;
 }
+
+void Horno_control_referencia(float ref)
+{
+	horno_control.referencia = ref;
+}
+
 /*
- * @brief Lazo de control P
+ * Inicialización de las variables del PI
  */
-void Horno_control_p(void){
-	horno_control.Err= horno_control.temp_set - horno_adc.temperatura; // calculo de error
-	horno_control.PI_Out= horno_pi.Kp*horno_control.Err;			   // calculo de termino proporcional
+void Horno_control_init(void) {
+	/* reiniciamos las variables a cero */
+	horno_control.referencia = 0;
+	horno_control.entrada = 0;
+	horno_control.entrada_1 = 0;
+	horno_control.salida = 0;
+	horno_control.salida_1 = 0;
 }
-
-
