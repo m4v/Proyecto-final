@@ -22,7 +22,7 @@
 #include "adc.h"
 #include "teclado.h"
 
-static ADC_CLOCK_SETUP_T ADCSetup;
+
 
 /*
  * Pin muxing configuration
@@ -160,18 +160,9 @@ void Horno_Init (void) {
 	Horno_delay_timer_Init();
 
 	Horno_Display_Init();
-
-	/* ADC Init */
-	Chip_ADC_Init(LPC_ADC, &ADCSetup);
-	Chip_ADC_EnableChannel(LPC_ADC, ADC_TH, ENABLE);
-	Chip_ADC_EnableChannel(LPC_ADC, ADC_LM35, ENABLE);
-	Chip_ADC_SetBurstCmd(LPC_ADC, ENABLE); // habilitar conversión continua
-
-	/*
-	 * Las interrupciones del SysTick son para muestrear con el ADC.
-	 */
+	Horno_adc_init();
+	/* Las interrupciones del SysTick son para muestrear con el ADC. */
 	Horno_systick_init(PERIODO_MUESTREO);
-
 	Horno_teclado_init();
 	Horno_motor_init();
 	Horno_pwm_init();

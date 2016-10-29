@@ -30,5 +30,6 @@ typedef struct {
 HORNO_PROMEDIO_T horno_adc;
 
 void Horno_adc_muestreo(void);
+void Horno_adc_init(void);
 
 #endif /* ADC_H_ */

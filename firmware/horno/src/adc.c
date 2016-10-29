@@ -11,6 +11,7 @@
 #include "board.h"
 #endif
 
+#include "init.h"
 #include "adc.h"
 #include "pwm.h"
 #include "grafico.h"
@@ -30,6 +31,8 @@ static const float a1=-0.007245, b1= 0.15911,  c1=23.6212,  d1=  1.0999;   // co
 static const float a2= 0.00252,  b2=-0.164398, c2=27.02517, d2=-10.04204;  // a.x^3+b.x^2+c.x+d
 static const float a3= 0.078896, b3=19.13545,  c3=75.8309;				   // a.x^2+b.x+d
 static const float a4=16.09,     b4=-3.429325;							   // coeficientes de lm35, a4.x+b
+
+static ADC_CLOCK_SETUP_T ADCSetup;
 
 /*
  * @brief Linealizacion para el calculo de temperatura de termocupla
@@ -99,6 +102,7 @@ void Horno_adc_muestreo(void)
 						horno_pwm.activo ? horno_pwm.dc : 0);
 			}
 
+			/* utilizamos la muestra */
 			Horno_adc_muestra_Handler(horno_adc.temperatura);
 
 			horno_adc.th_suma = 0;
@@ -108,6 +112,16 @@ void Horno_adc_muestreo(void)
 			horno_adc.valor_n++;
 		}
 	}
+}
+
+/*
+ * Iniciación del ADC
+ */
+void Horno_adc_init(void) {
+	Chip_ADC_Init(LPC_ADC, &ADCSetup);
+	Chip_ADC_EnableChannel(LPC_ADC, ADC_TH, ENABLE);
+	Chip_ADC_EnableChannel(LPC_ADC, ADC_LM35, ENABLE);
+	Chip_ADC_SetBurstCmd(LPC_ADC, ENABLE); // habilitar conversión continua
 }
 
 
