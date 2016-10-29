@@ -9,6 +9,7 @@
 #include "320240.h"
 #include "pwm.h"
 
+/* elegimos el TIMER a usar */
 #define _LPC_TIMER         LPC_TIMER0
 #define _TIMER_IRQn        TIMER0_IRQn
 #define _SYSCTL_PCLK_TIMER SYSCTL_PCLK_TIMER0
@@ -25,6 +26,7 @@
 #define bFILA3 7
 #define bFILA4 6
 
+/* defines para sacar la fila/columna de un número */
 #define GETCOL1(num) (num & (1<<bCOL1))
 #define GETCOL2(num) (num & (1<<bCOL2))
 #define GETCOL3(num) (num & (1<<bCOL3))
@@ -132,6 +134,7 @@ void TECLAA_Handler(void) {
 	Horno_pwm_ciclo(horno_pwm.dc);
 	Horno_pwm_inicio();
 	estado_pwm();
+	Horno_grafico_pwm_encendido(horno_pwm.activo);
 }
 
 void TECLAB_Handler(void) {
@@ -139,18 +142,21 @@ void TECLAB_Handler(void) {
 	Horno_pwm_parar();
 	estado_pwm(); // el estado lo reporta mal porque en realidad se apaga en la
 	              // siguiente interrupción
+	Horno_grafico_pwm_encendido(horno_pwm.activo);
 }
 
 void TECLAC_Handler(void) {
 	DEBUGOUT("C - ciclo de trabajo\n");
 	Horno_pwm_ciclo((float)(horno_keypad.dato_ingresado)/100.0);
 	estado_pwm();
+	Horno_grafico_pwm_ciclo(horno_pwm.dc);
 }
 
 void TECLAD_Handler(void) {
 	DEBUGOUT("D - periodo\n");
 	Horno_pwm_periodo(horno_keypad.dato_ingresado);
 	estado_pwm();
+	Horno_grafico_pwm_periodo(horno_pwm.periodo);
 }
 
 /* tecla asterisco */

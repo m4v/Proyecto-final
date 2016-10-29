@@ -222,8 +222,7 @@ void Horno_grafico_datos(uint32_t x, uint32_t y, uint32_t dato) {
 	}
 }
 
-/* Esta funcion pone los datos del programa en la parte izquierda */
-void Horno_grafico_datos_pwm( bool activo, uint32_t periodo, uint32_t dc){
+void Horno_grafico_pwm_encendido(bool activo) {
 	Put_string_waddr(1,4,"PWM:");
 	if(activo==1){
 		Put_string_waddr(14,4,"    ");
@@ -233,13 +232,26 @@ void Horno_grafico_datos_pwm( bool activo, uint32_t periodo, uint32_t dc){
 		Put_string_waddr(14,4,"    ");
 		Put_string_waddr(14,4,"OFF");
 	}
+}
+
+void Horno_grafico_pwm_periodo(uint32_t periodo) {
 	Put_string_waddr(1,6,"Periodo:");
 	Put_string_waddr(14,6,"    ");
 	Horno_grafico_datos_temperatura_ascenso(periodo);
 	Put_string_waddr(18,6,"ms");
+}
+
+void Horno_grafico_pwm_ciclo(float dc){
 	Put_string_waddr(1,8,"C. Trabajo:");
 	Put_string_waddr(14,8,"    ");
 	Horno_grafico_datos_tiempo_coccion((int)100*(dc));
 	Put_string_waddr(18,8,"%");
+}
+
+/* Esta funcion pone los datos del programa en la parte izquierda */
+void Horno_grafico_datos_pwm( bool activo, uint32_t periodo, float dc){
+	Horno_grafico_pwm_encendido(activo);
+	Horno_grafico_pwm_periodo(periodo);
+	Horno_grafico_pwm_ciclo(dc);
 }
 

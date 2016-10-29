@@ -31,6 +31,10 @@ void Horno_grafico_entero(uint32_t y, uint32_t dato);
 
 void Horno_grafico_datos(uint32_t x, uint32_t y, uint32_t dato);
 
-void Horno_grafico_datos_pwm( bool activo, uint32_t periodo, uint32_t dc);
+void Horno_grafico_datos_pwm( bool activo, uint32_t periodo, float dc);
+
+void Horno_grafico_pwm_encendido(bool activo);
+void Horno_grafico_pwm_periodo(uint32_t periodo);
+void Horno_grafico_pwm_ciclo(float dc);
 
 #endif /* GRAFICO_H_ */
