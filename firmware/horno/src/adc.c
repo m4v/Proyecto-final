@@ -12,6 +12,8 @@
 #endif
 
 #include "adc.h"
+#include "pwm.h"
+#include "grafico.h"
 
 #define ADC_SIZE 4096		//tamaño del ADC
 #define ADC_REF  3.3		//tension de referencia de ADC
@@ -47,57 +49,66 @@ float th_line(float valor) {
  * @brief Calcula valor de temperatura en C segun valores del ADC
  */
 float lm_line(float valor) {
-		float tension = valor*K_LM;
-		return a4*tension + b4;
+	float tension = valor*K_LM;
+	return a4*tension + b4;
 }
 
-/* rutina de interrupción del systick */
-void SysTick_Handler(void)
+/*
+ * @brief Esta función se ejecuta cada vez que se obtiene una nueva muestra de
+ *        temperatura, y aquí se procesa.
+ * @param temperatura: Temperatura en grados celsius
+ */
+void Horno_adc_muestra_Handler(float temperatura) {
+
+	/* actualizar la pantalla */
+	Horno_grafico_temperatura((uint32_t)temperatura);
+}
+
+/*
+ * @brief Función que muestrea, promedia y calcula la temperatura desde ADC.
+ *        Esta función es llamada en cada interrupción del SYSTICK.
+ */
+void Horno_adc_muestreo(void)
 {
-	if (adc_enabled) {
-		if (!adc_continue) {
-			if (horno_adc.valor_n > NUM_MUESTRAS_CAPTURA) {
-				adc_enabled = false;
-				Board_LED_Set(0, false);
-			}
-			Chip_ADC_SetStartMode(LPC_ADC, ADC_START_NOW, ADC_TRIGGERMODE_RISING);
-			if(Chip_ADC_ReadStatus(LPC_ADC, ADC_CHANNEL, ADC_DR_DONE_STAT) == SET) {
-				Chip_ADC_ReadValue(LPC_ADC, ADC_CHANNEL, &muestras[horno_adc.valor_n++]);
-			}
-		} else {
-			/* captura continua */
-			if(Chip_ADC_ReadStatus(LPC_ADC, ADC_LM35, ADC_DR_DONE_STAT) == SET) {
-				uint16_t muestra;
-				Chip_ADC_ReadValue(LPC_ADC, ADC_TH, &muestra);
-				horno_adc.th_suma += muestra;
-				horno_adc.th_cantidad++;
-				Chip_ADC_ReadValue(LPC_ADC, ADC_LM35, &muestra);
-				horno_adc.lm_suma += muestra;
-				horno_adc.lm_cantidad++;
-				if (horno_adc.lm_cantidad >= NUM_MUESTRAS_ADC) {
-					/* hacemos el promedio */
-					horno_adc.th_valor = horno_adc.th_suma / horno_adc.th_cantidad;
-					horno_adc.lm_valor = horno_adc.lm_suma / horno_adc.lm_cantidad;
+	if(Chip_ADC_ReadStatus(LPC_ADC, ADC_LM35, ADC_DR_DONE_STAT) == SET) {
+		uint16_t muestra;
+		Chip_ADC_ReadValue(LPC_ADC, ADC_TH, &muestra);
+		horno_adc.th_suma += muestra;
+		horno_adc.th_cantidad++;
+		Chip_ADC_ReadValue(LPC_ADC, ADC_LM35, &muestra);
+		horno_adc.lm_suma += muestra;
+		horno_adc.lm_cantidad++;
+		if (horno_adc.lm_cantidad >= NUM_MUESTRAS_ADC) {
+			/* hacemos el promedio */
+			horno_adc.th_valor = horno_adc.th_suma / horno_adc.th_cantidad;
+			horno_adc.lm_valor = horno_adc.lm_suma / horno_adc.lm_cantidad;
 
-					/* linealizamos */
-					horno_adc.lm_temperatura = lm_line((float)horno_adc.lm_valor);
-					horno_adc.th_temperatura = th_line((float)horno_adc.th_valor);
-					horno_adc.temperatura = horno_adc.lm_temperatura + horno_adc.th_temperatura;
+			/* linealizamos */
+			horno_adc.lm_temperatura = lm_line((float)horno_adc.lm_valor);
+			horno_adc.th_temperatura = th_line((float)horno_adc.th_valor);
+			horno_adc.temperatura = horno_adc.lm_temperatura + horno_adc.th_temperatura;
 
-
-					DEBUGOUT("%10d, %.2f, %.2f, %.2f, %d, %d\r\n", horno_adc.valor_n,
-														   horno_adc.temperatura,
-							                               horno_adc.th_temperatura,
-							                               horno_adc.lm_temperatura,
-														   horno_adc.th_valor,
-														   horno_adc.lm_valor);
-					horno_adc.th_suma = 0;
-					horno_adc.th_cantidad = 0;
-					horno_adc.lm_suma = 0;
-					horno_adc.lm_cantidad = 0;
-					horno_adc.valor_n++;
-				}
+			if (horno_adc.salida_uart) {
+				DEBUGOUT("%10d, %.2f, %.2f, %.2f, %d, %d, %.2f\r\n",
+						horno_adc.valor_n,
+						horno_adc.temperatura,
+						horno_adc.th_temperatura,
+						horno_adc.lm_temperatura,
+						horno_adc.th_valor,
+						horno_adc.lm_valor,
+						horno_pwm.activo ? horno_pwm.dc : 0);
 			}
+
+			/* usar el LED para indicar que tomamos una muestra */
+			Board_LED_Toggle(0);
+
+			Horno_adc_muestra_Handler(horno_adc.temperatura);
+
+			horno_adc.th_suma = 0;
+			horno_adc.th_cantidad = 0;
+			horno_adc.lm_suma = 0;
+			horno_adc.lm_cantidad = 0;
+			horno_adc.valor_n++;
 		}
 	}
 }

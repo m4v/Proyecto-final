@@ -22,6 +22,7 @@ uint16_t muestras[NUM_MUESTRAS_CAPTURA];
 
 
 typedef struct {
+	bool     salida_uart;       // si imprime los datos del AD al UART
 	uint32_t th_suma;			// suma accumulada del valor del AD (para hacer el promedio)
 	uint32_t th_cantidad;       // cantidad de valores sumados
 	uint16_t th_valor;          // valor del AD promediado
@@ -35,5 +36,7 @@ typedef struct {
 } HORNO_PROMEDIO_T;
 
 HORNO_PROMEDIO_T horno_adc;
+
+void Horno_adc_muestreo(void);
 
 #endif /* ADC_H_ */

@@ -19,6 +19,7 @@
 #include "320240.h"
 #include "motor.h"
 #include "pwm.h"
+#include "adc.h"
 #include "teclado.h"
 
 static ADC_CLOCK_SETUP_T ADCSetup;
@@ -141,6 +142,9 @@ void Horno_systick_init(uint32_t ms)
 	SysTick_Config(ticks);
 }
 
+void SysTick_Handler(void) {
+	Horno_adc_muestreo ();
+}
 
 /*
  * Función de inicialización del horno.
