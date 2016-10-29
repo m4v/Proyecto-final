@@ -15,17 +15,17 @@ typedef struct{
 	float PI_K;			// valor de termino proporcional
 	float temp_set;		// valor de temperatura de referencia (entrada al lazo de control)
 	float PI_Out;		// valor de control -  esto es lo que traducir en ciclos de pwm
-} HORNO_CONTROL;
+} HORNO_CONTROL_T;
 
- HORNO_CONTROL horno_control;
+ HORNO_CONTROL_T horno_control;
 
 /* estructura con valores de PI */
 typedef struct{
 	float Kp;
 	float Ki;
-} HORNO_PI;
+} HORNO_PI_T;
 
-HORNO_PI horno_pi;
+HORNO_PI_T horno_pi;
 
 
 void Horno_PI(void);
