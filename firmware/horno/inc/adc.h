@@ -16,11 +16,10 @@
 typedef struct {
 	bool     salida_uart;       // si imprime los datos del AD al UART
 	uint32_t th_suma;			// suma accumulada del valor del AD (para hacer el promedio)
-	uint32_t th_cantidad;       // cantidad de valores sumados
 	uint16_t th_valor;          // valor del AD promediado
 	uint32_t lm_suma;			// lo mismo para lm
-	uint32_t lm_cantidad;
 	uint16_t lm_valor;
+	uint32_t suma_cantidad;     // cantidad de valores sumados
 	uint32_t valor_n;           // número del último valor obtenido
 	float    th_temperatura;	// valor de temperatura de termocupla actual en gr C
 	float 	 lm_temperatura;

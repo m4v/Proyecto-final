@@ -77,14 +77,13 @@ void Horno_adc_muestreo(void)
 		uint16_t muestra;
 		Chip_ADC_ReadValue(LPC_ADC, ADC_TH, &muestra);
 		horno_adc.th_suma += muestra;
-		horno_adc.th_cantidad++;
 		Chip_ADC_ReadValue(LPC_ADC, ADC_LM35, &muestra);
 		horno_adc.lm_suma += muestra;
-		horno_adc.lm_cantidad++;
-		if (horno_adc.lm_cantidad >= NUM_MUESTRAS_ADC) {
+		horno_adc.suma_cantidad++;
+		if (horno_adc.suma_cantidad >= NUM_MUESTRAS_ADC) {
 			/* hacemos el promedio */
-			horno_adc.th_valor = horno_adc.th_suma / horno_adc.th_cantidad;
-			horno_adc.lm_valor = horno_adc.lm_suma / horno_adc.lm_cantidad;
+			horno_adc.th_valor = horno_adc.th_suma / horno_adc.suma_cantidad;
+			horno_adc.lm_valor = horno_adc.lm_suma / horno_adc.suma_cantidad;
 
 			/* linealizamos */
 			horno_adc.lm_temperatura = lm_line((float)horno_adc.lm_valor);
@@ -106,9 +105,8 @@ void Horno_adc_muestreo(void)
 			Horno_adc_muestra_Handler(horno_adc.temperatura);
 
 			horno_adc.th_suma = 0;
-			horno_adc.th_cantidad = 0;
 			horno_adc.lm_suma = 0;
-			horno_adc.lm_cantidad = 0;
+			horno_adc.suma_cantidad = 0;
 			horno_adc.valor_n++;
 		}
 	}
