@@ -12,8 +12,7 @@
 #endif
 
 #include "pwm.h"
-
-#define PWM_PERIODO 500
+#include "init.h"
 
 typedef struct {
 	uint32_t puerto:3;
