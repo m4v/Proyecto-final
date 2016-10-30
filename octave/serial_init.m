@@ -20,3 +20,15 @@ try
 catch
   fd = serial("/dev/ttyUSB1", 115200);
 end
+
+function s = read_linea(fd)
+  s = "";
+  while(1)
+    c = char(srl_read(fd, 1));
+    if (c == "\n")
+      s = strcat(s, "\n");
+      return
+    end
+    s = strcat(s, c);
+  end
+end
