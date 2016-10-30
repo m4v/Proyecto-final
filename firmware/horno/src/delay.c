@@ -53,7 +53,8 @@ void Horno_udelay(uint32_t usec)
 
 	/* Esperamos hasta que llegue la interrupción */
 	while (1) {
-		__WFI();		if (delay_enabled == false) {
+		__WFI();
+		if (delay_enabled == false) {
 			break;
 		}
 	}
