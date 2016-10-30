@@ -98,7 +98,7 @@ void Horno_adc_muestreo(void)
 			Horno_adc_muestra_Handler(horno_adc.temperatura);
 
 			if (horno_adc.salida_uart) {
-				DEBUGOUT("%10d, %.2f, %.2f, %.2f, %d, %d, %.2f, %.2f, %.2f, %.2f\r\n",
+				DEBUGOUT("%d, %.2f, %.2f, %.2f, %d, %d, %.4f, %.2f, %.2f, %.2f\r\n",
 						horno_adc.valor_n,
 						horno_adc.temperatura,
 						horno_adc.th_temperatura,
