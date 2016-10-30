@@ -27,6 +27,9 @@ static const float kx = KI*TS*0.5 + KP, kx1 = KI*TS*0.5 - KP;
  * @brief Lazo de control PI
  */
 void Horno_control_pi(float entrada) {
+	if (!horno_control.activo) {
+		return;
+	}
 	horno_control.entrada = horno_control.referencia - entrada;
 	horno_control.salida = horno_control.entrada * kx
 						   + horno_control.entrada_1 * kx1
@@ -50,11 +53,14 @@ void Horno_control_referencia(float ref)
 /*
  * Inicialización de las variables del PI
  */
-void Horno_control_init(void) {
-	/* reiniciamos las variables a cero */
-	horno_control.referencia = 0;
-	horno_control.entrada = 0;
-	horno_control.entrada_1 = 0;
-	horno_control.salida = 0;
-	horno_control.salida_1 = 0;
+void Horno_control_activar(bool activar)
+{
+	if (activar) {
+		/* reiniciamos las variables a cero */
+		horno_control.entrada = 0;
+		horno_control.entrada_1 = 0;
+		horno_control.salida = 0;
+		horno_control.salida_1 = 0;
+	}
+	horno_control.activo = activar;
 }

@@ -104,11 +104,18 @@ int main(void) {
     	case 'P':
     		if (horno_pwm.activo) {
     			Horno_pwm_parar();
+    			Horno_control_activar(false);
+    			DEBUGOUT("PWM y PI inactivos\n");
     		} else {
-    			Horno_control_init();
     			Horno_control_referencia(200);
+    			Horno_control_activar(true);
     			Horno_pwm_inicio();
+    			DEBUGOUT("PWM y PI activos\n");
     		}
+    		break;
+    	case 'L':
+    		Horno_control_activar(!horno_control.activo);
+    		DEBUGOUT("PI activo: %d\n", horno_control.activo);
     		break;
     	case 'R':
     		horno_adc.valor_n = 0;

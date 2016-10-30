@@ -10,6 +10,7 @@
 
 /* estructura con valores del lazo de control*/
 typedef struct{
+	bool activo;
 	float referencia;	// valor de temperatura de referencia
 	float entrada;      // valor de la entrada del PI
 	float entrada_1;    // valor de la entrada del PI una muestra anterior
@@ -21,6 +22,6 @@ HORNO_CONTROL_T horno_control;
 
 void Horno_control_pi(float entrada);
 void Horno_control_referencia(float ref);
-void Horno_control_init(void);
+void Horno_control_activar(bool activar);
 
 #endif /* CONTROL_H_ */
