@@ -36,8 +36,12 @@ unwind_protect
   while(1)
     % leemos una línea
     str = read_linea(fd);
-    [n, T, Tth, Tlm, ADth, ADlm, DC, REF, PIx, PIy ] = strread(str, 
-          "%f, %f, %f, %f, %f, %f, %f, %f, %f, %f");
+    try
+      [n, T, Tth, Tlm, ADth, ADlm, DC, REF, PIx, PIy ] = strread(str, 
+            "%f, %f, %f, %f, %f, %f, %f, %f, %f, %f");
+    catch
+      continue
+    end
     t(i) = n * Tm;
     temp(i) = T;
     tempth(i) = Tth;
