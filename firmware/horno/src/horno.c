@@ -110,6 +110,9 @@ int main(void) {
     			Horno_pwm_inicio();
     		}
     		break;
+    	case 'R':
+    		horno_adc.valor_n = 0;
+    		break;
     	case 'h':
     		DEBUGOUT(mensaje_menu);
     		break;
