@@ -13,11 +13,12 @@
 
 #include "control.h"
 #include "pwm.h"
+#include "init.h"
 
 /* valores del PI */
-#define KP 5.23			// constante proporcional
-#define KI 9.9e-5		// constante integrador
-#define TS 1			// periodo de muestreo (segundos)
+#define KP 5.23			    // constante proporcional
+#define KI 9.9e-5		    // constante integrador
+#define TS PERIODO_PROMEDIO // periodo de muestreo (segundos)
 
 /* constantes del PI discreto, usando la transformación bilineal */
 static const float kx = KI*TS*0.5 + KP, kx1 = KI*TS*0.5 - KP;
