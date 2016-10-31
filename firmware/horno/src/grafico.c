@@ -188,7 +188,8 @@ void Horno_grafico_CLR_digito(uint32_t x, uint32_t y) {
 }
 
 void Horno_grafico_entero(uint32_t y, uint32_t dato){
-   	uint32_t pos[4]={245, 220, 195, 170};
+	Put_string_waddr(21,1,"TEMPERATURA: ");
+	uint32_t pos[4]={245, 220, 195, 170};
 	uint32_t numero=dato;
 	if (numero>=9999){
 	   	for(int i=0;i<4;i++){
@@ -258,4 +259,6 @@ void Horno_grafico_datos_pwm( bool activo, uint32_t periodo, float dc){
 	Horno_grafico_pwm_periodo(periodo);
 	Horno_grafico_pwm_ciclo(dc);
 }
+
+
 
