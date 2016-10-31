@@ -404,8 +404,6 @@ void Horno_Display_Test(void){
 
 	static_curve_wsqare();	// Curva de trabajo + recuadros
 
-	Put_string_waddr(21,1,"TEMPERATURA: ");
-	Put_string_waddr(21,8,"TIEMPO RESTANTE: ");
 	/* Escribir en el 1er recuadro */
 	// Ponemos curso en el 1er layer (texto)
 	/* Cosas a tener en cuenta:
@@ -417,8 +415,8 @@ void Horno_Display_Test(void){
 	 *  */
 
 	/* Textos chicos */
-	Put_string_waddr(1,1,"DATOS del PROGRAMA");
-	Put_string_waddr(1,2,"==================");
+//	Put_string_waddr(1,1,"DATOS del PROGRAMA");
+//	Put_string_waddr(1,2,"==================");
 
 //	Put_string_waddr(1,4,"Pend. Max.:");
 //	Horno_grafico_datos_pendiente(7665);
