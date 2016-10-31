@@ -168,46 +168,6 @@ void Clr_pixel(uint32_t x, uint32_t y){
 	Parameter_Write(0x00<<temp);
 }
 
-/* Hace un rectánculo de las dimensiones indicadas, comenzando en el (0,0) */
-void Put_rectangle(uint32_t width, uint32_t height){
-/*
-	Command_Write(CSR_WRITE); // Ponemos el cursor en el comienzo del 2do layer <- Capa GRAFICA!
-	Parameter_Write(0x00); //P1 -- LSB
-	Parameter_Write(0x10); //P2 -- MSB
-//	Command_Write(MEM_WRITE); // Avisamos que vamos a escribir
-	int x = width;
-	int y = height;
-
-	for(int j=0;j<x;j++){
-		Command_Write(MEM_WRITE);
-		Parameter_Write(0xFF);}
-	for (int i=1; i<y; i++){
-		// Incremento una posición en y
-		Set_graphic_position(0,i);
-				Command_Write(MEM_WRITE);
-				Parameter_Write(0x80);
-		Set_graphic_position(x*8,i);
-				Command_Write(MEM_WRITE);
-				Parameter_Write(0x01);
-	}
-	Set_graphic_position(0,y);
-	for(int j=0;j<x;j++){
-
-		Command_Write(MEM_WRITE);
-		Parameter_Write(0xFF);}
-*/
-	for(int i=0;i<width;i++){	Put_pixel(i,0);}		// Arista superior
-	for(int j=0;j<height;j++){	Put_pixel(0,j);}		// Arista izquierda
-	for(int j=0;j<height;j++){	Put_pixel(width,j);}	// Arista derecha
-	for(int i=0;i<width;i++){	Put_pixel(i,height);}	// Arista inferior
-}
-
-/* Rellena rectángulo. Lo mismo que crear un cuadrado */
-void Fill_rectangle(uint32_t width, uint32_t height){
-	// acá iria donde acomodamos la dirección
-	Set_graphic_position(width/8,height);
-}
-
 /* Pone una línea que comienza en (x,y) y de longitud 'largo' */
 void Put_line( int x, uint32_t y, uint32_t largo){
 	char pp=(0x80>>(x%8)); // pixel inicial
@@ -316,81 +276,6 @@ void static_curve_wsqare(){
 		}
 		Put_line_waddr(0,0,0,120,320);// Linea horizontal en el medio
 		Put_line_waddr(0,0,0,239,320);// Linea horizontal al final
-}
-
-void Set_arrow(int x0,int y0){
-	/* vuelvo a poner la posición en la 2da layer */
-	Command_Write(CSR_WRITE);
-	Parameter_Write(0x00);
-	Parameter_Write(0x10);
-	/* escribo la flecha */
-	for(int i=0;i<5;i++){
-		Put_line_waddr(x0,y0,x0+2,i,4);
-		int p=(12-2*(i));
-		Put_line_waddr(x0,y0,(x0-2+i),i+5,p);
-		}
-}
-
-void Clear_arrow(int x0,int y0){
-	/* vuelvo a poner la posición en la 2da layer */
-	Command_Write(CSR_WRITE);
-	Parameter_Write(0x00);
-	Parameter_Write(0x10);
-	for(int i=0;i<5;i++){
-		Clear_line_waddr(x0,y0,x0+2,i,4);
-		int p=(12-2*(i));
-		Clear_line_waddr(x0,y0,(x0-2+i),i+5,p);
-		}
-}
-
-void Flechita_moviendose(void){
-	int y;
-	int x;
-	// 1er pendiente
-	for(int i=0;i<20;i++){
-		x=(2+i);
-		y=213-(1.8*i);
-		/* Pongo la flecha */
-		Set_arrow(x, y);
-		Horno_udelay(1e5);
-		/* Borro la flecha */
-		Clear_arrow(x,y);
-	}
-
-	// 1er constante
-	for(int i=0;i<35;i++){
-		x=(30+i);
-		y=170;
-		/* Pongo la flecha */
-		Set_arrow(x, y);
-		Horno_udelay(1e5);
-		/* Borro la flecha */
-		Clear_arrow(x,y);
-	}
-
-
-
-	// 2da pendiente
-	for(int i=0;i<25;i++){
-		x=(70+1.4*i);
-		y=170-(1.8*i);
-		/* Pongo la flecha */
-		Set_arrow(x, y);
-		Horno_udelay(1e5);
-		/* Borro la flecha */
-		Clear_arrow(x,y);
-	}
-
-	// 2da constante
-	for(int i=0;i<30;i++){
-		x=(110+i);
-		y=121;
-		/* Pongo la flecha */
-		Set_arrow(x, y);
-		Horno_udelay(1e5);
-		/* Borro la flecha */
-		Clear_arrow(x,y);
-	}
 }
 
 void Put_string_waddr(int x, int y, char *str){
@@ -552,9 +437,5 @@ void Horno_Display_Test(void){
 //	Put_string_waddr(18,12,"`C");
 
 	Horno_grafico_datos_pwm( horno_pwm.activo,horno_pwm.periodo, horno_pwm.dc);
-
-
-//	Flechita_moviendose();	// Con esto la flechita se mueve por toda la curva
-
 
 }
