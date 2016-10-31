@@ -59,6 +59,7 @@ typedef struct {
 
 static HORNO_TECLADO_T horno_keypad = { 0, 0 };
 static uint32_t counter;
+static bool A_status=false;
 
 void TECLA1_Handler(void) {
 	DEBUGOUT("1");
@@ -130,19 +131,26 @@ void estado_pwm(void) {
 }
 
 void TECLAA_Handler(void) {
-	DEBUGOUT("A - inicio PWM\n");
-	Horno_pwm_ciclo(horno_pwm.dc);
-	Horno_pwm_inicio();
-	estado_pwm();
-	Horno_grafico_pwm_encendido(horno_pwm.activo);
+	if (A_status==false){
+		DEBUGOUT("A - inicio PWM\n");
+		Horno_pwm_ciclo(horno_pwm.dc);
+		Horno_pwm_inicio();
+		estado_pwm();
+		Horno_grafico_pwm_encendido(horno_pwm.activo);
+		A_status=true;
+	}
+	else if (A_status==true){
+		DEBUGOUT("B - parar PWM\n");
+		Horno_pwm_parar();
+		estado_pwm(); // el estado lo reporta mal porque en realidad se apaga en la
+					  // siguiente interrupción
+		Horno_grafico_pwm_encendido(horno_pwm.activo);
+		A_status=false;
+	}
 }
 
 void TECLAB_Handler(void) {
-	DEBUGOUT("B - parar PWM\n");
-	Horno_pwm_parar();
-	estado_pwm(); // el estado lo reporta mal porque en realidad se apaga en la
-	              // siguiente interrupción
-	Horno_grafico_pwm_encendido(horno_pwm.activo);
+
 }
 
 void TECLAC_Handler(void) {
