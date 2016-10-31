@@ -251,6 +251,9 @@ void Horno_grafico_pwm_ciclo(float dc){
 
 /* Esta funcion pone los datos del programa en la parte izquierda */
 void Horno_grafico_datos_pwm( bool activo, uint32_t periodo, float dc){
+	Put_string_waddr(1,1,"DATOS del PWM");
+	Put_string_waddr(1,2,"=============");
+
 	Horno_grafico_pwm_encendido(activo);
 	Horno_grafico_pwm_periodo(periodo);
 	Horno_grafico_pwm_ciclo(dc);
