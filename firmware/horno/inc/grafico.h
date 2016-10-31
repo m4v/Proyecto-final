@@ -8,7 +8,6 @@
 #ifndef GRAFICO_H_
 #define GRAFICO_H_
 
-#define Horno_grafico_temperatura(temp) Horno_grafico_entero(20, temp)
 //#define Horno_grafico_tiempo(tiemp) Horno_grafico_entero(75, tiemp)
 
 
@@ -28,6 +27,8 @@ void Horno_grafico_flecha(uint32_t x, uint32_t y);
 void Horno_grafico_CLR_flecha(uint32_t x, uint32_t y);
 
 void Horno_grafico_entero(uint32_t y, uint32_t dato);
+void Horno_grafico_temperatura(uint32_t temp);
+void Horno_grafico_tiempo(uint32_t tiempo);
 
 void Horno_grafico_datos(uint32_t x, uint32_t y, uint32_t dato);
 
@@ -36,5 +37,7 @@ void Horno_grafico_datos_pwm( bool activo, uint32_t periodo, float dc);
 void Horno_grafico_pwm_encendido(bool activo);
 void Horno_grafico_pwm_periodo(uint32_t periodo);
 void Horno_grafico_pwm_ciclo(float dc);
+
+
 
 #endif /* GRAFICO_H_ */
