@@ -71,8 +71,6 @@ int main(void) {
 
    	DEBUGOUT(mensaje_menu);
 
-   	Horno_grafico_digito(270,20,10); /* gráfico del "°C" que no cambia */
-
    	/* bucle principal */
    	while(1){
     	charUART = DEBUGIN();

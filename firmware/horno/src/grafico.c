@@ -208,6 +208,7 @@ void Horno_grafico_entero(uint32_t y, uint32_t dato){
 	   		numero=numero/10;
 			}
 		}
+   	Horno_grafico_digito(270,20,10);
 	}
 
 void Horno_grafico_datos(uint32_t x, uint32_t y, uint32_t dato) {
