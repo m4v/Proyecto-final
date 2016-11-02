@@ -4,27 +4,24 @@ serial_init
 
 % creamos nuestras figuras
 clf
-subplot(3, 1, 1);
+subplot(2, 1, 1);
 h1 = plot(1, 1, 'xb;temperatura;');
 legend('location', 'northwest');
 hold on
 h2 = plot(1, 1, '-r;referencia;');
 grid on
-subplot(3, 1, 2);
+subplot(2, 1, 2);
 h3 = plot(1, 1, '-r;salida PI;');
 legend('location', 'northwest');
 hold on
 h4 = plot(1, 1, '-b;salida PI (saturacin);');
 grid on
-subplot(3, 1, 3);
-h5 = plot(1, 1, '-b;ciclo de trabajo;');
-legend('location', 'northwest');
-grid on
 
 log = fopen("registro.log", "a");
 fwrite(log, sprintf("-Inicio del registro de captura %s\r\n", fecha()));
 
-srl_write(fd, "cP"); % iniciar captura
+srl_write(fd, sprintf("S%d\n", referencia)); % valor del escalon
+srl_write(fd, "cPL"); % iniciar captura
 Tm = 1; % en este modo el muestreo es cada seg
 if (exist("i", "var"))
   i = length(t);
@@ -56,7 +53,6 @@ unwind_protect
     set(h2, 'XData', t, 'YData', ref);
     set(h3, 'XData', t, 'YData', piy);
     set(h4, 'XData', t, 'YData', piys);
-    set(h5, 'XData', t, 'YData', dc);
     drawnow;
     %guardamos un registro
     fwrite(log, str);
@@ -67,7 +63,7 @@ unwind_protect
   end
 unwind_protect_cleanup
   % Ctrl-C, detener y cerrar la conección
-  srl_write(fd, "cP");
+  srl_write(fd, "cPL");
   fclose(fd);
   fwrite(log, sprintf("-Fin de la captura %s\r\n", fecha()));
   fclose(log);
