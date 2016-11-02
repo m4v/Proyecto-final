@@ -9,7 +9,7 @@ function n = a_numero(a)
 end
 
 function s = fecha()
-  s = sprintf("%s_%s", date, strftime("%H:%M:%S", localtime(time)));
+  s = sprintf("%s_%s", date, strftime("%H%M%S", localtime(time)));
 end
 
 Tm = 100e-3;          % periodo de muestreo

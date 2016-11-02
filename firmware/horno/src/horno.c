@@ -101,18 +101,34 @@ int main(void) {
     	case 'P':
     		if (horno_pwm.activo) {
     			Horno_pwm_parar();
-    			Horno_control_activar(false);
-    			DEBUGOUT("PWM y PI inactivos\n");
+    			DEBUGOUT("PWM inactivo\n");
     		} else {
-    			Horno_control_referencia(200);
-    			Horno_control_activar(true);
     			Horno_pwm_inicio();
-    			DEBUGOUT("PWM y PI activos\n");
+    			DEBUGOUT("PWM activo\n");
     		}
     		break;
     	case 'L':
     		Horno_control_activar(!horno_control.activo);
+//    		if (horno_control.activo) {
+//    			Horno_control_referencia(200);
+//    		}
     		DEBUGOUT("PI activo: %d\n", horno_control.activo);
+    		break;
+    	case 'S':
+    		DEBUGOUT("Ingrese temperatura de referencia: ");
+    		uint32_t ref = 0;
+    		while(1) {
+    			uint8_t c = DEBUGIN();
+    			if (((c > 47) && (c < 58)) || (c == '\n')) {
+					DEBUGOUT("%c", c);
+					if (c == '\n') {
+						break;
+					}
+					ref = (ref*10) + c - 48;
+    			}
+    		}
+    		DEBUGOUT("Valor ingresado: %d\n", ref);
+    		Horno_control_referencia((float)ref);
     		break;
     	case 'R':
     		horno_adc.valor_n = 0;
