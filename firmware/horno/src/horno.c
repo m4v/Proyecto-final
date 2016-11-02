@@ -71,8 +71,15 @@ int main(void) {
 
    	DEBUGOUT(mensaje_menu);
 
+   	uint32_t tiempo=6789;
+  	Horno_grafico_tiempo(tiempo);
+
+
+
    	/* bucle principal */
    	while(1){
+
+
     	charUART = DEBUGIN();
     	switch(charUART) {
     	case 'c':
