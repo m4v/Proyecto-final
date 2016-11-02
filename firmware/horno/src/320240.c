@@ -16,6 +16,7 @@
 #include "320240.h"
 #include "grafico.h"
 #include "pwm.h"
+#include "control.h"
 /* Defines */
 
 #define LAYER2_ADDRESS 0x1000
@@ -434,6 +435,6 @@ void Horno_Display_Test(void){
 //	Horno_grafico_datos_temperatura_coccion(6543);
 //	Put_string_waddr(18,12,"`C");
 
-	Horno_grafico_datos_pwm( horno_pwm.activo,horno_pwm.periodo, horno_pwm.dc);
+	Horno_grafico_datos_pwm( horno_pwm.activo,horno_pwm.periodo, horno_pwm.dc, horno_control.referencia);
 
 }

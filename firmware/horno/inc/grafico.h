@@ -16,6 +16,7 @@
 #define Horno_grafico_datos_tiempo_coccion(dato)		Horno_grafico_datos(14,8,dato)
 #define Horno_grafico_datos_temperatura_secado(dato)	Horno_grafico_datos(14,10,dato)
 #define Horno_grafico_datos_temperatura_coccion(dato)	Horno_grafico_datos(14,12,dato)
+#define Horno_grafico_datos_PI_referencia(dato)	Horno_grafico_datos(14,10,dato)
 
 
 void Horno_grafico_digito(uint32_t x, uint32_t y, uint32_t num);
@@ -32,11 +33,12 @@ void Horno_grafico_tiempo(uint32_t tiempo);
 
 void Horno_grafico_datos(uint32_t x, uint32_t y, uint32_t dato);
 
-void Horno_grafico_datos_pwm( bool activo, uint32_t periodo, float dc);
+void Horno_grafico_datos_pwm( bool activo, uint32_t periodo, float dc, float referencia);
 
 void Horno_grafico_pwm_encendido(bool activo);
 void Horno_grafico_pwm_periodo(uint32_t periodo);
 void Horno_grafico_pwm_ciclo(float dc);
+void Horno_grafico_control_referencia(float ref);
 
 
 

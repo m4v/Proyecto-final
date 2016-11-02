@@ -8,6 +8,7 @@
 #include "grafico.h"
 #include "320240.h"
 #include "pwm.h"
+#include "control.h"
 
 /* elegimos el TIMER a usar */
 #define _LPC_TIMER         LPC_TIMER0
@@ -138,7 +139,7 @@ void TECLAA_Handler(void) {
 		Horno_grafico_pwm_encendido(horno_pwm.activo);
 	}
 	else {
-		DEBUGOUT("B - parar PWM\n");
+		DEBUGOUT("A - parar PWM\n");
 		Horno_pwm_parar();
 		estado_pwm(); // el estado lo reporta mal porque en realidad se apaga en la
 					  // siguiente interrupción
@@ -147,6 +148,10 @@ void TECLAA_Handler(void) {
 }
 
 void TECLAB_Handler(void) {
+	DEBUGOUT("B - setear referencia\n");
+	Horno_control_referencia((float)horno_keypad.dato_ingresado);
+	Horno_grafico_control_referencia(horno_control.referencia);
+
 }
 
 void TECLAC_Handler(void) {

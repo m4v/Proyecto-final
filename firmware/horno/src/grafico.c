@@ -211,6 +211,40 @@ void Horno_grafico_entero(uint32_t y, uint32_t dato){
    	Horno_grafico_digito(270,20,10);
 	}
 
+void Horno_grafico_entero_tiempo(uint32_t y, uint32_t tiempo){
+//	uint32_t pos[4]={260, 235, 195, 170}; // Esto es para poner Hrs y Mins
+	uint32_t pos[4]={245, 220, 195, 170};
+	uint32_t numero=tiempo;
+	if (numero>=9999){
+	   	for(int i=0;i<4;i++){
+	   		Horno_grafico_digito(pos[i], y, 9);
+	   	}
+	}
+	else if(numero==0){
+   		Horno_grafico_digito(pos[0], y, 0);
+	}
+	else {
+		int i=0;
+		while(numero!=0)
+		{
+			int temp=numero%10;
+	   		Horno_grafico_digito(pos[i], y, temp);
+	   		i++;
+	   		numero=numero/10;
+			}
+		}
+//	Put_string_waddr(27,10,"H");
+//	Put_string_waddr(27,11,"o");
+//	Put_string_waddr(27,12,"r");
+//	Put_string_waddr(27,13,"s");
+//
+//	Put_string_waddr(35,10,"M");
+//	Put_string_waddr(35,11,"i");
+//	Put_string_waddr(35,12,"n");
+//	Put_string_waddr(35,13,"s");
+
+}
+
 void Horno_grafico_datos(uint32_t x, uint32_t y, uint32_t dato) {
 	uint32_t numero=dato;
 	if (numero >9999){
@@ -250,13 +284,14 @@ void Horno_grafico_pwm_ciclo(float dc){
 }
 
 /* Esta funcion pone los datos del programa en la parte izquierda */
-void Horno_grafico_datos_pwm( bool activo, uint32_t periodo, float dc){
+void Horno_grafico_datos_pwm( bool activo, uint32_t periodo, float dc, float referencia){
 	Put_string_waddr(1,1,"DATOS del PWM");
 	Put_string_waddr(1,2,"=============");
 
 	Horno_grafico_pwm_encendido(activo);
 	Horno_grafico_pwm_periodo(periodo);
 	Horno_grafico_pwm_ciclo(dc);
+	Horno_grafico_control_referencia(referencia);
 }
 
 void Horno_grafico_temperatura(uint32_t temp){
@@ -265,6 +300,24 @@ void Horno_grafico_temperatura(uint32_t temp){
 }
 
 void Horno_grafico_tiempo(uint32_t tiempo){
-	Put_string_waddr(21,1,"TIEMPO RESTANTE: ");
-	Horno_grafico_entero(75,tiempo);
+	Put_string_waddr(21,8,"TIEMPO RESTANTE: ");
+	Put_string_waddr(35,10,"segs");
+	Horno_grafico_entero_tiempo(75,tiempo);
+//	for (tiempo; tiempo>=0;tiempo--){
+//		if(tiempo==0){
+//			Put_string_waddr(27,10,"Llegamos a cero");
+////			Horno_grafico_entero_tiempo(75,0000);
+//		}
+//		else
+//			Horno_grafico_entero_tiempo(75,tiempo);
+//			Horno_udelay(1e5);
+//	}
+}
+
+
+void Horno_grafico_control_referencia(float ref){
+	Put_string_waddr(1,10,"Ref. PI:");
+	Put_string_waddr(14,10,"    ");
+	Horno_grafico_datos_PI_referencia(ref);
+	Put_string_waddr(18,10,"[?]");
 }
