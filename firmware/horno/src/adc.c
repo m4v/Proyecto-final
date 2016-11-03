@@ -35,6 +35,9 @@ static const float a4=16.09,     b4=-3.429325;							   // coeficientes de lm35,
 
 static ADC_CLOCK_SETUP_T ADCSetup;
 
+bool dos_pts=true;
+
+
 /*
  * @brief Linealizacion para el calculo de temperatura de termocupla
  */
@@ -110,11 +113,20 @@ void Horno_adc_muestreo(void)
 						horno_control.entrada,
 						horno_control.salida);
 			}
-
 			horno_adc.th_suma = 0;
 			horno_adc.lm_suma = 0;
 			horno_adc.suma_cantidad = 0;
 			horno_adc.valor_n++;
+			Horno_grafico_tiempo(horno_adc_tiempo_restante-(horno_adc.valor_n/60));
+//			Horno_grafico_tiempo(750);
+			if(dos_pts==true){
+				Horno_grafico_CLR_dos_puntos(240,75);
+				dos_pts=false;
+			}
+			else{
+				Horno_grafico_dos_puntos(240,75);
+				dos_pts=true;
+			}
 		}
 	}
 }

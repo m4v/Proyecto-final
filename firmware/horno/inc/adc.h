@@ -28,6 +28,8 @@ typedef struct {
 
 HORNO_PROMEDIO_T horno_adc;
 
+int horno_adc_tiempo_restante;
+
 void Horno_adc_muestreo(void);
 void Horno_adc_init(void);
 

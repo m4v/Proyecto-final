@@ -5,6 +5,7 @@
 #endif
 
 #include "delay.h"
+#include "adc.h"
 #include "grafico.h"
 #include "320240.h"
 #include "pwm.h"
@@ -131,7 +132,7 @@ void estado_pwm(void) {
 }
 
 void TECLAA_Handler(void) {
-	if (horno_pwm.activo==false){
+	if (!horno_pwm.activo) {
 		DEBUGOUT("A - inicio PWM\n");
 		Horno_pwm_ciclo(horno_pwm.dc);
 		Horno_pwm_inicio();
@@ -148,10 +149,10 @@ void TECLAA_Handler(void) {
 }
 
 void TECLAB_Handler(void) {
-	DEBUGOUT("B - setear referencia\n");
-	Horno_control_referencia((float)horno_keypad.dato_ingresado);
-	Horno_grafico_control_referencia(horno_control.referencia);
-
+//	DEBUGOUT("B - setear referencia\n");
+//	Horno_control_referencia((float)horno_keypad.dato_ingresado);
+//	Horno_grafico_control_referencia(horno_control.referencia);
+	horno_adc_tiempo_restante= horno_keypad.dato_ingresado;
 }
 
 void TECLAC_Handler(void) {
