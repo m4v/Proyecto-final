@@ -40,6 +40,8 @@ void Horno_grafico_pwm_periodo(uint32_t periodo);
 void Horno_grafico_pwm_ciclo(float dc);
 void Horno_grafico_control_referencia(float ref);
 
+void Horno_grafico_dos_puntos(uint32_t x, uint32_t y);
+void Horno_grafico_CLR_dos_puntos(uint32_t x, uint32_t y);
 
 
 #endif /* GRAFICO_H_ */
