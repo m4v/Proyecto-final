@@ -71,10 +71,7 @@ int main(void) {
 
    	DEBUGOUT(mensaje_menu);
 
-   	uint32_t tiempo=6789;
-  	Horno_grafico_tiempo(tiempo);
-
-
+   	horno_adc_tiempo_restante=1000;
 
    	/* bucle principal */
    	while(1){

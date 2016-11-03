@@ -152,7 +152,11 @@ void TECLAB_Handler(void) {
 //	DEBUGOUT("B - setear referencia\n");
 //	Horno_control_referencia((float)horno_keypad.dato_ingresado);
 //	Horno_grafico_control_referencia(horno_control.referencia);
-	horno_adc_tiempo_restante= horno_keypad.dato_ingresado;
+
+//	horno_adc_tiempo_restante= horno_keypad.dato_ingresado;
+//	horno_adc.valor_n=0;
+
+	FIN=true;	// Para testeo de la función FIN
 }
 
 void TECLAC_Handler(void) {

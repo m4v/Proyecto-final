@@ -36,6 +36,7 @@ static const float a4=16.09,     b4=-3.429325;							   // coeficientes de lm35,
 static ADC_CLOCK_SETUP_T ADCSetup;
 
 bool dos_pts=true;
+bool FIN=false;
 
 
 /*
@@ -117,19 +118,32 @@ void Horno_adc_muestreo(void)
 			horno_adc.lm_suma = 0;
 			horno_adc.suma_cantidad = 0;
 			horno_adc.valor_n++;
-			Horno_grafico_tiempo(horno_adc_tiempo_restante-(horno_adc.valor_n/60));
-//			Horno_grafico_tiempo(750);
-			if(dos_pts==true){
-				Horno_grafico_CLR_dos_puntos(240,75);
-				dos_pts=false;
-			}
-			else{
-				Horno_grafico_dos_puntos(240,75);
-				dos_pts=true;
+			uint32_t pos_m[2]={275, 248};
+			uint32_t pos_h[2]={223, 198};
+			switch(FIN){
+			case false:
+				Horno_grafico_tiempo(horno_adc_tiempo_restante-(horno_adc.valor_n/60));
+				if(dos_pts==true){
+					Horno_grafico_CLR_dos_puntos(240,75);
+					dos_pts=false;
+				}
+				else{
+					Horno_grafico_dos_puntos(240,75);
+					dos_pts=true;
+				}
+				break;
+			case true:
+			   	Horno_grafico_CLR_digito(pos_m[1],75);
+			   	Horno_grafico_CLR_digito(pos_m[0],75);
+			   	Horno_grafico_CLR_digito(pos_h[1],75);
+			   	Horno_grafico_CLR_digito(pos_h[0],75);
+				Horno_grafico_FIN();
+				break;
 			}
 		}
 	}
 }
+
 
 /*
  * Iniciación del ADC
