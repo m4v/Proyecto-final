@@ -5,9 +5,11 @@
 #endif
 
 #include "delay.h"
+#include "adc.h"
 #include "grafico.h"
 #include "320240.h"
 #include "pwm.h"
+#include "control.h"
 
 /* elegimos el TIMER a usar */
 #define _LPC_TIMER         LPC_TIMER0
@@ -130,19 +132,31 @@ void estado_pwm(void) {
 }
 
 void TECLAA_Handler(void) {
-	DEBUGOUT("A - inicio PWM\n");
-	Horno_pwm_ciclo(horno_pwm.dc);
-	Horno_pwm_inicio();
-	estado_pwm();
-	Horno_grafico_pwm_encendido(horno_pwm.activo);
+	if (!horno_pwm.activo) {
+		DEBUGOUT("A - inicio PWM\n");
+		Horno_pwm_ciclo(horno_pwm.dc);
+		Horno_pwm_inicio();
+		estado_pwm();
+		Horno_grafico_pwm_encendido(horno_pwm.activo);
+	}
+	else {
+		DEBUGOUT("A - parar PWM\n");
+		Horno_pwm_parar();
+		estado_pwm(); // el estado lo reporta mal porque en realidad se apaga en la
+					  // siguiente interrupción
+		Horno_grafico_pwm_encendido(horno_pwm.activo);
+	}
 }
 
 void TECLAB_Handler(void) {
-	DEBUGOUT("B - parar PWM\n");
-	Horno_pwm_parar();
-	estado_pwm(); // el estado lo reporta mal porque en realidad se apaga en la
-	              // siguiente interrupción
-	Horno_grafico_pwm_encendido(horno_pwm.activo);
+//	DEBUGOUT("B - setear referencia\n");
+//	Horno_control_referencia((float)horno_keypad.dato_ingresado);
+//	Horno_grafico_control_referencia(horno_control.referencia);
+
+//	horno_adc_tiempo_restante= horno_keypad.dato_ingresado;
+//	horno_adc.valor_n=0;
+
+	FIN=true;	// Para testeo de la función FIN
 }
 
 void TECLAC_Handler(void) {

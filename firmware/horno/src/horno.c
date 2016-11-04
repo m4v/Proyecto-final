@@ -43,8 +43,7 @@ static char mensaje_menu[] =
 		" '-' para disminuir la velocidad del motor.\r\n"
 		" 'l' para cambiar el sentido de giro.\r\n"
 		"Teclado:\r\n"
-		" A inicia el PWM\r\n"
-		" B detiene el PWM\r\n"
+		" A inicia/detiene el PWM\r\n"
 		" C configura el ciclo de trabajo del PWM\r\n"
 		" D configura el periodo del PWM\r\n"
 		" # enter\r\n"
@@ -72,10 +71,12 @@ int main(void) {
 
    	DEBUGOUT(mensaje_menu);
 
-   	Horno_grafico_digito(270,20,10); /* gráfico del "°C" que no cambia */
+   	horno_adc_tiempo_restante=1000;
 
    	/* bucle principal */
    	while(1){
+
+
     	charUART = DEBUGIN();
     	switch(charUART) {
     	case 'c':
