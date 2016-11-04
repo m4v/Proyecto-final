@@ -68,10 +68,22 @@ int main(void) {
     DEBUGOUT(mensaje_inicio);
     Horno_Init();
    	Horno_Display_Test();
+//   	Board_LED_Set(0,true); // Esto es para apagar el led que está jodiendo.
 
    	DEBUGOUT(mensaje_menu);
 
    	horno_adc_tiempo_restante=1000;
+   	Put_string_waddr(10,27,"La flecha muestra el estado");
+   	Put_string_waddr(10,28,"actual en el programa");
+   	for (int i=2; i<40;i++)
+   	{
+   		Horno_grafico_posicion_flecha(i);
+   		for(int i=0;i<1e5; i++){
+   			int j;
+   			j++;
+		}
+   	Horno_grafico_CLR_flecha(i,Horno_pos_y_flecha[i]);
+   	}
 
    	/* bucle principal */
    	while(1){

@@ -32,20 +32,46 @@ uint8_t dos_puntos[42] = {
 		0x1C,0x1C,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
 		0x00,0x00,0x00,0x00,0x00,0x00};
 
+int Horno_pos_y_flecha[39]={
+		220,212,204,196,188,180,172,168,
+		168,168,168,168,168,168,168,168,
+		168,168,168,162,155,150,145,140,
+		135,130,125,121,121,121,121,121,
+		121,121,121,121,121,121,121};
+
+
+/*
+ * @brief grafica flecha de 8x12 px
+ * @param x: posición X de a 8 pixels
+ * @param y: posición Y en pixels
+ */
 void Horno_grafico_flecha(uint32_t x, uint32_t y) {
 	for (uint32_t i=0; i < 12; i++) {
-		Set_graphic_position(x/8, y+i);
+		Set_graphic_position(x, y+i);
 			Command_Write(MEM_WRITE);
 			Parameter_Write((~flecha[i]));
 	}
 }
 
+/*
+ * @brief borra flecha de 8x12 px
+ * @param x: posición X de a pixels
+ * @param y: posición Y en pixels
+ */
 void Horno_grafico_CLR_flecha(uint32_t x, uint32_t y) {
 	for (uint32_t i=0; i < 12; i++) {
-		Set_graphic_position(x/8, y+i);
+		Set_graphic_position(x, y+i);
 			Command_Write(MEM_WRITE);
 			Parameter_Write(0X00);
 	}
+}
+
+void Horno_grafico_posicion_flecha(uint32_t estado){
+	Horno_grafico_flecha(estado, Horno_pos_y_flecha[estado]);
+}
+
+void Horno_grafico_posicion_flecha_CLR(uint32_t estado){
+	Horno_grafico_CLR_flecha(estado, Horno_pos_y_flecha[estado]);
 }
 
 void Horno_grafico_dos_puntos(uint32_t x, uint32_t y){
