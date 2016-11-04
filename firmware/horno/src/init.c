@@ -19,9 +19,10 @@
 #include "320240.h"
 #include "motor.h"
 #include "pwm.h"
+#include "adc.h"
 #include "teclado.h"
 
-static ADC_CLOCK_SETUP_T ADCSetup;
+
 
 /*
  * Pin muxing configuration
@@ -39,8 +40,10 @@ static const PINMUX_GRP_T pinmux[] = {
 	/* pines del ADC */
 	{0,  23,  IOCON_MODE_INACT | IOCON_FUNC1}, // Termocupla
 	{0,   3,  IOCON_MODE_INACT | IOCON_FUNC2}, // LM35
-	/* PWM */
-	{2,   0,  IOCON_MODE_INACT | IOCON_FUNC1},
+	/* PWM
+	 * Lo utilizamos como GPIO con R de pull-down, desde pwm.c se cambia a IOCON_FUNC1
+	 * cuando es necesario. */
+	{2,   0,  IOCON_MODE_PULLDOWN | IOCON_FUNC0},
 	/* pines del display */
 	{2,  11,  IOCON_MODE_INACT | IOCON_FUNC0}, // /CS
 	{2,   1,  IOCON_MODE_INACT | IOCON_FUNC0}, // A0
@@ -57,7 +60,6 @@ static const PINMUX_GRP_T pinmux[] = {
 	{2,   8,  IOCON_MODE_INACT | IOCON_FUNC0},
 	{2,  10,  IOCON_MODE_INACT | IOCON_FUNC0},
 	/*Pines del teclado */
-	// Esto hay que cmbiarlo con los valores que correspondan en el PCB
 	/* filas */
 	{0,  9,  IOCON_MODE_INACT | IOCON_FUNC0},
 	{0,  8,  IOCON_MODE_INACT | IOCON_FUNC0},
@@ -99,7 +101,6 @@ static const GPIO_DIR_T gpiodir[] = {
 	{2,  8, true},
 	{2, 10, true},
 	/*Pines del teclado */
-	// Esto hay que cmbiarlo con los valores que correspondan en el PCB
 	/* filas */
 	{0,  9, true},
 	{0,  8, true},
@@ -142,6 +143,9 @@ void Horno_systick_init(uint32_t ms)
 	SysTick_Config(ticks);
 }
 
+void SysTick_Handler(void) {
+	Horno_adc_muestreo ();
+}
 
 /*
  * Función de inicialización del horno.
@@ -156,20 +160,10 @@ void Horno_Init (void) {
 	Horno_delay_timer_Init();
 
 	Horno_Display_Init();
-
-	/* ADC Init */
-	Chip_ADC_Init(LPC_ADC, &ADCSetup);
-	Chip_ADC_EnableChannel(LPC_ADC, ADC_TH, ENABLE);
-	Chip_ADC_EnableChannel(LPC_ADC, ADC_LM35, ENABLE);
-	Chip_ADC_SetBurstCmd(LPC_ADC, ENABLE); // habilitar conversión continua
-
-	/*
-	 * Las interrupciones del SysTick son para muestrear con el ADC.
-	 */
+	Horno_adc_init();
+	/* Las interrupciones del SysTick son para muestrear con el ADC. */
 	Horno_systick_init(PERIODO_MUESTREO);
-
 	Horno_teclado_init();
-
 	Horno_motor_init();
 	Horno_pwm_init();
 }

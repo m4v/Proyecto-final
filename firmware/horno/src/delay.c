@@ -20,7 +20,7 @@
 #define _SYSCTL_PCLK_TIMER SYSCTL_PCLK_TIMER3
 #define _TIMER_IRQHandler TIMER3_IRQHandler
 
-static bool delay_enabled;
+volatile static bool delay_enabled;
 static uint32_t timer_clock;
 static uint32_t ticks;
 
@@ -53,7 +53,8 @@ void Horno_udelay(uint32_t usec)
 
 	/* Esperamos hasta que llegue la interrupción */
 	while (1) {
-		__WFI();		if (delay_enabled == false) {
+		__WFI();
+		if (delay_enabled == false) {
 			break;
 		}
 	}

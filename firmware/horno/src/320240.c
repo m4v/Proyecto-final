@@ -14,7 +14,8 @@
 #include <string.h>
 #include "delay.h"
 #include "320240.h"
-
+#include "grafico.h"
+#include "pwm.h"
 /* Defines */
 
 #define LAYER2_ADDRESS 0x1000
@@ -30,7 +31,6 @@
 #define CLR_RD  Chip_GPIO_SetPinState(LPC_GPIO, 0, 10, false)
 #define SET_RST Chip_GPIO_SetPinState(LPC_GPIO, 2, 12, true)
 #define CLR_RST Chip_GPIO_SetPinState(LPC_GPIO, 2, 12, false)
-
 
 #define LCD_DELAY 1 /* retraso usado para comunicarse con la pantalla */
 
@@ -521,12 +521,6 @@ void Horno_Display_Test(void){
 
 	Put_string_waddr(21,1,"TEMPERATURA: ");
 	Put_string_waddr(21,8,"TIEMPO RESTANTE: ");
-	int x0=160,y0=3;
-	int Xm=15;
-	int Yi=15;
-	int c=0;
-
-
 	/* Escribir en el 1er recuadro */
 	// Ponemos curso en el 1er layer (texto)
 	/* Cosas a tener en cuenta:
@@ -540,16 +534,25 @@ void Horno_Display_Test(void){
 	/* Textos chicos */
 	Put_string_waddr(1,1,"DATOS del PROGRAMA");
 	Put_string_waddr(1,2,"==================");
-	Put_string_waddr(1,4,"Pend. Max:");
-	Put_string_waddr(16,4,"1111");
-	Put_string_waddr(1,6,"Temp. Ascenso:");
-	Put_string_waddr(16,6,"2222");
-	Put_string_waddr(1,8,"Tiem. Coccion:");
-	Put_string_waddr(16,8,"3333");
-	Put_string_waddr(1,10,"Temp. Secado:");
-	Put_string_waddr(16,10,"4444");
-	Put_string_waddr(1,12,"Temp. Coccion:");
-	Put_string_waddr(16,12,"9999");
+
+//	Put_string_waddr(1,4,"Pend. Max.:");
+//	Horno_grafico_datos_pendiente(7665);
+//	Put_string_waddr(18,4,"m/s");
+//	Put_string_waddr(1,6,"Temp. Asc.:");
+//	Horno_grafico_datos_temperatura_ascenso(345);
+//	Put_string_waddr(18,6,"`C");
+//	Put_string_waddr(1,8,"Tiem. Cocc.:");
+//	Horno_grafico_datos_tiempo_coccion(987);
+//	Put_string_waddr(18,8,"m");
+//	Put_string_waddr(1,10,"Temp. Sec.:");
+//	Horno_grafico_datos_temperatura_secado(999);
+//	Put_string_waddr(18,10,"`C");
+//	Put_string_waddr(1,12,"Temp. Cocc.:");
+//	Horno_grafico_datos_temperatura_coccion(6543);
+//	Put_string_waddr(18,12,"`C");
+
+	Horno_grafico_datos_pwm( horno_pwm.activo,horno_pwm.periodo, horno_pwm.dc);
+
 
 //	Flechita_moviendose();	// Con esto la flechita se mueve por toda la curva
 

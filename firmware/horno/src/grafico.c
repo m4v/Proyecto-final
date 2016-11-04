@@ -13,6 +13,9 @@
 
 #include "320240.h"
 #include "grafico.h"
+#include "pwm.h"
+
+#include <stdlib.h>
 
 /* estructura para guardar bloques de 32x42 píxeles */
 typedef struct {
@@ -140,11 +143,16 @@ const BLOQUE42_T HORNO_DIGITO[] = {
 		 0x0007C1FC, 0x0007FFBC, 0x0001FF3C, 0x00007C3C, 0x00000078, 0x00000078, 0x00000078,
 		 0x000000F0, 0x000000F0, 0x000001E0, 0x000607E0, 0x0007FFC0, 0x0007FF00, 0x0001FC00,
 		 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000
+	}},
+	{{ /* ºC  */
+		 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x001C0000, 0x00360000, 0x00220000,
+		 0x00360000, 0x001C0000, 0x00001FC0, 0x0000FFF8, 0x0001FFFC, 0x0007F03E, 0x0007C00E,
+		 0x000F0006, 0x001F0000, 0x001E0000, 0x001E0000, 0x003C0000, 0x003C0000, 0x003C0000,
+		 0x003C0000, 0x003C0000, 0x003C0000, 0x003C0000, 0x003C0000, 0x001E0000, 0x001E0000,
+		 0x001F0000, 0x000F0006, 0x0007C00E, 0x0007F03E, 0x0001FFFC, 0x0000FFF8, 0x00001FC0,
+		 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000
 	}}
 };
-
-
-
 
 
 
@@ -168,7 +176,6 @@ void Horno_grafico_digito(uint32_t x, uint32_t y, uint32_t num) {
 	}
 }
 
-
 void Horno_grafico_CLR_digito(uint32_t x, uint32_t y) {
 	for (uint32_t i=0; i < 42; i++) {
 		Set_graphic_position(x/8, y+i);
@@ -180,15 +187,10 @@ void Horno_grafico_CLR_digito(uint32_t x, uint32_t y) {
 	}
 }
 
-
 void Horno_grafico_entero(uint32_t y, uint32_t dato){
    	uint32_t pos[4]={245, 220, 195, 170};
-	uint32_t numero;
-	numero=dato;
-
-	// Caso que sea dato>9999 ya muestro 9999
+	uint32_t numero=dato;
 	if (numero>=9999){
-		// Poner er 9999
 	   	for(int i=0;i<4;i++){
 	   		Horno_grafico_digito(pos[i], y, 9);
 	   	}
@@ -204,11 +206,52 @@ void Horno_grafico_entero(uint32_t y, uint32_t dato){
 	   		Horno_grafico_digito(pos[i], y, temp);
 	   		i++;
 	   		numero=numero/10;
-
 			}
 		}
-
 	}
 
+void Horno_grafico_datos(uint32_t x, uint32_t y, uint32_t dato) {
+	uint32_t numero=dato;
+	if (numero >9999){
+		Put_string_waddr(x,y,"ERR");
+	}
+	else{
+		char str[4];
+		itoa(numero,str,10);
+		Put_string_waddr(x,y,str);
+	}
+}
 
+void Horno_grafico_pwm_encendido(bool activo) {
+	Put_string_waddr(1,4,"PWM:");
+	if(activo==1){
+		Put_string_waddr(14,4,"    ");
+		Put_string_waddr(14,4,"ON");
+		}
+	else if(activo==0){
+		Put_string_waddr(14,4,"    ");
+		Put_string_waddr(14,4,"OFF");
+	}
+}
+
+void Horno_grafico_pwm_periodo(uint32_t periodo) {
+	Put_string_waddr(1,6,"Periodo:");
+	Put_string_waddr(14,6,"    ");
+	Horno_grafico_datos_temperatura_ascenso(periodo);
+	Put_string_waddr(18,6,"ms");
+}
+
+void Horno_grafico_pwm_ciclo(float dc){
+	Put_string_waddr(1,8,"C. Trabajo:");
+	Put_string_waddr(14,8,"    ");
+	Horno_grafico_datos_tiempo_coccion((int)100*(dc));
+	Put_string_waddr(18,8,"%");
+}
+
+/* Esta funcion pone los datos del programa en la parte izquierda */
+void Horno_grafico_datos_pwm( bool activo, uint32_t periodo, float dc){
+	Horno_grafico_pwm_encendido(activo);
+	Horno_grafico_pwm_periodo(periodo);
+	Horno_grafico_pwm_ciclo(dc);
+}
 

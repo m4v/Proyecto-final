@@ -11,105 +11,122 @@
 #include "board.h"
 #endif
 
+#include "init.h"
 #include "adc.h"
+#include "pwm.h"
+#include "grafico.h"
+#include "control.h"
 
 #define ADC_SIZE 4096		//tamaño del ADC
 #define ADC_REF  3.3		//tension de referencia de ADC
-#define TH_GAIN  80.2 		//ganancia de la etapa de termocupla
+#define TH_GAIN  80.7 		//ganancia de la etapa de termocupla
 #define LM_GAIN  6.65		//ganancia de la etapa de lm
 #define TH_SEG1  1228		//limite del primer segmento de linealizacion de termocupla(0-300°C), expresado en niveles de ADC
 #define TH_SEG2  2869		//limite del segundo segmento (300-700°C)
 #define TH_SEG3  4096		//limite del tercero (700-1000°C)
 
-float a1=-0.007245, b1=0.15911, c1=23.6212, d1=1.0999; 		//coeficientes de polinomios de linealizacion
-float a2=0.00252, b2=-0.164398, c2=27.02517, d2=-10.04204;	// a.x^3+b.x^2+c.x+d
-float a3=0.078896, b3=19.13545, c3=75.8309;					// a.x^2+b.x+d
-float a4=16.09, b4=-3.429325;								//coeficientes de lm35, a4.x+b
+#define K_LM ADC_REF/ADC_SIZE // factor de escala del ADC del LM35
+#define K_TH ADC_REF/(ADC_SIZE*TH_GAIN*1e-3) // factor de escala del ADC de la termocupla
+
+static const float a1=-0.007245, b1= 0.15911,  c1=23.6212,  d1=  1.0999;   // coeficientes de polinomios de linealizacion
+static const float a2= 0.00252,  b2=-0.164398, c2=27.02517, d2=-10.04204;  // a.x^3+b.x^2+c.x+d
+static const float a3= 0.078896, b3=19.13545,  c3=75.8309;				   // a.x^2+b.x+d
+static const float a4=16.09,     b4=-3.429325;							   // coeficientes de lm35, a4.x+b
+
+static ADC_CLOCK_SETUP_T ADCSetup;
 
 /*
- * @brief Elige polinomio de linealizacion correspondiente para el calculo de temperatura de termocupla
+ * @brief Linealizacion para el calculo de temperatura de termocupla
  */
-void horno_th_line(void){
-	if (horno_adc.th_valor<TH_SEG1){
-		Horno_th_lineseg1();
-	}else if (horno_adc.th_valor>TH_SEG1 && horno_adc.th_valor<TH_SEG2){
-		Horno_th_lineseg2();
-	}else if(horno_adc.th_valor>TH_SEG3 && horno_adc.th_valor<TH_SEG3){
-		Horno_th_lineseg3();
+float th_line(float valor) {
+	float tension = valor*K_TH;
+	if (valor < TH_SEG1) {
+		return a1*tension*tension*tension + b1*tension*tension + c1*tension + d1;
+	} else if (valor < TH_SEG2) {
+		return a2*tension*tension*tension + b2*tension*tension + c2*tension + d2;
+	} else {
+		return a3*tension*tension + b3*tension + c3;
 	}
-}
-
-/*
- * @brief Resuelven linealizaciones y obtiene valor de temperatura de termocupla en gr C
- */
-void Horno_th_lineseg1(void){
-		float temp=horno_adc.th_valor_mv;
-		horno_adc.temperatura= a1*temp*temp*temp + b1*temp*temp + c1*temp + d1;
-				}
-void Horno_th_lineseg2(void){
-		float temp=horno_adc.th_valor_mv;
-		horno_adc.th_temperatura= a2*temp*temp*temp + b2*temp*temp + c2*temp + d2;
-}
-void Horno_th_lineseg3(void){
-		float temp=horno_adc.th_valor_mv;
-		horno_adc.th_temperatura= a3*temp*temp + b3*temp + c3;
-}
-
-/*
- * @brief Pasa valores de niveles de ADC a tension en mv
- */
-void Horno_th_adctomv(void){
-		horno_adc.th_valor_mv= horno_adc.th_valor*ADC_REF/(ADC_SIZE*TH_GAIN);
 }
 
 /*
  * @brief Calcula valor de temperatura en C segun valores del ADC
  */
-void Horno_lm_line(void){
-		horno_adc.lm_valor_v=horno_adc.lm_valor*ADC_REF/(ADC_SIZE*LM_GAIN);
-		horno_adc.lm_temperatura=a4*horno_adc.lm_valor_v+b4;
+float lm_line(float valor) {
+	float tension = valor*K_LM;
+	return a4*tension + b4;
 }
 
+/*
+ * @brief Esta función se ejecuta cada vez que se obtiene una nueva muestra de
+ *        temperatura, y aquí se procesa.
+ * @param temperatura: Temperatura en grados celsius
+ */
+void Horno_adc_muestra_Handler(float temperatura) {
 
-/* rutina de interrupción del systick */
-void SysTick_Handler(void)
+	/* actualizar la pantalla */
+	Horno_grafico_temperatura((uint32_t)temperatura);
+	if (horno_pwm.activo) {
+		Horno_control_pi(temperatura);
+	}
+}
+
+/*
+ * @brief Función que muestrea, promedia y calcula la temperatura desde ADC.
+ *        Esta función es llamada en cada interrupción del SYSTICK.
+ */
+void Horno_adc_muestreo(void)
 {
-	if (adc_enabled) {
-		if (!adc_continue) {
-			if (horno_adc.valor_n > NUM_MUESTRAS_CAPTURA) {
-				adc_enabled = false;
-				Board_LED_Set(0, false);
+	if(Chip_ADC_ReadStatus(LPC_ADC, ADC_LM35, ADC_DR_DONE_STAT) == SET) {
+		uint16_t muestra;
+		Chip_ADC_ReadValue(LPC_ADC, ADC_TH, &muestra);
+		horno_adc.th_suma += muestra;
+		Chip_ADC_ReadValue(LPC_ADC, ADC_LM35, &muestra);
+		horno_adc.lm_suma += muestra;
+		horno_adc.suma_cantidad++;
+		if (horno_adc.suma_cantidad >= NUM_MUESTRAS_ADC) {
+			/* hacemos el promedio */
+			horno_adc.th_valor = horno_adc.th_suma / horno_adc.suma_cantidad;
+			horno_adc.lm_valor = horno_adc.lm_suma / horno_adc.suma_cantidad;
+
+			/* linealizamos */
+			horno_adc.lm_temperatura = lm_line((float)horno_adc.lm_valor);
+			horno_adc.th_temperatura = th_line((float)horno_adc.th_valor);
+			horno_adc.temperatura = horno_adc.lm_temperatura + horno_adc.th_temperatura;
+
+			/* utilizamos la muestra */
+			Horno_adc_muestra_Handler(horno_adc.temperatura);
+
+			if (horno_adc.salida_uart) {
+				DEBUGOUT("%d, %.2f, %.2f, %.2f, %d, %d, %.4f, %.2f, %.2f, %.2f\r\n",
+						horno_adc.valor_n,
+						horno_adc.temperatura,
+						horno_adc.th_temperatura,
+						horno_adc.lm_temperatura,
+						horno_adc.th_valor,
+						horno_adc.lm_valor,
+						horno_pwm.activo ? horno_pwm.dc : 0,
+						horno_control.referencia,
+						horno_control.entrada,
+						horno_control.salida);
 			}
-			Chip_ADC_SetStartMode(LPC_ADC, ADC_START_NOW, ADC_TRIGGERMODE_RISING);
-			if(Chip_ADC_ReadStatus(LPC_ADC, ADC_CHANNEL, ADC_DR_DONE_STAT) == SET) {
-				Chip_ADC_ReadValue(LPC_ADC, ADC_CHANNEL, &muestras[horno_adc.valor_n++]);
-			}
-		} else {
-			/* captura continua */
-			if(Chip_ADC_ReadStatus(LPC_ADC, ADC_LM35, ADC_DR_DONE_STAT) == SET) {
-				uint16_t muestra;
-				Chip_ADC_ReadValue(LPC_ADC, ADC_TH, &muestra);
-				horno_adc.th_suma += muestra;
-				horno_adc.th_cantidad++;
-				Chip_ADC_ReadValue(LPC_ADC, ADC_LM35, &muestra);
-				horno_adc.lm_suma += muestra;
-				horno_adc.lm_cantidad++;
-				if (horno_adc.lm_cantidad >= NUM_MUESTRAS_ADC) {
-					Board_LED_Toggle(0);
-					horno_adc.th_valor = horno_adc.th_suma / horno_adc.th_cantidad;
-					horno_adc.lm_valor = horno_adc.lm_suma / horno_adc.lm_cantidad;
-					DEBUGOUT("%10d, %4d, %4d\r\n", horno_adc.valor_n,
-							                       horno_adc.th_valor,
-							                       horno_adc.lm_valor);
-					horno_adc.th_suma = 0;
-					horno_adc.th_cantidad = 0;
-					horno_adc.lm_suma = 0;
-					horno_adc.lm_cantidad = 0;
-					horno_adc.valor_n++;
-				}
-			}
+
+			horno_adc.th_suma = 0;
+			horno_adc.lm_suma = 0;
+			horno_adc.suma_cantidad = 0;
+			horno_adc.valor_n++;
 		}
 	}
+}
+
+/*
+ * Iniciación del ADC
+ */
+void Horno_adc_init(void) {
+	Chip_ADC_Init(LPC_ADC, &ADCSetup);
+	Chip_ADC_EnableChannel(LPC_ADC, ADC_TH, ENABLE);
+	Chip_ADC_EnableChannel(LPC_ADC, ADC_LM35, ENABLE);
+	Chip_ADC_SetBurstCmd(LPC_ADC, ENABLE); // habilitar conversión continua
 }
 
 

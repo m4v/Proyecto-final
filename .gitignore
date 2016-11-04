@@ -3,6 +3,7 @@
 /**/.settings
 /**/RemoteSystemsTempFiles
 /**/Debug
+/**/Release
 *.launch
 .settings
 

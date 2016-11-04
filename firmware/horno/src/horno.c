@@ -26,7 +26,7 @@
 #include "delay.h"
 #include "pwm.h"
 #include "adc.h"
-
+#include "control.h"
 
 /* mensaje de inicio para mandar por el UART */
 static char mensaje_inicio[] =
@@ -36,8 +36,7 @@ static char mensaje_inicio[] =
 		"\r\n";
 static char mensaje_menu[] =
 		"Controles UART:\r\n"
-		" 'c' para iniciar/detener la captura continua.\r\n"
-		" 'm' para capturar N muestras.\r\n"
+		" 'c' mostrar datos del ADC y PWM.\r\n"
 		" 'i' para poner en marcha el motor.\r\n"
 		" 'p' para detener el motor.\r\n"
 		" '+' para aumentar la velocidad del motor.\r\n"
@@ -54,7 +53,6 @@ static char mensaje_menu[] =
 
 int main(void) {
 	uint8_t charUART;
-	int i;
 
 #if defined (__USE_LPCOPEN)
 #if !defined(NO_BOARD_LIB)
@@ -70,63 +68,78 @@ int main(void) {
 
     DEBUGOUT(mensaje_inicio);
     Horno_Init();
-
-//   	// TODO acá fuerzo el led a apagarse
-//   	Chip_GPIO_SetPinState(LPC_GPIO,0,22,1);
-//
-//
-
    	Horno_Display_Test();
 
-   	int cc=0;
    	DEBUGOUT(mensaje_menu);
 
+   	Horno_grafico_digito(270,20,10); /* gráfico del "°C" que no cambia */
+
+   	/* bucle principal */
    	while(1){
-   		Horno_grafico_temperatura(cc);
-   		Horno_udelay(5e5);
-   		cc++;
     	charUART = DEBUGIN();
-    	if (charUART == 'm') {
-    		adc_enabled = true;
-    		adc_continue = false;
-    		horno_adc.valor_n = 0;
-    		Board_LED_Set(0, true);
-    		while(adc_enabled) {}
-    		for (i=0; i < NUM_MUESTRAS_CAPTURA; i++) {
-    			DEBUGOUT("%10d, %4d\r\n", i, muestras[i]);
-    		}
-    		Board_LED_Set(0, false);
-    	} else if (charUART == 'c') {
-    		adc_enabled = !adc_enabled;
-    		adc_continue = true;
-    		if (!adc_enabled) {
-    			DEBUGOUT("Conversión detenida.\r\n");
-    		} else {
-    			horno_adc.valor_n = 0;
-    			horno_adc.th_suma = 0;
-    			horno_adc.th_cantidad = 0;
-    			horno_adc.lm_suma = 0;
-    			horno_adc.lm_cantidad = 0;
-    		}
-    	} else if (charUART == 'i') {
+    	switch(charUART) {
+    	case 'c':
+    		horno_adc.salida_uart = !horno_adc.salida_uart;
+    		break;
+    	case 'i':
     		Horno_motor_marcha(horno_motor.periodo);
     		DEBUGOUT("Motor encendido - periodo %dms\n", horno_motor.periodo);
-    	} else if (charUART == 'p') {
+    		break;
+    	case 'p':
     		Horno_motor_detener();
     		DEBUGOUT("Motor detenido\n");
-    	} else if (charUART == '+') {
+    		break;
+    	case '+':
     		Horno_motor_marcha(horno_motor.periodo + 500);
     		DEBUGOUT("Motor periodo %dms\n", horno_motor.periodo);
-    	} else if (charUART == '-') {
+    		break;
+    	case '-':
     		Horno_motor_marcha(horno_motor.periodo - 500);
     		DEBUGOUT("Motor periodo %dms\n", horno_motor.periodo);
-    	} else if (charUART == 'l') {
+    		break;
+    	case 'l':
     		Horno_motor_ascender(!horno_motor.ascender);
     		DEBUGOUT("Motor sentido ascender %d\n", horno_motor.ascender);
-    	} else if (charUART == 'h') {
+    		break;
+    	case 'P':
+    		if (horno_pwm.activo) {
+    			Horno_pwm_parar();
+    			DEBUGOUT("PWM inactivo\n");
+    		} else {
+    			Horno_pwm_inicio();
+    			DEBUGOUT("PWM activo\n");
+    		}
+    		break;
+    	case 'L':
+    		Horno_control_activar(!horno_control.activo);
+//    		if (horno_control.activo) {
+//    			Horno_control_referencia(200);
+//    		}
+    		DEBUGOUT("PI activo: %d\n", horno_control.activo);
+    		break;
+    	case 'S':
+    		DEBUGOUT("Ingrese temperatura de referencia: ");
+    		uint32_t ref = 0;
+    		while(1) {
+    			uint8_t c = DEBUGIN();
+    			if (((c > 47) && (c < 58)) || (c == '\n')) {
+					DEBUGOUT("%c", c);
+					if (c == '\n') {
+						break;
+					}
+					ref = (ref*10) + c - 48;
+    			}
+    		}
+    		DEBUGOUT("Valor ingresado: %d\n", ref);
+    		Horno_control_referencia((float)ref);
+    		break;
+    	case 'R':
+    		horno_adc.valor_n = 0;
+    		break;
+    	case 'h':
     		DEBUGOUT(mensaje_menu);
+    		break;
     	}
     }
-
     return 0;
 }

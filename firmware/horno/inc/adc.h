@@ -11,38 +11,24 @@
 #include "board.h"
 #include "init.h"
 
-
-
-#define ADC_CHANNEL ADC_TH  // canal de captura del comando 'm'
-#define NUM_MUESTRAS_CAPTURA 100
 #define NUM_MUESTRAS_ADC 1000*PERIODO_PROMEDIO/PERIODO_MUESTREO
-bool adc_enabled;
-bool adc_continue;
-uint16_t muestras[NUM_MUESTRAS_CAPTURA];
-
 
 typedef struct {
+	bool     salida_uart;       // si imprime los datos del AD al UART
 	uint32_t th_suma;			// suma accumulada del valor del AD (para hacer el promedio)
-	uint32_t th_cantidad;       // cantidad de valores sumados
 	uint16_t th_valor;          // valor del AD promediado
 	uint32_t lm_suma;			// lo mismo para lm
-	uint32_t lm_cantidad;
 	uint16_t lm_valor;
+	uint32_t suma_cantidad;     // cantidad de valores sumados
 	uint32_t valor_n;           // número del último valor obtenido
-	float    th_valor_mv;		// valor del temperatura de termocupla actual en mv
-	float    th_temperatura;		// valor de temperatura de termocupla actual en gr C
-	float    lm_valor_v;		// mismo para lm
+	float    th_temperatura;	// valor de temperatura de termocupla actual en gr C
 	float 	 lm_temperatura;
-	float 	 temperatura;			// valor de temperatura actual en gr C
+	float 	 temperatura;		// valor de temperatura actual en gr C
 } HORNO_PROMEDIO_T;
 
 HORNO_PROMEDIO_T horno_adc;
 
-void Horno_th_lineseg1(void);
-void Horno_th_lineseg2(void);
-void Horno_th_lineseg3(void);
-void Horno_th_adctomv(void);
-void Horno_lm_line(void);
-
+void Horno_adc_muestreo(void);
+void Horno_adc_init(void);
 
 #endif /* ADC_H_ */
