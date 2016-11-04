@@ -134,43 +134,31 @@ void estado_pwm(void) {
 void TECLAA_Handler(void) {
 	if (!horno_pwm.activo) {
 		DEBUGOUT("A - inicio PWM\n");
-		Horno_pwm_ciclo(horno_pwm.dc);
 		Horno_pwm_inicio();
+		Horno_control_activar(true);
 		estado_pwm();
 		Horno_grafico_pwm_encendido(horno_pwm.activo);
-	}
-	else {
+	} else {
 		DEBUGOUT("A - parar PWM\n");
 		Horno_pwm_parar();
-		estado_pwm(); // el estado lo reporta mal porque en realidad se apaga en la
-					  // siguiente interrupción
+		Horno_control_activar(false);
+		estado_pwm();
 		Horno_grafico_pwm_encendido(horno_pwm.activo);
 	}
 }
 
 void TECLAB_Handler(void) {
-//	DEBUGOUT("B - setear referencia\n");
-//	Horno_control_referencia((float)horno_keypad.dato_ingresado);
-//	Horno_grafico_control_referencia(horno_control.referencia);
-
-//	horno_adc_tiempo_restante= horno_keypad.dato_ingresado;
-//	horno_adc.valor_n=0;
-
-	FIN=true;	// Para testeo de la función FIN
+	DEBUGOUT("B - setear referencia\n");
+	Horno_control_referencia((float)horno_keypad.dato_ingresado);
+	Horno_grafico_control_referencia(horno_control.referencia);
 }
 
 void TECLAC_Handler(void) {
-	DEBUGOUT("C - ciclo de trabajo\n");
-	Horno_pwm_ciclo((float)(horno_keypad.dato_ingresado)/100.0);
-	estado_pwm();
-	Horno_grafico_pwm_ciclo(horno_pwm.dc);
+	DEBUGOUT("C");
 }
 
 void TECLAD_Handler(void) {
-	DEBUGOUT("D - periodo\n");
-	Horno_pwm_periodo(horno_keypad.dato_ingresado);
-	estado_pwm();
-	Horno_grafico_pwm_periodo(horno_pwm.periodo);
+	DEBUGOUT("D");
 }
 
 /* tecla asterisco */
