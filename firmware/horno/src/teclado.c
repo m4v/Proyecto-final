@@ -155,10 +155,14 @@ void TECLAB_Handler(void) {
 
 void TECLAC_Handler(void) {
 	DEBUGOUT("C");
+	Horno_motor_ascender(false);
+	Horno_motor_marcha(horno_motor.periodo);
 }
 
 void TECLAD_Handler(void) {
 	DEBUGOUT("D");
+	Horno_motor_ascender(true);
+	Horno_motor_marcha(horno_motor.periodo);
 }
 
 /* tecla asterisco */
