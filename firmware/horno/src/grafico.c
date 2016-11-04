@@ -40,55 +40,7 @@ int Horno_pos_y_flecha[39]={
 		121,121,121,121,121,121,121};
 
 
-/*
- * @brief grafica flecha de 8x12 px
- * @param x: posición X de a 8 pixels
- * @param y: posición Y en pixels
- */
-void Horno_grafico_flecha(uint32_t x, uint32_t y) {
-	for (uint32_t i=0; i < 12; i++) {
-		Set_graphic_position(x, y+i);
-			Command_Write(MEM_WRITE);
-			Parameter_Write((~flecha[i]));
-	}
-}
 
-/*
- * @brief borra flecha de 8x12 px
- * @param x: posición X de a pixels
- * @param y: posición Y en pixels
- */
-void Horno_grafico_CLR_flecha(uint32_t x, uint32_t y) {
-	for (uint32_t i=0; i < 12; i++) {
-		Set_graphic_position(x, y+i);
-			Command_Write(MEM_WRITE);
-			Parameter_Write(0X00);
-	}
-}
-
-void Horno_grafico_posicion_flecha(uint32_t estado){
-	Horno_grafico_flecha(estado, Horno_pos_y_flecha[estado]);
-}
-
-void Horno_grafico_posicion_flecha_CLR(uint32_t estado){
-	Horno_grafico_CLR_flecha(estado, Horno_pos_y_flecha[estado]);
-}
-
-void Horno_grafico_dos_puntos(uint32_t x, uint32_t y){
-	for (uint32_t i=0; i < 42; i++) {
-		Set_graphic_position(x/8, y+i);
-			Command_Write(MEM_WRITE);
-			Parameter_Write((dos_puntos[i]));
-	}
-}
-
-void Horno_grafico_CLR_dos_puntos(uint32_t x, uint32_t y) {
-	for (uint32_t i=0; i < 42; i++) {
-		Set_graphic_position(x/8, y+i);
-			Command_Write(MEM_WRITE);
-			Parameter_Write(0X00);
-	}
-}
 
 const BLOQUE42_T HORNO_DIGITO[] = {
 	{{ /* número 0*/
@@ -342,12 +294,91 @@ void Horno_grafico_entero_tiempo(uint32_t y, uint32_t tiempo){
 		}
 }
 
+
+/*
+ * @brief grafica flecha de 8x12 px
+ * @param x: posición X de a 8 pixels
+ * @param y: posición Y en pixels
+ */
+void Horno_grafico_flecha(uint32_t x, uint32_t y) {
+	for (uint32_t i=0; i < 12; i++) {
+		Set_graphic_position(x, y+i);
+			Command_Write(MEM_WRITE);
+			Parameter_Write((~flecha[i]));
+	}
+}
+
+/*
+ * @brief borra flecha de 8x12 px
+ * @param x: posición X de a pixels
+ * @param y: posición Y en pixels
+ */
+void Horno_grafico_CLR_flecha(uint32_t x, uint32_t y) {
+	for (uint32_t i=0; i < 12; i++) {
+		Set_graphic_position(x, y+i);
+			Command_Write(MEM_WRITE);
+			Parameter_Write(0X00);
+	}
+}
+
+/*
+ * @brief grafica la flecha siguiendo la gráfica
+ * @param estado: momento en que está el programa (de 0 a 39 estados)
+ */
+void Horno_grafico_posicion_flecha(uint32_t estado){
+	Horno_grafico_flecha(estado, Horno_pos_y_flecha[estado]);
+}
+
+/*
+ * @brief borra la flecha siguiendo la gráfica
+ * @param estado: momento en que está el programa (de 0 a 39 estados)
+ */
+void Horno_grafico_posicion_flecha_CLR(uint32_t estado){
+	Horno_grafico_CLR_flecha(estado, Horno_pos_y_flecha[estado]);
+}
+
+/*
+ * @brief pone los dos puntos del gráfico del tiempo
+ * @param x: posición X de a pixels
+ * @param y: posición Y de a pixels
+ */
+void Horno_grafico_dos_puntos(uint32_t x, uint32_t y){
+	for (uint32_t i=0; i < 42; i++) {
+		Set_graphic_position(x/8, y+i);
+			Command_Write(MEM_WRITE);
+			Parameter_Write((dos_puntos[i]));
+	}
+}
+
+/*
+ * @brief borra los dos puntos del gráfico del tiempo
+ * @param x: posición X de a pixels
+ * @param y: posición Y de a pixels
+ */
+void Horno_grafico_CLR_dos_puntos(uint32_t x, uint32_t y) {
+	for (uint32_t i=0; i < 42; i++) {
+		Set_graphic_position(x/8, y+i);
+			Command_Write(MEM_WRITE);
+			Parameter_Write(0X00);
+	}
+}
+
+/*
+ * @brief grafica FIN
+ */
 void Horno_grafico_FIN(){
 	uint32_t pos[3]={248, 224, 200};
 	Horno_grafico_digito(pos[2], 75, 13);
 	Horno_grafico_digito(pos[1], 75, 14);
 	Horno_grafico_digito(pos[0], 75, 15);
 }
+
+/*
+ * @brief pone el dato ingresado en formato numérico de 4 cifras
+ * @param x: posición x en bloque de 8 pixels
+ * @param y: posición y en bloque de 8 pixels
+ * @param dato: numero a escribir
+ */
 void Horno_grafico_datos(uint32_t x, uint32_t y, uint32_t dato) {
 	uint32_t numero=dato;
 	if (numero >9999){
@@ -397,11 +428,19 @@ void Horno_grafico_datos_pwm( bool activo, uint32_t periodo, float dc, float ref
 	Horno_grafico_control_referencia(referencia);
 }
 
+/*
+ * @brief pone datos en de temperatura actual en ºC
+ * @param temp: temperatura a mostrar.
+ */
 void Horno_grafico_temperatura(uint32_t temp){
 	Put_string_waddr(21,1,"TEMPERATURA: ");
 	Horno_grafico_entero(20,temp);
 }
 
+/*
+ * @brief pone datos en de tiempo restante
+ * @param tiempo: numero en minutos a graficar.
+ */
 void Horno_grafico_tiempo(uint32_t tiempo){
 	Put_string_waddr(21,8,"TIEMPO RESTANTE: ");
 	Horno_grafico_entero_tiempo(75,tiempo);
