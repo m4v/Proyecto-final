@@ -5,16 +5,17 @@ serial_init
 % creamos nuestras figuras
 clf
 subplot(2, 1, 1);
-h1 = plot(1, 1, 'xb;temperatura;');
+h11 = plot(1, 1, 'xb;temperatura;');
 legend('location', 'northwest');
 hold on
-h2 = plot(1, 1, '-r;referencia;');
+h12 = plot(1, 1, '-r;referencia;');
+h13 = plot(1, 1, '-b;referencia cond;');
 grid on
 subplot(2, 1, 2);
-h3 = plot(1, 1, '-r;salida PI;');
+h21 = plot(1, 1, '-r;salida PI;');
 legend('location', 'northwest');
 hold on
-h4 = plot(1, 1, '-b;salida PI (saturacin);');
+h22 = plot(1, 1, '-b;salida PI (saturacin);');
 grid on
 
 log = fopen("registro.log", "a");
@@ -34,8 +35,8 @@ unwind_protect
     % leemos una línea
     str = read_linea(fd);
     try
-      [n, T, Tth, Tlm, ADth, ADlm, DC, REF, PIx, PIy ] = strread(str, 
-            "%f, %f, %f, %f, %f, %f, %f, %f, %f, %f");
+      [n, T, Tth, Tlm, ADth, ADlm, DC, REF, REF_C, PIx, PIy ] = strread(str, 
+            "%f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f");
     catch
       continue
     end
@@ -44,15 +45,17 @@ unwind_protect
     tempth(i) = Tth;
     templm(i) = Tlm;
     ref(i) = REF;
+    ref_c(i) = REF_C;
     dc(i) = DC*100;
     piy(i) = PIy;
-    piys(i) = DC*220;
+    piys(i) = DC*100;
     pix(i) = PIx;
     % actualizar gráfico
-    set(h1, 'XData', t, 'YData', temp);
-    set(h2, 'XData', t, 'YData', ref);
-    set(h3, 'XData', t, 'YData', piy);
-    set(h4, 'XData', t, 'YData', piys);
+    set(h11, 'XData', t, 'YData', temp);
+    set(h12, 'XData', t, 'YData', ref);
+    set(h13, 'XData', t, 'YData', ref_c);
+    set(h21, 'XData', t, 'YData', piy);
+    set(h22, 'XData', t, 'YData', piys);
     drawnow;
     %guardamos un registro
     fwrite(log, str);
@@ -74,11 +77,12 @@ unwind_protect_cleanup
   temp = temp(1:N);
   piy = piy(1:N);
   ref = ref(1:N);
+  ref_c = ref_c(1:N);
   pix = pix(1:N);
   dc = dc(1:N);
   templm = templm(1:N);
   tempth = tempth(1:N);
   csvwrite(sprintf("captura_continua_%s.csv", fecha()),
-      [t' temp' tempth' templm' ref' pix' piy' dc']);
+      [t' temp' tempth' templm' ref' pix' piy' dc' ref_c']);
   printf("captura guardada\n")
 end

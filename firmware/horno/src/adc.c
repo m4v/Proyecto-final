@@ -98,7 +98,7 @@ void Horno_adc_muestreo(void)
 			Horno_adc_muestra_Handler(horno_adc.temperatura);
 
 			if (horno_adc.salida_uart) {
-				DEBUGOUT("%d, %.2f, %.2f, %.2f, %d, %d, %.4f, %.2f, %.2f, %.2f\r\n",
+				DEBUGOUT("%d, %.2f, %.2f, %.2f, %d, %d, %.4f, %.2f, %.2f, %.2f, %.2f\r\n",
 						horno_adc.valor_n,
 						horno_adc.temperatura,
 						horno_adc.th_temperatura,
@@ -107,6 +107,7 @@ void Horno_adc_muestreo(void)
 						horno_adc.lm_valor,
 						horno_pwm.activo ? horno_pwm.dc : 0,
 						horno_control.referencia,
+						horno_control.referencia_cond,
 						horno_control.entrada,
 						horno_control.salida);
 			}
