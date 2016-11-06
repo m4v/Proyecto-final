@@ -123,7 +123,8 @@ void Horno_adc_muestreo(void)
 			uint32_t pos_h[2]={223, 198};
 			switch(FIN){
 			case false:
-				Horno_grafico_tiempo(horno_adc_tiempo_restante-(horno_adc.valor_n/60));
+				Horno_grafico_tiempo(horno_adc.valor_n/60); // Contamos el tiempo de encendido
+				/* Pone los dos puntos intermitentes del tiempo */
 				if(dos_pts==true){
 					Horno_grafico_CLR_dos_puntos(240,75);
 					dos_pts=false;
@@ -134,11 +135,12 @@ void Horno_adc_muestreo(void)
 				}
 				break;
 			case true:
+				/* Limpiamos los digitos anteriores */
 			   	Horno_grafico_CLR_digito(pos_m[1],75);
 			   	Horno_grafico_CLR_digito(pos_m[0],75);
 			   	Horno_grafico_CLR_digito(pos_h[1],75);
 			   	Horno_grafico_CLR_digito(pos_h[0],75);
-				Horno_grafico_FIN();
+				Horno_grafico_FIN(); // Ponemos la palabra FIN
 				break;
 			}
 		}
