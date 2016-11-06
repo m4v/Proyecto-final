@@ -14,11 +14,13 @@
 #include "control.h"
 #include "pwm.h"
 #include "init.h"
+#include "adc.h"
 
 /* valores del PI */
-#define KP 5.23			    // constante proporcional
-#define KI 9.9e-5		    // constante integrador
+#define KP 0.4			    // constante proporcional
+#define KI 0.00005		    // constante integrador
 #define TS PERIODO_PROMEDIO // periodo de muestreo (segundos)
+#define P_MAX 0.5
 
 /* constantes del PI discreto, usando la transformación bilineal */
 static const float kx = KI*TS*0.5 + KP, kx1 = KI*TS*0.5 - KP;
@@ -30,7 +32,23 @@ void Horno_control_pi(float entrada) {
 	if (!horno_control.activo) {
 		return;
 	}
-	horno_control.entrada = horno_control.referencia - entrada;
+
+	float error_ref = horno_control.referencia - horno_control.referencia_cond;
+	if (error_ref > 0) {
+		if (error_ref > P_MAX) {
+			horno_control.referencia_cond += P_MAX;
+		} else {
+			horno_control.referencia_cond = horno_control.referencia;
+		}
+	} else {
+		if (error_ref < -P_MAX) {
+			horno_control.referencia_cond -= P_MAX;
+		} else {
+			horno_control.referencia_cond = horno_control.referencia;
+		}
+	}
+
+	horno_control.entrada = horno_control.referencia_cond - entrada;
 	horno_control.salida = horno_control.entrada * kx
 						   + horno_control.entrada_1 * kx1
 			               + horno_control.salida_1;
@@ -38,7 +56,7 @@ void Horno_control_pi(float entrada) {
 	/* Actualizamos el PWM
 	 * Dado nuestro modelo de la planta, la salida es en tensión.
 	 * Escalamos para que 220V sean 100% del ciclo de trabajo del PWM */
-	Horno_pwm_ciclo(horno_control.salida / 220);
+	Horno_pwm_ciclo(horno_control.salida / 100);
 
 	/* actualizamos las muestras anteriores */
 	horno_control.entrada_1 = horno_control.entrada;
@@ -48,6 +66,7 @@ void Horno_control_pi(float entrada) {
 void Horno_control_referencia(float ref)
 {
 	horno_control.referencia = ref;
+	horno_control.referencia_cond = horno_adc.temperatura;
 }
 
 /*
