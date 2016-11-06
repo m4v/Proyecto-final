@@ -270,27 +270,11 @@ void Horno_grafico_entero_tiempo(uint32_t y, uint32_t tiempo){
 	   	Horno_grafico_digito(pos_m[1], y, 12); 	// R
 	   	Horno_grafico_CLR_digito(pos_m[0],y); 	// Limpio el 4to digito para q no joda
 	}
-	else if(tiempo==0){
-   		Horno_grafico_digito(pos_m[0], y, 0);
-   		Horno_grafico_digito(pos_m[1], y, 0);
-   		Horno_grafico_digito(pos_h[0], y, 0);
-   		Horno_grafico_digito(pos_h[1], y, 0);
-	}
 	else {
-		int i=0,j=0;
-		while(horas!=0){
-			int temp=horas%10;
-	   		Horno_grafico_digito(pos_h[j], y, temp);
-	   		j++;
-	   		horas=horas/10;
-		}
-		while(minutos!=0)
-		{
-			int temp=minutos%10;
-	   		Horno_grafico_digito(pos_m[i], y, temp);
-	   		i++;
-	   		minutos=minutos/10;
-			}
+		Horno_grafico_digito(pos_h[0], y, horas%10);
+		Horno_grafico_digito(pos_h[1], y, horas/10);
+		Horno_grafico_digito(pos_m[0], y, minutos%10);
+		Horno_grafico_digito(pos_m[1], y, minutos/10);
 		}
 }
 
