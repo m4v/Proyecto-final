@@ -74,6 +74,9 @@ static const PINMUX_GRP_T pinmux[] = {
 	{0,  24,  IOCON_MODE_PULLDOWN | IOCON_FUNC0},
 	{0,  25,  IOCON_MODE_PULLDOWN | IOCON_FUNC0},
 
+	/* pin del FDC*/
+	{0,  26,  IOCON_MODE_PULLDOWN | IOCON_FUNC0},
+
 	/* LED */
 	{0,  22,  IOCON_MODE_INACT | IOCON_FUNC0},
 };
@@ -113,6 +116,8 @@ static const GPIO_DIR_T gpiodir[] = {
 	{0, 25, false},
 	/* LED */
 	{0, 22, true},
+	/* FDC*/
+	{0,26,false},
 };
 
 /*
