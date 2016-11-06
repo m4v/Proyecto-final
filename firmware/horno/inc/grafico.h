@@ -23,8 +23,9 @@ void Horno_grafico_digito(uint32_t x, uint32_t y, uint32_t num);
 void Horno_grafico_CLR_digito(uint32_t x, uint32_t y);
 
 void Horno_grafico_flecha(uint32_t x, uint32_t y);
-
 void Horno_grafico_CLR_flecha(uint32_t x, uint32_t y);
+void Horno_grafico_posicion_flecha(uint32_t estado);
+void Horno_grafico_posicion_CLR_flecha(uint32_t estado);
 
 void Horno_grafico_entero(uint32_t y, uint32_t dato);
 void Horno_grafico_temperatura(uint32_t temp);

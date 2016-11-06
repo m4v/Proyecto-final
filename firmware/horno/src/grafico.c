@@ -329,6 +329,10 @@ void Horno_grafico_posicion_flecha(uint32_t estado){
 	Horno_grafico_flecha(estado, Horno_pos_y_flecha[estado]);
 }
 
+void Horno_grafico_posicion_CLR_flecha(uint32_t estado){
+	Horno_grafico_CLR_flecha(estado, Horno_pos_y_flecha[estado]);
+}
+
 /*
  * @brief borra la flecha siguiendo la gráfica
  * @param estado: momento en que está el programa (de 0 a 39 estados)
@@ -442,7 +446,8 @@ void Horno_grafico_temperatura(uint32_t temp){
  * @param tiempo: numero en minutos a graficar.
  */
 void Horno_grafico_tiempo(uint32_t tiempo){
-	Put_string_waddr(21,8,"TIEMPO RESTANTE: ");
+//	Put_string_waddr(21,8,"TIEMPO RESTANTE: ");
+	Put_string_waddr(21,8,"TIEMPO Encendido: ");
 	Horno_grafico_entero_tiempo(75,tiempo);
 }
 
