@@ -14,6 +14,7 @@ void Horno_motor_marcha(uint32_t periodo);
 void Horno_motor_ascender(bool ascender);
 
 typedef struct {
+	bool activo;
 	uint32_t num_paso;
 	uint32_t periodo;
 	bool ascender;

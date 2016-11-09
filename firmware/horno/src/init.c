@@ -21,6 +21,7 @@
 #include "pwm.h"
 #include "adc.h"
 #include "teclado.h"
+#include "programa.h"
 
 
 
@@ -157,6 +158,9 @@ void SysTick_Handler(void) {
  * Se llama al principio del main
  */
 void Horno_Init (void) {
+	/* máquina de estados */
+	horno_estado = HACER_NADA;
+
 	/* configurar puertos */
 	Chip_IOCON_SetPinMuxing(LPC_IOCON, pinmux, sizeof(pinmux) / sizeof(PINMUX_GRP_T));
 	GPIO_SetDirections(gpiodir, sizeof(gpiodir) / sizeof(GPIO_DIR_T));

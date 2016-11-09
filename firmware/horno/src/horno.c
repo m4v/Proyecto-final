@@ -27,6 +27,7 @@
 #include "pwm.h"
 #include "adc.h"
 #include "control.h"
+#include "programa.h"
 
 /* mensaje de inicio para mandar por el UART */
 static char mensaje_inicio[] =
@@ -152,6 +153,13 @@ int main(void) {
     		break;
     	case 'h':
     		DEBUGOUT(mensaje_menu);
+    		break;
+    	case 'M':
+    		if (horno_estado == HACER_NADA) {
+    			Horno_programa_inicio();
+    		} else {
+    			horno_estado = FIN_PROGRAMA;
+    		}
     		break;
     	}
     }

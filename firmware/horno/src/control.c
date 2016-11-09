@@ -26,6 +26,7 @@
 
 #define TS PERIODO_PROMEDIO // periodo de muestreo (segundos)
 #define P_MAX 0.8
+#define P_SEC 0.5
 #define TEMP_SECADO 350
 
 /* constantes del PI discreto, usando la transformación bilineal */
@@ -40,17 +41,24 @@ void Horno_control_pi(float entrada) {
 		return;
 	}
 
+	float p_max;
+	if (horno_control.referencia < TEMP_SECADO) {
+		p_max = P_SEC;
+	} else {
+		p_max = P_MAX;
+	}
+
 	/* condicionamiento de la referencia, limitando la pendiente máxima */
 	float error_ref = horno_control.referencia - horno_control.referencia_cond;
 	if (error_ref > 0) {
-		if (error_ref > P_MAX) {
-			horno_control.referencia_cond += P_MAX;
+		if (error_ref > p_max) {
+			horno_control.referencia_cond += p_max;
 		} else {
 			horno_control.referencia_cond = horno_control.referencia;
 		}
 	} else {
-		if (error_ref < -P_MAX) {
-			horno_control.referencia_cond -= P_MAX;
+		if (error_ref < -p_max) {
+			horno_control.referencia_cond -= p_max;
 		} else {
 			horno_control.referencia_cond = horno_control.referencia;
 		}
