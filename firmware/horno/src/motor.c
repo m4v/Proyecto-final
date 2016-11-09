@@ -118,9 +118,9 @@ void _TIMER_IRQHandler(void)
 	if (Chip_TIMER_MatchPending(_LPC_TIMER, 1)) {
 		Chip_TIMER_ClearMatch(_LPC_TIMER, 1);
 		if (horno_motor.ascender) {
-			horno_motor.num_paso += 1;
-		} else {
 			horno_motor.num_paso -= 1;
+		} else {
+			horno_motor.num_paso += 1;
 		}
 		Horno_motor_paso(horno_motor.num_paso);
 	}
