@@ -29,7 +29,8 @@ void Horno_programa_actualizar(void)
 		DEBUGOUT("ESPERAR_TSECADO\n");
 		break;
 	case ESPERAR_TSECADO:
-		/* esperar hasta alcanzar la temperatura de secado */
+		/* pendiente inicial de temperatura.
+		 * esperar hasta alcanzar la temperatura de secado */
 		if (horno_adc.temperatura > (horno_programa.temperatura_secado - 10)) {
 			horno_programa.tiempo_inicio = horno_adc.valor_n;
 			horno_estado = SECADO;
@@ -60,7 +61,8 @@ void Horno_programa_actualizar(void)
 		DEBUGOUT("ESPERAR_TCOCCION\n");
 		break;
 	case ESPERAR_TCOCCION:
-		/* esperar hasta alcanzar la temp. de cocción */
+		/* segunda pendiente de temperatura.
+		 * esperar hasta alcanzar la temp. de cocción */
 		if (horno_adc.temperatura > (horno_programa.temperatura_coccion - 10)) {
 			horno_estado = COCCION;
 			horno_programa.tiempo_inicio = horno_adc.valor_n;
@@ -75,6 +77,7 @@ void Horno_programa_actualizar(void)
 		}
 		break;
 	case FIN_PROGRAMA:
+		/* detenemos todo y abrimos la puerta */
 		Horno_pwm_parar();
 		Horno_control_activar(false);
 		Horno_motor_ascender(false);
