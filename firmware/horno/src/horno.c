@@ -27,6 +27,7 @@
 #include "pwm.h"
 #include "adc.h"
 #include "control.h"
+#include "programa.h"
 
 /* mensaje de inicio para mandar por el UART */
 static char mensaje_inicio[] =
@@ -95,11 +96,11 @@ int main(void) {
     		DEBUGOUT("Motor detenido\n");
     		break;
     	case '+':
-    		Horno_motor_marcha(horno_motor.periodo + 500);
+    		Horno_motor_marcha(horno_motor.periodo + 100);
     		DEBUGOUT("Motor periodo %dms\n", horno_motor.periodo);
     		break;
     	case '-':
-    		Horno_motor_marcha(horno_motor.periodo - 500);
+    		Horno_motor_marcha(horno_motor.periodo - 100);
     		DEBUGOUT("Motor periodo %dms\n", horno_motor.periodo);
     		break;
     	case 'l':
@@ -143,6 +144,13 @@ int main(void) {
     		break;
     	case 'h':
     		DEBUGOUT(mensaje_menu);
+    		break;
+    	case 'M':
+    		if (horno_estado == HACER_NADA) {
+    			Horno_programa_inicio();
+    		} else {
+    			horno_estado = FIN_PROGRAMA;
+    		}
     		break;
     	}
     }

@@ -16,6 +16,7 @@
 #include "pwm.h"
 #include "grafico.h"
 #include "control.h"
+#include "programa.h"
 
 #define ADC_SIZE 4096		//tamaño del ADC
 #define ADC_REF  3.3		//tension de referencia de ADC
@@ -70,8 +71,13 @@ void Horno_adc_muestra_Handler(float temperatura) {
 
 	/* actualizar la pantalla */
 	Horno_grafico_temperatura((uint32_t)temperatura);
+	/* actualizar la máquina de estados */
+	Horno_programa_actualizar();
+
 	if (horno_pwm.activo) {
 		Horno_control_pi(temperatura);
+		/* actualizar ciclo en la pantalla */
+		Horno_grafico_pwm_ciclo(horno_pwm.dc);
 	}
 }
 
