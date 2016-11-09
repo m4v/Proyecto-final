@@ -38,25 +38,17 @@ void Horno_motor_paso(uint32_t paso) {
 	switch(paso & 0b11) {
 	case 0:
 		MOTOR_P0(true);
-		MOTOR_P1(false);
-		MOTOR_P2(false);
 		MOTOR_P3(false);
 		break;
 	case 1:
 		MOTOR_P0(false);
 		MOTOR_P1(true);
-		MOTOR_P2(false);
-		MOTOR_P3(false);
 		break;
 	case 2:
-		MOTOR_P0(false);
 		MOTOR_P1(false);
 		MOTOR_P2(true);
-		MOTOR_P3(false);
 		break;
 	case 3:
-		MOTOR_P0(false);
-		MOTOR_P1(false);
 		MOTOR_P2(false);
 		MOTOR_P3(true);
 		break;
