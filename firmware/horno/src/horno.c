@@ -105,11 +105,11 @@ int main(void) {
     		DEBUGOUT("Motor detenido\n");
     		break;
     	case '+':
-    		Horno_motor_marcha(horno_motor.periodo + 500);
+    		Horno_motor_marcha(horno_motor.periodo + 100);
     		DEBUGOUT("Motor periodo %dms\n", horno_motor.periodo);
     		break;
     	case '-':
-    		Horno_motor_marcha(horno_motor.periodo - 500);
+    		Horno_motor_marcha(horno_motor.periodo - 100);
     		DEBUGOUT("Motor periodo %dms\n", horno_motor.periodo);
     		break;
     	case 'l':

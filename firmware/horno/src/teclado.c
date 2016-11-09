@@ -29,11 +29,6 @@
 #define bFILA3 7
 #define bFILA4 6
 
-#define FDC 26
-
-#define GETPIN(num) (num & (1<<FDC))
-#define PIN GETPIN(Chip_GPIO_GetPortValue(LPC_GPIO, 0))
-
 /* defines para sacar la fila/columna de un número */
 #define GETCOL1(num) (num & (1<<bCOL1))
 #define GETCOL2(num) (num & (1<<bCOL2))
@@ -218,16 +213,6 @@ void COLUMN4_Handler(void) {
 void EINT3_IRQHandler(void) {
 	if (Chip_GPIOINT_IsIntPending(LPC_GPIOINT, 0)) {
 		uint32_t pint = Chip_GPIOINT_GetStatusRising(LPC_GPIOINT, 0);
-		if (GETPIN(pint)){
-					Chip_GPIOINT_ClearIntStatus(LPC_GPIOINT, 0, 1<<FDC);
-								Horno_udelay(100e3); // dejo pasar los rebotes
-								if (PIN) {
-									/* el boton está apretado */
-
-									Horno_motor_detener();
-									DEBUGOUT("Motor detenido\n");
-								}
-				              }
 		if (GETCOL1(pint)) {
 			/* columna 1, limpio la interrupción */
 			Chip_GPIOINT_ClearIntStatus(LPC_GPIOINT, 0, 1<<bCOL1);
@@ -311,7 +296,7 @@ void _TIMER_IRQHandler(void)
 void Horno_teclado_init(void) {
 	/* configurar interrupciones del GPIO */
 	Chip_GPIOINT_Init(LPC_GPIOINT);
-	Chip_GPIOINT_SetIntRising(LPC_GPIOINT, 0, (1<<bCOL1)|(1<<bCOL2)|(1<<bCOL3)|(1<<bCOL4)|(1<<FDC));
+	Chip_GPIOINT_SetIntRising(LPC_GPIOINT, 0, (1<<bCOL1)|(1<<bCOL2)|(1<<bCOL3)|(1<<bCOL4));
 
 	/* configurar timer */
 	Chip_TIMER_Init(_LPC_TIMER); // activa el clock del timer

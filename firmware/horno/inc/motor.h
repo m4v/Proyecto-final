@@ -12,10 +12,13 @@ void Horno_motor_init(void);
 void Horno_motor_detener(void);
 void Horno_motor_marcha(uint32_t periodo);
 void Horno_motor_ascender(bool ascender);
+void Horno_motor_subir(void);
+void Horno_motor_bajar(void);
 
 typedef struct {
 	bool activo;
-	uint32_t num_paso;
+	uint32_t secuencia;
+	uint32_t cantidad_pasos;
 	uint32_t periodo;
 	bool ascender;
 } HORNO_MOTOR_T;

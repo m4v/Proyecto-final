@@ -40,8 +40,7 @@ void Horno_programa_actualizar(void)
 	case SECADO:
 		/* esperar el tiempo programado */
 		if (horno_programa.tiempo_secado < (horno_adc.valor_n - horno_programa.tiempo_inicio)) {
-			Horno_motor_ascender(true);
-			Horno_motor_marcha(3000);
+			Horno_motor_subir();
 			horno_estado = ESPERAR_CIERRE;
 			DEBUGOUT("ESPERAR_CIERRE\n");
 		}
@@ -80,8 +79,7 @@ void Horno_programa_actualizar(void)
 		/* detenemos todo y abrimos la puerta */
 		Horno_pwm_parar();
 		Horno_control_activar(false);
-		Horno_motor_ascender(false);
-		Horno_motor_marcha(3000);
+		Horno_motor_bajar();
 		horno_estado = HACER_NADA;
 		DEBUGOUT("HACER_NADA\n");
 		break;
