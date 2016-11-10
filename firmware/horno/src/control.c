@@ -17,16 +17,16 @@
 #include "adc.h"
 
 /* valores del PI de secado */
-#define KPs 0.45		    // constante proporcional
-#define KIs 0.00005		    // constante integrador
+#define KPs 0.5		    // constante proporcional
+#define KIs 0.003		    // constante integrador
 
 /* valores del PI de coccion */
 #define KPc 3.5
-#define KIc 0.001
+#define KIc 0.0012
 
 #define TS PERIODO_PROMEDIO // periodo de muestreo (segundos)
 #define P_MAX 0.8
-#define P_SEC 0.5
+#define P_SEC 0.3333
 #define TEMP_SECADO 350
 
 /* constantes del PI discreto, usando la transformación bilineal */
@@ -67,9 +67,13 @@ void Horno_control_pi(float entrada) {
 	horno_control.entrada = horno_control.referencia_cond - entrada;
 	if (horno_control.referencia < TEMP_SECADO) {
 		/* secado */
-		horno_control.salida = horno_control.entrada   * kx_sec
-							 + horno_control.entrada_1 * kx1_sec
-							 + horno_control.salida_1;
+		if ((horno_control.entrada < 10) && (horno_control.entrada > -10)) {
+			horno_control.salida = horno_control.entrada   * kx_sec
+								 + horno_control.entrada_1 * kx1_sec
+								 + horno_control.salida_1;
+		} else {
+			horno_control.salida = horno_control.entrada * KPs;
+		}
 	} else {
 		/* cocción */
 		horno_control.salida = horno_control.entrada   * kx_coc
