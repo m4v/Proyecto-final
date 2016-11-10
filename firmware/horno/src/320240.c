@@ -415,26 +415,9 @@ void Horno_Display_Test(void){
 	 * --- Dejando 1 linea de espacio, quedan 7 lineas utilizables
 	 *  */
 
-	/* Textos chicos */
-//	Put_string_waddr(1,1,"DATOS del PROGRAMA");
-//	Put_string_waddr(1,2,"==================");
+//	Horno_grafico_programa(bool estado, uint32_t T_coccion, uint32_t T_secado, uint32_t t_secado, uint32_t t_coccion, uint32_t P_calentamiento){
+	Horno_grafico_programa(1, 10, 20, 30, 50, 60);
 
-//	Put_string_waddr(1,4,"Pend. Max.:");
-//	Horno_grafico_datos_pendiente(7665);
-//	Put_string_waddr(18,4,"m/s");
-//	Put_string_waddr(1,6,"Temp. Asc.:");
-//	Horno_grafico_datos_temperatura_ascenso(345);
-//	Put_string_waddr(18,6,"`C");
-//	Put_string_waddr(1,8,"Tiem. Cocc.:");
-//	Horno_grafico_datos_tiempo_coccion(987);
-//	Put_string_waddr(18,8,"m");
-//	Put_string_waddr(1,10,"Temp. Sec.:");
-//	Horno_grafico_datos_temperatura_secado(999);
-//	Put_string_waddr(18,10,"`C");
-//	Put_string_waddr(1,12,"Temp. Cocc.:");
-//	Horno_grafico_datos_temperatura_coccion(6543);
-//	Put_string_waddr(18,12,"`C");
-
-	Horno_grafico_datos_pwm( horno_pwm.activo,horno_pwm.periodo, horno_pwm.dc, horno_control.referencia);
+//	Horno_grafico_datos_pwm( horno_pwm.activo,horno_pwm.periodo, horno_pwm.dc, horno_control.referencia);
 
 }
