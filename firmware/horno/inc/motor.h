@@ -13,6 +13,7 @@ void Horno_motor_detener(void);
 void Horno_motor_marcha(uint32_t periodo);
 void Horno_motor_ascender(bool ascender);
 void Horno_motor_subir(void);
+void Horno_motor_subir_tiempo(uint32_t periodo);
 void Horno_motor_bajar(void);
 
 typedef struct {

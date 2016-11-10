@@ -38,12 +38,9 @@ void Horno_programa_actualizar(void)
 		}
 		break;
 	case SECADO:
-		/* esperar el tiempo programado */
-		if (horno_programa.tiempo_secado < (horno_adc.valor_n - horno_programa.tiempo_inicio)) {
-			Horno_motor_subir();
-			horno_estado = ESPERAR_CIERRE;
-			DEBUGOUT("ESPERAR_CIERRE\n");
-		}
+		Horno_motor_subir_tiempo(horno_programa.tiempo_secado);
+		horno_estado = ESPERAR_CIERRE;
+		DEBUGOUT("ESPERAR_CIERRE\n");
 		break;
 	case ESPERAR_CIERRE:
 		/* esperar a que se cierre el horno */
@@ -91,8 +88,8 @@ void Horno_programa_actualizar(void)
 void Horno_programa_inicio(void) {
 	horno_programa.temperatura_coccion = 800;
 	horno_programa.temperatura_secado = 200;
-	horno_programa.tiempo_secado = 500;
-	horno_programa.tiempo_coccion = 500;
+	horno_programa.tiempo_secado = 600;
+	horno_programa.tiempo_coccion = 600;
 	horno_programa.pendiente_calentamiento = 0.8;
 
 	horno_estado = INICIO;
