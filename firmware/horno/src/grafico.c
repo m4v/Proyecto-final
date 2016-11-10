@@ -425,7 +425,7 @@ void Horno_grafico_programa(bool estado, uint32_t T_coccion, uint32_t T_secado, 
 	Horno_grafico_datos_pendiente(P_calentamiento);
 	Put_string_waddr(18,4,"m/s");
 	Put_string_waddr(1,6,"Tiempo Sec.:");
-	Horno_grafico_datos_tiempo_secado(9998);
+	Horno_grafico_datos_tiempo_secado(9998); // En este tenemos que definir qué variable le asignamos
 	Put_string_waddr(19,6,"m");
 	Put_string_waddr(1,8,"Tiempo Coc.:");
 	Horno_grafico_datos_tiempo_coccion(t_coccion);

@@ -410,19 +410,7 @@ void Horno_Display_Test(void){
 
 	static_curve_wsqare();	// Curva de trabajo + recuadros
 
-	/* Escribir en el 1er recuadro */
-	// Ponemos curso en el 1er layer (texto)
-	/* Cosas a tener en cuenta:
-	 * - Las tildes no están contempladas
-	 * - Máximo de (160/8)-1=20 caracteres. El '-1' es para no pisar la línea vertical.
-	 * - Máxima cantidad de líneas: (120/8)-1=15.
-	 * --- Considerar el espacio entre líneas, para mejor visibilidad.
-	 * --- Dejando 1 linea de espacio, quedan 7 lineas utilizables
-	 *  */
-
 //	Horno_grafico_programa(bool estado, uint32_t T_coccion, uint32_t T_secado, uint32_t t_secado, uint32_t t_coccion, uint32_t P_calentamiento){
 	Horno_grafico_programa(1, 10, 20, 30, 50, 60);
-
-//	Horno_grafico_datos_pwm( horno_pwm.activo,horno_pwm.periodo, horno_pwm.dc, horno_control.referencia);
 
 }
