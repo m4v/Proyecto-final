@@ -33,7 +33,7 @@ void Horno_grafico_tiempo(uint32_t tiempo);
 
 void Horno_grafico_datos(uint32_t x, uint32_t y, uint32_t dato);
 
-void Horno_grafico_programa(bool estado, uint32_t T_coccion, uint32_t T_secado, uint32_t t_secado, uint32_t t_coccion, uint32_t P_calentamiento);
+void Horno_grafico_programa(bool estado, uint32_t P_calentamiento, uint32_t T_secado, uint32_t T_coccion, uint32_t t_secado, uint32_t t_coccion);
 void Horno_grafico_datos_pwm( bool activo, uint32_t periodo, float dc, float referencia);
 
 void Horno_grafico_pwm_encendido(bool activo);

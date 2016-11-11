@@ -29,10 +29,25 @@ typedef enum {
 	HACER_NADA
 } HORNO_ESTADO_T;
 
+typedef enum {
+//	ESTADO,				// Este lo dejo en stand by
+	PENDIENTE_MAX,
+	TIEMPO_SECADO,
+	TIEMPO_COCCION,
+	TEMPERATURA_SECADO,
+	TEMPERATURA_COCCION
+} HORNO_LINEA_T;
+
+
 HORNO_PROGRAMA_T horno_programa;
 HORNO_ESTADO_T horno_estado;
+HORNO_LINEA_T horno_ingreso_datos;
+
+//bool horno_programa_estado=false;
 
 void Horno_programa_inicio(void);
 void Horno_programa_actualizar(void);
+//void Horno_programa_carga_datos(int horno_ingreso_datos, uint32_t dato, bool estado);
+void Horno_programa_carga_datos(int horno_ingreso_datos, uint32_t dato);
 
 #endif /* PROGRAMA_H_ */
