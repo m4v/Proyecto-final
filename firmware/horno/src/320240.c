@@ -250,33 +250,38 @@ void Clear_line_waddr(int x0, uint32_t y0, uint32_t x, uint32_t y, uint32_t larg
 
 /* Curva de trabajo estática con el recuadro*/
 void static_curve_wsqare(){
-	/* Esto pone la curva*/
-	for (int i=0;i<50;i++){
-			/*primer rampa       --desde x0=10 y0=230 hasta x1=83 y1=181*/
-			/*segunda rampa      --desde x0=150 y0=181 hasta x1=223 y1=132*/
-			if (i>=46){
-				Put_line_waddr(10,230,i,-i,97);			/* Constante 1*/
-				Put_line_waddr(150,181,1.5*i,-i,90);	/* Constante 2*/
-			}
-			else{
-				Put_line_waddr(10,230,i,-i,8);
-				Put_line_waddr(150,180,1.5*i,-i,8);
-			}
-		}
+
 
 	/* Esto pone los recuadros */
 	Put_line_waddr(0,0,0,0,320); // Linea horizontal al comienzo
 
-	/* esto pone las lineas verticales en los laterales */
-	for (int i=0;i<=239;i++){
+
+	/* Esto pone las lineas verticales en los laterales */
+	for (int i=0;i<=119;i++){
 			Put_pixel(0,i+1);	// vertical en el costado izquierdo
 			Put_pixel(319,i+1);	// vertical en el costado derecho
+			Put_pixel(159,i+1);	// vertical en la mitad
 		}
-	for (int i=0; i<=119;i++){
-		Put_pixel(159,i+1);	// vertical en la mitad
+	/* Ponemos la 2da linea horizontal después de las verticales
+	 * porque sino aparecen huecos */
+	Put_line_waddr(0,0,0,120,320); // Linea horizontal en el medio
+
+	/* Esto pone la curva*/
+		/*primer rampa       --desde x0=0 y0=229 hasta x1=83 y1=181*/
+	for (int i=0; i<59; i++){
+		Put_line_waddr(1,239,i,-i,8);
 		}
-		Put_line_waddr(0,0,0,120,320);// Linea horizontal en el medio
-		Put_line_waddr(0,0,0,239,320);// Linea horizontal al final
+	for (int i=0;i<49;i++){
+			/*segunda rampa      --desde x0=150 y0=181 hasta x1=223 y1=132*/
+			if (i>=45){
+				Put_line_waddr(11,229,i,-i,99);			/* Constante 1*/
+				Put_line_waddr(150,181,1.5*i,-i,97);	/* Constante 2*/
+			}
+			else{
+				Put_line_waddr(150,181,1.5*i,-i,8);
+			}
+		}
+
 }
 
 void Put_string_waddr(int x, int y, char *str){
@@ -404,37 +409,6 @@ void Horno_Display_Init(void)
 void Horno_Display_Test(void){
 
 	static_curve_wsqare();	// Curva de trabajo + recuadros
-
-	/* Escribir en el 1er recuadro */
-	// Ponemos curso en el 1er layer (texto)
-	/* Cosas a tener en cuenta:
-	 * - Las tildes no están contempladas
-	 * - Máximo de (160/8)-1=20 caracteres. El '-1' es para no pisar la línea vertical.
-	 * - Máxima cantidad de líneas: (120/8)-1=15.
-	 * --- Considerar el espacio entre líneas, para mejor visibilidad.
-	 * --- Dejando 1 linea de espacio, quedan 7 lineas utilizables
-	 *  */
-
-	/* Textos chicos */
-//	Put_string_waddr(1,1,"DATOS del PROGRAMA");
-//	Put_string_waddr(1,2,"==================");
-
-//	Put_string_waddr(1,4,"Pend. Max.:");
-//	Horno_grafico_datos_pendiente(7665);
-//	Put_string_waddr(18,4,"m/s");
-//	Put_string_waddr(1,6,"Temp. Asc.:");
-//	Horno_grafico_datos_temperatura_ascenso(345);
-//	Put_string_waddr(18,6,"`C");
-//	Put_string_waddr(1,8,"Tiem. Cocc.:");
-//	Horno_grafico_datos_tiempo_coccion(987);
-//	Put_string_waddr(18,8,"m");
-//	Put_string_waddr(1,10,"Temp. Sec.:");
-//	Horno_grafico_datos_temperatura_secado(999);
-//	Put_string_waddr(18,10,"`C");
-//	Put_string_waddr(1,12,"Temp. Cocc.:");
-//	Horno_grafico_datos_temperatura_coccion(6543);
-//	Put_string_waddr(18,12,"`C");
-
-	Horno_grafico_datos_pwm( horno_pwm.activo,horno_pwm.periodo, horno_pwm.dc, horno_control.referencia);
+	Horno_grafico_programa(0, 00, 00, 00, 00, 00);
 
 }

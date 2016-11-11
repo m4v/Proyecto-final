@@ -16,6 +16,9 @@
 #include "adc.h"
 #include "control.h"
 #include "motor.h"
+#include "grafico.h"
+
+#define TIEMPO_PROGRAMA (horno_adc.valor_n - horno_programa.tiempo_inicio)
 
 void Horno_programa_actualizar(void)
 {
@@ -31,7 +34,8 @@ void Horno_programa_actualizar(void)
 	case ESPERAR_TSECADO:
 		/* pendiente inicial de temperatura.
 		 * esperar hasta alcanzar la temperatura de secado */
-		if (horno_adc.temperatura > (horno_programa.temperatura_secado - 10)) {
+		if (horno_adc.temperatura > (horno_programa.temperatura_secado - 10))
+		{
 			horno_programa.tiempo_inicio = horno_adc.valor_n;
 			horno_estado = SECADO;
 			DEBUGOUT("SECADO\n");
@@ -44,7 +48,8 @@ void Horno_programa_actualizar(void)
 		break;
 	case ESPERAR_CIERRE:
 		/* esperar a que se cierre el horno */
-		if (!horno_motor.activo) {
+		if (!horno_motor.activo)
+		{
 			/* llegó al fin de carrera */
 			horno_estado = CALENTAMIENTO;
 			DEBUGOUT("CALENTAMIENTO\n");
@@ -59,7 +64,8 @@ void Horno_programa_actualizar(void)
 	case ESPERAR_TCOCCION:
 		/* segunda pendiente de temperatura.
 		 * esperar hasta alcanzar la temp. de cocción */
-		if (horno_adc.temperatura > (horno_programa.temperatura_coccion - 10)) {
+		if (horno_adc.temperatura > (horno_programa.temperatura_coccion - 10))
+		{
 			horno_estado = COCCION;
 			horno_programa.tiempo_inicio = horno_adc.valor_n;
 			DEBUGOUT("COCCION\n");
@@ -67,7 +73,8 @@ void Horno_programa_actualizar(void)
 		break;
 	case COCCION:
 		/* esperar el tiempo programado */
-		if (horno_programa.tiempo_coccion < (horno_adc.valor_n - horno_programa.tiempo_inicio)) {
+		if (horno_programa.tiempo_coccion < (horno_adc.valor_n - horno_programa.tiempo_inicio))
+		{
 			horno_estado = FIN_PROGRAMA;
 			DEBUGOUT("FIN_PROGRAMA\n");
 		}
@@ -94,4 +101,38 @@ void Horno_programa_inicio(void) {
 
 	horno_estado = INICIO;
 	DEBUGOUT("INICIO\n");
+}
+
+/* dato: valor a poner en las lineas de datos
+ * estado:	true: funcionando el programa;
+ * 			false: programa apagado
+ */
+//void Horno_programa_carga_datos(int horno_ingreso_datos, uint32_t dato, bool estado){
+void Horno_programa_carga_datos(int horno_ingreso_datos, uint32_t dato){
+//	if(!estado==true){
+		switch(horno_ingreso_datos)	{
+		case PENDIENTE_MAX:
+			Horno_grafico_datos_pendiente(dato);
+			horno_programa.pendiente_calentamiento = dato;
+			break;
+		case TIEMPO_SECADO:
+			Horno_grafico_datos_tiempo_secado(dato); // En este tenemos que definir qué variable le asignamos
+			horno_programa.tiempo_secado = dato;
+			break;
+		case TIEMPO_COCCION:
+			Horno_grafico_datos_tiempo_coccion(dato);
+			horno_programa.tiempo_coccion = dato;
+			break;
+		case TEMPERATURA_SECADO:
+			Horno_grafico_datos_temperatura_secado(dato);
+			horno_programa.temperatura_secado = dato;
+			break;
+		case TEMPERATURA_COCCION:
+			Horno_grafico_datos_temperatura_coccion(dato);
+			horno_programa.temperatura_coccion = dato;
+			break;
+		}
+//	}
+
+
 }

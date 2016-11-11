@@ -76,8 +76,6 @@ void Horno_adc_muestra_Handler(float temperatura) {
 
 	if (horno_pwm.activo) {
 		Horno_control_pi(temperatura);
-		/* actualizar ciclo en la pantalla */
-		Horno_grafico_pwm_ciclo(horno_pwm.dc);
 	}
 }
 
@@ -125,11 +123,22 @@ void Horno_adc_muestreo(void)
 			horno_adc.lm_suma = 0;
 			horno_adc.suma_cantidad = 0;
 			horno_adc.valor_n++;
+			int horno_adc_tiempo_test=horno_adc.valor_n/5; // Para tener control en este test
 			uint32_t pos_m[2]={275, 248};
 			uint32_t pos_h[2]={223, 198};
 			switch(FIN){
 			case false:
-				Horno_grafico_tiempo(horno_adc.valor_n/60); // Contamos el tiempo de encendido
+				Horno_grafico_tiempo(horno_adc.valor_n); // Contamos el tiempo de encendido
+				if((horno_adc_tiempo_test)>=0 &&(horno_adc_tiempo_test)<40 ){
+					if ((horno_adc_tiempo_test)==0){
+						Horno_grafico_posicion_flecha(horno_adc_tiempo_test);
+
+					}
+					else{
+						Horno_grafico_posicion_CLR_flecha((horno_adc_tiempo_test-1));
+						Horno_grafico_posicion_flecha(horno_adc_tiempo_test);
+					}
+				}
 				/* Pone los dos puntos intermitentes del tiempo */
 				if(dos_pts==true){
 					Horno_grafico_CLR_dos_puntos(240,75);

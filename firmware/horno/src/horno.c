@@ -73,19 +73,13 @@ int main(void) {
 
    	DEBUGOUT(mensaje_menu);
 
-//   	horno_adc_tiempo_restante=1000; // Esto es para testear el tiempo restante
+   	Put_string_waddr(0, 16,"Otro lugar para poner");
+   	Put_string_waddr(0, 17,"- - - - datos - - - -");
+   	Put_string_waddr(0, 18,"- - - - - - - - - - -");
+
    	Put_string_waddr(10,27,"La flecha muestra el estado");
    	Put_string_waddr(10,28,"actual en el programa");
 
-   	for(int i=1;i<40;i++){
-   	Horno_grafico_posicion_flecha(i);
-   	/* Esto es un timer casero porque con Horno_udelay se traba todo. */
-   	for(int i=0;i<1e5; i++){
-   	   			int j;
-   	   			j++;
-   	}
-   	Horno_grafico_posicion_CLR_flecha(i);
-   	}
 
    	/* bucle principal */
    	while(1){
