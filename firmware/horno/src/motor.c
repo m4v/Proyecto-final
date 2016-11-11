@@ -22,7 +22,11 @@
 #define _SYSCTL_PCLK_TIMER SYSCTL_PCLK_TIMER1
 #define _TIMER_IRQHandler  TIMER1_IRQHandler
 
-#define PASOS_VUELTA 200 // pasos por vuelta
+#define PASOS_VUELTA 200     // pasos por vuelta
+#define DISTANCIA_VUELTAS 56 // cantidad de vueltas del motor para cerrar la plataforma
+
+/* tiempos mínimos (en ms) que puede tardar el motor en hacer una vuelta cuando sube y
+ * baja la plataforma. Tiempos menores (mayor velocidad) hace que el motor patine */
 #define PERIODO_MIN_SUBIDA 2000
 #define PERIODO_MIN_BAJADA 1000
 
@@ -111,12 +115,31 @@ void Horno_motor_marcha(uint32_t time_ms)
 void Horno_motor_ascender(bool ascender) {
 	horno_motor.ascender = ascender;
 }
+
 /*
  * @brief Sube la plataforma a la máxima velocidad posible.
  */
+
 void Horno_motor_subir(void) {
 	horno_motor.ascender = true;
 	Horno_motor_marcha(PERIODO_MIN_SUBIDA);
+}
+
+/*
+ * @brief Sube la plataforma para cerrar en el tiempo indicado
+ * @param tiempo: Tiempo que debería tardar en cerrar la plataforma (segundos).
+ */
+
+void Horno_motor_subir_tiempo(uint32_t tiempo) {
+	horno_motor.ascender = true;
+
+	uint32_t periodo = 1000*tiempo/DISTANCIA_VUELTAS;
+
+	if (periodo < PERIODO_MIN_SUBIDA) {
+		periodo = PERIODO_MIN_SUBIDA;
+	}
+
+	Horno_motor_marcha(periodo);
 }
 
 /*
