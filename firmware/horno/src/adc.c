@@ -76,8 +76,6 @@ void Horno_adc_muestra_Handler(float temperatura) {
 
 	if (horno_pwm.activo) {
 		Horno_control_pi(temperatura);
-		/* actualizar ciclo en la pantalla */
-		Horno_grafico_pwm_ciclo(horno_pwm.dc);
 	}
 }
 
