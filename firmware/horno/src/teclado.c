@@ -70,70 +70,70 @@ uint8_t horno_teclado_linea_datos=0;
 
 
 void TECLA1_Handler(void) {
-	DEBUGOUT("1");
+//	DEBUGOUT("1");
 	horno_keypad.dato *= 10;
 	horno_keypad.dato += 1;
 	Horno_programa_carga_datos(horno_teclado_linea_datos,horno_keypad.dato);
 }
 
 void TECLA2_Handler(void) {
-	DEBUGOUT("2");
+//	DEBUGOUT("2");
 	horno_keypad.dato *= 10;
 	horno_keypad.dato += 2;
 	Horno_programa_carga_datos(horno_teclado_linea_datos,horno_keypad.dato);
 }
 
 void TECLA3_Handler(void) {
-	DEBUGOUT("3");
+//	DEBUGOUT("3");
 	horno_keypad.dato *= 10;
 	horno_keypad.dato += 3;
 	Horno_programa_carga_datos(horno_teclado_linea_datos,horno_keypad.dato);
 }
 
 void TECLA4_Handler(void) {
-	DEBUGOUT("4");
+//	DEBUGOUT("4");
 	horno_keypad.dato *= 10;
 	horno_keypad.dato += 4;
 	Horno_programa_carga_datos(horno_teclado_linea_datos,horno_keypad.dato);
 }
 
 void TECLA5_Handler(void) {
-	DEBUGOUT("5");
+//	DEBUGOUT("5");
 	horno_keypad.dato *= 10;
 	horno_keypad.dato += 5;
 	Horno_programa_carga_datos(horno_teclado_linea_datos,horno_keypad.dato);
 }
 
 void TECLA6_Handler(void) {
-	DEBUGOUT("6");
+//	DEBUGOUT("6");
 	horno_keypad.dato *= 10;
 	horno_keypad.dato += 6;
 	Horno_programa_carga_datos(horno_teclado_linea_datos,horno_keypad.dato);
 }
 
 void TECLA7_Handler(void) {
-	DEBUGOUT("7");
+//	DEBUGOUT("7");
 	horno_keypad.dato *= 10;
 	horno_keypad.dato += 7;
 	Horno_programa_carga_datos(horno_teclado_linea_datos,horno_keypad.dato);
 }
 
 void TECLA8_Handler(void) {
-	DEBUGOUT("8");
+//	DEBUGOUT("8");
 	horno_keypad.dato *= 10;
 	horno_keypad.dato += 8;
 	Horno_programa_carga_datos(horno_teclado_linea_datos,horno_keypad.dato);
 }
 
 void TECLA9_Handler(void) {
-	DEBUGOUT("9");
+//	DEBUGOUT("9");
 	horno_keypad.dato *= 10;
 	horno_keypad.dato += 9;
 	Horno_programa_carga_datos(horno_teclado_linea_datos,horno_keypad.dato);
 }
 
 void TECLA0_Handler(void) {
-	DEBUGOUT("0");
+//	DEBUGOUT("0");
 	horno_keypad.dato *= 10;
 	Horno_programa_carga_datos(horno_teclado_linea_datos,horno_keypad.dato);
 }
@@ -149,70 +149,66 @@ void estado_pwm(void) {
 }
 
 void TECLAA_Handler(void) {
-	if (!horno_pwm.activo) {
-		DEBUGOUT("A - inicio PWM\n");
-		Horno_pwm_inicio();
-		Horno_control_activar(true);
-		estado_pwm();
-//		Horno_grafico_pwm_encendido(horno_pwm.activo);
-		Horno_grafico_programa(horno_pwm.activo, horno_programa.pendiente_calentamiento, horno_programa.tiempo_secado, horno_programa.tiempo_coccion, horno_programa.temperatura_secado, horno_programa.temperatura_coccion); // Test para update datos
-	} else {
-		DEBUGOUT("A - parar PWM\n");
-		Horno_pwm_parar();
-		Horno_control_activar(false);
-		estado_pwm();
-//		Horno_grafico_pwm_encendido(horno_pwm.activo);
-		Horno_grafico_programa(horno_pwm.activo, horno_programa.pendiente_calentamiento, horno_programa.tiempo_secado, horno_programa.tiempo_coccion, horno_programa.temperatura_secado, horno_programa.temperatura_coccion); // Test para update datos
-	}
+	horno_estado = INICIO;
+	Horno_grafico_programa(true,
+			horno_programa.pendiente_calentamiento,
+			horno_programa.tiempo_secado,
+			horno_programa.tiempo_coccion,
+			horno_programa.temperatura_secado,
+			horno_programa.temperatura_coccion
+			); // Test para update datos
 }
 
 void TECLAB_Handler(void) {
-	DEBUGOUT("B - setear referencia\n");
-//	Horno_control_referencia((float)horno_keypad.dato_ingresado);
-//	Horno_grafico_control_referencia(horno_control.referencia);
-
-
+	horno_estado = FIN_PROGRAMA;
+	Horno_grafico_programa(false,
+				horno_programa.pendiente_calentamiento,
+				horno_programa.tiempo_secado,
+				horno_programa.tiempo_coccion,
+				horno_programa.temperatura_secado,
+				horno_programa.temperatura_coccion
+				);
 }
 
 void TECLAC_Handler(void) {
-	DEBUGOUT("C");
-//	Horno_motor_ascender(false);
-//	Horno_motor_marcha(horno_motor.periodo);
-	if(horno_teclado_linea_datos<1){
-			horno_teclado_linea_datos=0;
-		}else horno_teclado_linea_datos--;
-
+//	DEBUGOUT("C");
+	if(horno_teclado_linea_datos<1) {
+		horno_teclado_linea_datos=0;
+	} else {
+		horno_teclado_linea_datos--;
+	}
 }
 
 void TECLAD_Handler(void) {
-	DEBUGOUT("D");
-//	Horno_motor_ascender(true);
-//	Horno_motor_marcha(horno_motor.periodo);
+//	DEBUGOUT("D");
 	if(horno_teclado_linea_datos>3){
 		horno_teclado_linea_datos=4;
-	}else horno_teclado_linea_datos++;
-
-
+	} else {
+		horno_teclado_linea_datos++;
+	}
 }
 
 /* tecla asterisco */
 void TECLAE_Handler(void) {
-	DEBUGOUT("\b"); /* \b -> backspace */
+//	DEBUGOUT("\b"); /* \b -> backspace */
 	horno_keypad.dato /= 10;
+	Horno_programa_carga_datos(horno_teclado_linea_datos,horno_keypad.dato);
 }
 
 /* tecla numeral
  *  ---FUNCIONA COMO ENTER: confirma el número ingresado
  *  */
 void TECLAF_Handler(void) {
-	DEBUGOUT("\n");
+//	DEBUGOUT("\n");
 	horno_keypad.dato_ingresado = horno_keypad.dato;
 	horno_keypad.dato = 0;
-	DEBUGOUT("dato ingresado: %d\n", horno_keypad.dato_ingresado);
+//	DEBUGOUT("dato ingresado: %d\n", horno_keypad.dato_ingresado);
 	// Esto es para que baje de linea automáticamente //
 	if(horno_teclado_linea_datos>3){
 		horno_teclado_linea_datos=4;
-	}else horno_teclado_linea_datos++;
+	} else {
+		horno_teclado_linea_datos++;
+	}
 }
 
 void COLUMN1_Handler(void) {

@@ -28,6 +28,11 @@ void Horno_programa_actualizar(void)
 		Horno_control_referencia(horno_programa.temperatura_secado);
 		Horno_control_activar(true);
 		Horno_pwm_inicio();
+		horno_programa.tiempo_total = horno_programa.tiempo_secado
+									+ horno_programa.tiempo_coccion
+									+ (horno_programa.temperatura_coccion - horno_programa.temperatura_secado)/0.8
+									+ horno_programa.temperatura_secado / 0.3333;
+		horno_programa.tiempo_programa_inicio = horno_adc.valor_n;
 		horno_estado = ESPERAR_TSECADO;
 		DEBUGOUT("ESPERAR_TSECADO\n");
 		break;
@@ -84,12 +89,35 @@ void Horno_programa_actualizar(void)
 		Horno_pwm_parar();
 		Horno_control_activar(false);
 		Horno_motor_bajar();
+		/* limpiar los 2 puntos */
+		Horno_grafico_CLR_dos_puntos(240,75);
+		/* escribir FIN */
+		uint32_t pos_m[2]={275, 248};
+		uint32_t pos_h[2]={223, 198};
+	   	Horno_grafico_CLR_digito(pos_m[1],75);
+	   	Horno_grafico_CLR_digito(pos_m[0],75);
+	   	Horno_grafico_CLR_digito(pos_h[1],75);
+	   	Horno_grafico_CLR_digito(pos_h[0],75);
+		Horno_grafico_FIN(); // Ponemos la palabra FIN
 		horno_estado = HACER_NADA;
 		DEBUGOUT("HACER_NADA\n");
 		break;
 	case HACER_NADA:
 		break;
 	}
+
+	if (horno_estado != HACER_NADA) {
+		/* Pone los dos puntos intermitentes del tiempo */
+		if(horno_adc.valor_n & 1){
+			Horno_grafico_CLR_dos_puntos(240,75);
+		} else {
+			Horno_grafico_dos_puntos(240,75);
+		}
+		uint32_t tiempo = horno_programa.tiempo_total - horno_adc.valor_n;
+		Horno_grafico_tiempo(tiempo > 0 ? tiempo : 0);
+	}
+
+
 }
 
 void Horno_programa_inicio(void) {
