@@ -11,7 +11,7 @@
 #include "board.h"
 #include "init.h"
 
-#define NUM_MUESTRAS_ADC 1000*PERIODO_PROMEDIO/PERIODO_MUESTREO
+#define NUM_MUESTRAS_ADC (1000*PERIODO_PROMEDIO/PERIODO_MUESTREO)
 
 typedef struct {
 	bool     salida_uart;       // si imprime los datos del AD al UART
