@@ -5,10 +5,10 @@ serial_init
 % creamos nuestras figuras
 clf
 subplot(2, 1, 1);
-h11 = plot(1, 1, 'xb;temperatura;');
+h11 = plot(1, 1, '-b;temperatura;');
 legend('location', 'northwest');
 hold on
-h12 = plot(1, 1, '-r;referencia;');
+h12 = plot(1, 1, '--r;referencia;');
 h13 = plot(1, 1, '-b;referencia cond;');
 grid on
 subplot(2, 1, 2);
@@ -21,8 +21,8 @@ grid on
 log = fopen("registro.log", "a");
 fwrite(log, sprintf("-Inicio del registro de captura %s\r\n", fecha()));
 
-srl_write(fd, sprintf("S%d\n", referencia)); % valor del escalon
-srl_write(fd, "cPL"); % iniciar captura
+%srl_write(fd, sprintf("S%d\n", referencia)); % valor del escalon
+srl_write(fd, "cM"); % iniciar captura
 Tm = 1; % en este modo el muestreo es cada seg
 if (exist("i", "var"))
   i = length(t);
@@ -30,6 +30,7 @@ if (exist("i", "var"))
   i = 1;
 end
 %clear t temp ref piy piys dc
+more off
 unwind_protect
   while(1)
     % leemos una línea
@@ -38,6 +39,10 @@ unwind_protect
       [n, T, Tth, Tlm, ADth, ADlm, DC, REF, REF_C, PIx, PIy ] = strread(str, 
             "%f, %f, %f, %f, %f, %f, %f, %f, %f, %f, %f");
     catch
+      % desactivo el warning que es molesto
+      [text, id] = lastwarn();
+      warning("off", id);
+      printf(str)
       continue
     end
     t(i) = n * Tm;
@@ -66,7 +71,7 @@ unwind_protect
   end
 unwind_protect_cleanup
   % Ctrl-C, detener y cerrar la conección
-  srl_write(fd, "cPL");
+  srl_write(fd, "c");
   fclose(fd);
   fwrite(log, sprintf("-Fin de la captura %s\r\n", fecha()));
   fclose(log);
