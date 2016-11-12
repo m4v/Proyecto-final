@@ -22,12 +22,20 @@
 #define _SYSCTL_PCLK_TIMER SYSCTL_PCLK_TIMER1
 #define _TIMER_IRQHandler  TIMER1_IRQHandler
 
-#define PASOS 200 // pasos por vuelta
+#define PASOS_VUELTA 200     // pasos por vuelta
+#define DISTANCIA_VUELTAS 56 // cantidad de vueltas del motor para cerrar la plataforma
+
+/* tiempos mínimos (en ms) que puede tardar el motor en hacer una vuelta cuando sube y
+ * baja la plataforma. Tiempos menores (mayor velocidad) hace que el motor patine */
+#define PERIODO_MIN_SUBIDA 2000
+#define PERIODO_MIN_BAJADA 1000
 
 #define MOTOR_P0(estado) Chip_GPIO_SetPinState(LPC_GPIO, 0, 30, estado);
 #define MOTOR_P1(estado) Chip_GPIO_SetPinState(LPC_GPIO, 0,  4, estado);
 #define MOTOR_P2(estado) Chip_GPIO_SetPinState(LPC_GPIO, 0,  5, estado);
 #define MOTOR_P3(estado) Chip_GPIO_SetPinState(LPC_GPIO, 0, 29, estado);
+
+#define FIN_CARRERA Chip_GPIO_GetPinState(LPC_GPIO, 0, 26)
 
 /*
  * @brief traduce el número de paso actual a la sequencia correspondiente
@@ -38,29 +46,29 @@ void Horno_motor_paso(uint32_t paso) {
 	switch(paso & 0b11) {
 	case 0:
 		MOTOR_P0(true);
-		MOTOR_P1(false);
-		MOTOR_P2(false);
 		MOTOR_P3(false);
 		break;
 	case 1:
 		MOTOR_P0(false);
 		MOTOR_P1(true);
-		MOTOR_P2(false);
-		MOTOR_P3(false);
 		break;
 	case 2:
-		MOTOR_P0(false);
 		MOTOR_P1(false);
 		MOTOR_P2(true);
-		MOTOR_P3(false);
 		break;
 	case 3:
-		MOTOR_P0(false);
-		MOTOR_P1(false);
 		MOTOR_P2(false);
 		MOTOR_P3(true);
 		break;
 	}
+
+	/* si se activa el fin de carrera detenemos el motor solamente si al menos
+	 * ya hizo una vuelta.
+	 */
+	if (FIN_CARRERA && (horno_motor.cantidad_pasos > PASOS_VUELTA)) {
+		Horno_motor_detener();
+	}
+	horno_motor.cantidad_pasos++;
 }
 
 /*
@@ -73,6 +81,8 @@ void Horno_motor_detener(void){
 	MOTOR_P2(false);
 	MOTOR_P3(false);
 	Chip_TIMER_Disable(_LPC_TIMER);
+	horno_motor.activo = false;
+	DEBUGOUT("Motor detenido. Total pasos %d\n", horno_motor.cantidad_pasos);
 }
 
 /*
@@ -82,10 +92,7 @@ void Horno_motor_detener(void){
 
 void Horno_motor_marcha(uint32_t time_ms)
 {
-	/* más rápido no gira */
-	if (time_ms < 2000) {
-		time_ms = 2000;
-	}
+	horno_motor.cantidad_pasos = 0;
 	horno_motor.periodo = time_ms;
 	/* poner todos los contadores a cero */
 	Chip_TIMER_Reset(_LPC_TIMER);
@@ -93,10 +100,11 @@ void Horno_motor_marcha(uint32_t time_ms)
 	/* obtener la cantidad de ciclos por milisegundo */
 	uint32_t ticks = Chip_Clock_GetPeripheralClockRate(_SYSCTL_PCLK_TIMER) / 1e3;
 	/* sacar los ciclos por cada paso */
-	ticks = time_ms * ticks / PASOS;
+	ticks = time_ms * ticks / PASOS_VUELTA;
 	/* configuramos la cantidad de ciclos a esperar y activamos el timer */
 	Chip_TIMER_SetMatch(_LPC_TIMER, 1, ticks);
 	Chip_TIMER_Enable(_LPC_TIMER);
+	horno_motor.activo = true;
 }
 
 /*
@@ -109,6 +117,40 @@ void Horno_motor_ascender(bool ascender) {
 }
 
 /*
+ * @brief Sube la plataforma a la máxima velocidad posible.
+ */
+
+void Horno_motor_subir(void) {
+	horno_motor.ascender = true;
+	Horno_motor_marcha(PERIODO_MIN_SUBIDA);
+}
+
+/*
+ * @brief Sube la plataforma para cerrar en el tiempo indicado
+ * @param tiempo: Tiempo que debería tardar en cerrar la plataforma (segundos).
+ */
+
+void Horno_motor_subir_tiempo(uint32_t tiempo) {
+	horno_motor.ascender = true;
+
+	uint32_t periodo = 1000*tiempo/DISTANCIA_VUELTAS;
+
+	if (periodo < PERIODO_MIN_SUBIDA) {
+		periodo = PERIODO_MIN_SUBIDA;
+	}
+
+	Horno_motor_marcha(periodo);
+}
+
+/*
+ * @brief Baja la plataforma a la máxima velocidad posible.
+ */
+void Horno_motor_bajar(void) {
+	horno_motor.ascender = false;
+	Horno_motor_marcha(PERIODO_MIN_BAJADA);
+}
+
+/*
  * @brief	Handle interrupt from 32-bit timer
  */
 
@@ -118,11 +160,11 @@ void _TIMER_IRQHandler(void)
 	if (Chip_TIMER_MatchPending(_LPC_TIMER, 1)) {
 		Chip_TIMER_ClearMatch(_LPC_TIMER, 1);
 		if (horno_motor.ascender) {
-			horno_motor.num_paso += 1;
+			horno_motor.secuencia -= 1;
 		} else {
-			horno_motor.num_paso -= 1;
+			horno_motor.secuencia += 1;
 		}
-		Horno_motor_paso(horno_motor.num_paso);
+		Horno_motor_paso(horno_motor.secuencia);
 	}
 }
 
@@ -142,5 +184,5 @@ void Horno_motor_init(void) {
 	NVIC_ClearPendingIRQ(_TIMER_IRQn);
 	NVIC_EnableIRQ(_TIMER_IRQn);
 
-	horno_motor.periodo = 2000;
+	horno_motor.periodo = PERIODO_MIN_SUBIDA;
 }

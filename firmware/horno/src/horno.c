@@ -27,6 +27,7 @@
 #include "pwm.h"
 #include "adc.h"
 #include "control.h"
+#include "programa.h"
 
 /* mensaje de inicio para mandar por el UART */
 static char mensaje_inicio[] =
@@ -43,8 +44,7 @@ static char mensaje_menu[] =
 		" '-' para disminuir la velocidad del motor.\r\n"
 		" 'l' para cambiar el sentido de giro.\r\n"
 		"Teclado:\r\n"
-		" A inicia el PWM\r\n"
-		" B detiene el PWM\r\n"
+		" A inicia/detiene el PWM\r\n"
 		" C configura el ciclo de trabajo del PWM\r\n"
 		" D configura el periodo del PWM\r\n"
 		" # enter\r\n"
@@ -69,13 +69,14 @@ int main(void) {
     DEBUGOUT(mensaje_inicio);
     Horno_Init();
    	Horno_Display_Test();
+   	Board_LED_Set(0,true); // Esto es para apagar el led que está jodiendo.
 
    	DEBUGOUT(mensaje_menu);
 
-   	Horno_grafico_digito(270,20,10); /* gráfico del "°C" que no cambia */
-
    	/* bucle principal */
    	while(1){
+
+
     	charUART = DEBUGIN();
     	switch(charUART) {
     	case 'c':
@@ -90,11 +91,11 @@ int main(void) {
     		DEBUGOUT("Motor detenido\n");
     		break;
     	case '+':
-    		Horno_motor_marcha(horno_motor.periodo + 500);
+    		Horno_motor_marcha(horno_motor.periodo + 100);
     		DEBUGOUT("Motor periodo %dms\n", horno_motor.periodo);
     		break;
     	case '-':
-    		Horno_motor_marcha(horno_motor.periodo - 500);
+    		Horno_motor_marcha(horno_motor.periodo - 100);
     		DEBUGOUT("Motor periodo %dms\n", horno_motor.periodo);
     		break;
     	case 'l':
@@ -117,6 +118,22 @@ int main(void) {
 //    		}
     		DEBUGOUT("PI activo: %d\n", horno_control.activo);
     		break;
+    	case 'D':
+			DEBUGOUT("Ingrese ciclo de trabajo: ");
+			uint32_t dc = 0;
+			while(1) {
+				uint8_t c = DEBUGIN();
+				if (((c > 47) && (c < 58)) || (c == '\n')) {
+					DEBUGOUT("%c", c);
+					if (c == '\n') {
+						break;
+					}
+					dc = (dc*10) + c - 48;
+				}
+			}
+			DEBUGOUT("Valor ingresado: %d\n", dc);
+			Horno_pwm_ciclo((float)dc/100);
+			break;
     	case 'S':
     		DEBUGOUT("Ingrese temperatura de referencia: ");
     		uint32_t ref = 0;
@@ -138,6 +155,13 @@ int main(void) {
     		break;
     	case 'h':
     		DEBUGOUT(mensaje_menu);
+    		break;
+    	case 'M':
+    		if (horno_estado == HACER_NADA) {
+    			Horno_programa_inicio();
+    		} else {
+    			horno_estado = FIN_PROGRAMA;
+    		}
     		break;
     	}
     }

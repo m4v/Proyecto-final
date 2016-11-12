@@ -16,6 +16,7 @@
 #include "320240.h"
 #include "grafico.h"
 #include "pwm.h"
+#include "control.h"
 /* Defines */
 
 #define LAYER2_ADDRESS 0x1000
@@ -168,46 +169,6 @@ void Clr_pixel(uint32_t x, uint32_t y){
 	Parameter_Write(0x00<<temp);
 }
 
-/* Hace un rectánculo de las dimensiones indicadas, comenzando en el (0,0) */
-void Put_rectangle(uint32_t width, uint32_t height){
-/*
-	Command_Write(CSR_WRITE); // Ponemos el cursor en el comienzo del 2do layer <- Capa GRAFICA!
-	Parameter_Write(0x00); //P1 -- LSB
-	Parameter_Write(0x10); //P2 -- MSB
-//	Command_Write(MEM_WRITE); // Avisamos que vamos a escribir
-	int x = width;
-	int y = height;
-
-	for(int j=0;j<x;j++){
-		Command_Write(MEM_WRITE);
-		Parameter_Write(0xFF);}
-	for (int i=1; i<y; i++){
-		// Incremento una posición en y
-		Set_graphic_position(0,i);
-				Command_Write(MEM_WRITE);
-				Parameter_Write(0x80);
-		Set_graphic_position(x*8,i);
-				Command_Write(MEM_WRITE);
-				Parameter_Write(0x01);
-	}
-	Set_graphic_position(0,y);
-	for(int j=0;j<x;j++){
-
-		Command_Write(MEM_WRITE);
-		Parameter_Write(0xFF);}
-*/
-	for(int i=0;i<width;i++){	Put_pixel(i,0);}		// Arista superior
-	for(int j=0;j<height;j++){	Put_pixel(0,j);}		// Arista izquierda
-	for(int j=0;j<height;j++){	Put_pixel(width,j);}	// Arista derecha
-	for(int i=0;i<width;i++){	Put_pixel(i,height);}	// Arista inferior
-}
-
-/* Rellena rectángulo. Lo mismo que crear un cuadrado */
-void Fill_rectangle(uint32_t width, uint32_t height){
-	// acá iria donde acomodamos la dirección
-	Set_graphic_position(width/8,height);
-}
-
 /* Pone una línea que comienza en (x,y) y de longitud 'largo' */
 void Put_line( int x, uint32_t y, uint32_t largo){
 	char pp=(0x80>>(x%8)); // pixel inicial
@@ -289,108 +250,22 @@ void Clear_line_waddr(int x0, uint32_t y0, uint32_t x, uint32_t y, uint32_t larg
 
 /* Curva de trabajo estática con el recuadro*/
 void static_curve_wsqare(){
-	/* Esto pone la curva*/
-	for (int i=0;i<50;i++){
-			/*primer rampa       --desde x0=10 y0=230 hasta x1=83 y1=181*/
-			/*segunda rampa      --desde x0=150 y0=181 hasta x1=223 y1=132*/
-			if (i>=46){
-				Put_line_waddr(10,230,i,-i,97);			/* Constante 1*/
-				Put_line_waddr(150,181,1.5*i,-i,90);	/* Constante 2*/
-			}
-			else{
-				Put_line_waddr(10,230,i,-i,8);
-				Put_line_waddr(150,180,1.5*i,-i,8);
-			}
-		}
+
 
 	/* Esto pone los recuadros */
 	Put_line_waddr(0,0,0,0,320); // Linea horizontal al comienzo
 
-	/* esto pone las lineas verticales en los laterales */
-	for (int i=0;i<=239;i++){
+
+	/* Esto pone las lineas verticales en los laterales */
+	for (int i=0;i<=119;i++){
 			Put_pixel(0,i+1);	// vertical en el costado izquierdo
 			Put_pixel(319,i+1);	// vertical en el costado derecho
+			Put_pixel(185,i+1);	// vertical en la mitad
 		}
-	for (int i=0; i<=119;i++){
-		Put_pixel(159,i+1);	// vertical en la mitad
-		}
-		Put_line_waddr(0,0,0,120,320);// Linea horizontal en el medio
-		Put_line_waddr(0,0,0,239,320);// Linea horizontal al final
-}
+	/* Ponemos la 2da linea horizontal después de las verticales
+	 * porque sino aparecen huecos */
+	Put_line_waddr(0,0,0,120,320); // Linea horizontal en el medio
 
-void Set_arrow(int x0,int y0){
-	/* vuelvo a poner la posición en la 2da layer */
-	Command_Write(CSR_WRITE);
-	Parameter_Write(0x00);
-	Parameter_Write(0x10);
-	/* escribo la flecha */
-	for(int i=0;i<5;i++){
-		Put_line_waddr(x0,y0,x0+2,i,4);
-		int p=(12-2*(i));
-		Put_line_waddr(x0,y0,(x0-2+i),i+5,p);
-		}
-}
-
-void Clear_arrow(int x0,int y0){
-	/* vuelvo a poner la posición en la 2da layer */
-	Command_Write(CSR_WRITE);
-	Parameter_Write(0x00);
-	Parameter_Write(0x10);
-	for(int i=0;i<5;i++){
-		Clear_line_waddr(x0,y0,x0+2,i,4);
-		int p=(12-2*(i));
-		Clear_line_waddr(x0,y0,(x0-2+i),i+5,p);
-		}
-}
-
-void Flechita_moviendose(void){
-	int y;
-	int x;
-	// 1er pendiente
-	for(int i=0;i<20;i++){
-		x=(2+i);
-		y=213-(1.8*i);
-		/* Pongo la flecha */
-		Set_arrow(x, y);
-		Horno_udelay(1e5);
-		/* Borro la flecha */
-		Clear_arrow(x,y);
-	}
-
-	// 1er constante
-	for(int i=0;i<35;i++){
-		x=(30+i);
-		y=170;
-		/* Pongo la flecha */
-		Set_arrow(x, y);
-		Horno_udelay(1e5);
-		/* Borro la flecha */
-		Clear_arrow(x,y);
-	}
-
-
-
-	// 2da pendiente
-	for(int i=0;i<25;i++){
-		x=(70+1.4*i);
-		y=170-(1.8*i);
-		/* Pongo la flecha */
-		Set_arrow(x, y);
-		Horno_udelay(1e5);
-		/* Borro la flecha */
-		Clear_arrow(x,y);
-	}
-
-	// 2da constante
-	for(int i=0;i<30;i++){
-		x=(110+i);
-		y=121;
-		/* Pongo la flecha */
-		Set_arrow(x, y);
-		Horno_udelay(1e5);
-		/* Borro la flecha */
-		Clear_arrow(x,y);
-	}
 }
 
 void Put_string_waddr(int x, int y, char *str){
@@ -518,43 +393,6 @@ void Horno_Display_Init(void)
 void Horno_Display_Test(void){
 
 	static_curve_wsqare();	// Curva de trabajo + recuadros
-
-	Put_string_waddr(21,1,"TEMPERATURA: ");
-	Put_string_waddr(21,8,"TIEMPO RESTANTE: ");
-	/* Escribir en el 1er recuadro */
-	// Ponemos curso en el 1er layer (texto)
-	/* Cosas a tener en cuenta:
-	 * - Las tildes no están contempladas
-	 * - Máximo de (160/8)-1=20 caracteres. El '-1' es para no pisar la línea vertical.
-	 * - Máxima cantidad de líneas: (120/8)-1=15.
-	 * --- Considerar el espacio entre líneas, para mejor visibilidad.
-	 * --- Dejando 1 linea de espacio, quedan 7 lineas utilizables
-	 *  */
-
-	/* Textos chicos */
-	Put_string_waddr(1,1,"DATOS del PROGRAMA");
-	Put_string_waddr(1,2,"==================");
-
-//	Put_string_waddr(1,4,"Pend. Max.:");
-//	Horno_grafico_datos_pendiente(7665);
-//	Put_string_waddr(18,4,"m/s");
-//	Put_string_waddr(1,6,"Temp. Asc.:");
-//	Horno_grafico_datos_temperatura_ascenso(345);
-//	Put_string_waddr(18,6,"`C");
-//	Put_string_waddr(1,8,"Tiem. Cocc.:");
-//	Horno_grafico_datos_tiempo_coccion(987);
-//	Put_string_waddr(18,8,"m");
-//	Put_string_waddr(1,10,"Temp. Sec.:");
-//	Horno_grafico_datos_temperatura_secado(999);
-//	Put_string_waddr(18,10,"`C");
-//	Put_string_waddr(1,12,"Temp. Cocc.:");
-//	Horno_grafico_datos_temperatura_coccion(6543);
-//	Put_string_waddr(18,12,"`C");
-
-	Horno_grafico_datos_pwm( horno_pwm.activo,horno_pwm.periodo, horno_pwm.dc);
-
-
-//	Flechita_moviendose();	// Con esto la flechita se mueve por toda la curva
-
+	Horno_grafico_programa(0, 00, 00, 00, 00, 00);
 
 }

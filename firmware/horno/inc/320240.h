@@ -1,4 +1,5 @@
 /*
+void Horno_grafico_curva(void){
  * 320240.c
  *
  *  Created on: 9 de ago. de 2016
@@ -14,6 +15,8 @@ void Set_graphic_position(uint32_t x, uint32_t y);
 void Parameter_Write(uint8_t pmtr);
 void Command_Write(uint8_t cmd);
 void Put_string_waddr(int x, int y, char *str);
+void Put_line_waddr(int x0, uint32_t y0, uint32_t x, uint32_t y, uint32_t largo);
+void Clear_line_waddr(int x0, uint32_t y0, uint32_t x, uint32_t y, uint32_t largo);
 
 
 /* comandos */

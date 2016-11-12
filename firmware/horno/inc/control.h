@@ -12,6 +12,7 @@
 typedef struct{
 	bool activo;
 	float referencia;	// valor de temperatura de referencia
+	float referencia_cond;
 	float entrada;      // valor de la entrada del PI
 	float entrada_1;    // valor de la entrada del PI una muestra anterior
 	float salida;       // valor de la salida del PI
