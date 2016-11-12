@@ -28,6 +28,7 @@
 #include "adc.h"
 #include "control.h"
 #include "programa.h"
+#include "teclado.h"
 
 /* mensaje de inicio para mandar por el UART */
 static char mensaje_inicio[] =
