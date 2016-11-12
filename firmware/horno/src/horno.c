@@ -126,6 +126,22 @@ int main(void) {
 //    		}
     		DEBUGOUT("PI activo: %d\n", horno_control.activo);
     		break;
+    	case 'D':
+			DEBUGOUT("Ingrese ciclo de trabajo: ");
+			uint32_t dc = 0;
+			while(1) {
+				uint8_t c = DEBUGIN();
+				if (((c > 47) && (c < 58)) || (c == '\n')) {
+					DEBUGOUT("%c", c);
+					if (c == '\n') {
+						break;
+					}
+					dc = (dc*10) + c - 48;
+				}
+			}
+			DEBUGOUT("Valor ingresado: %d\n", dc);
+			Horno_pwm_ciclo((float)dc/100);
+			break;
     	case 'S':
     		DEBUGOUT("Ingrese temperatura de referencia: ");
     		uint32_t ref = 0;
