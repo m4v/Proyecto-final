@@ -26,7 +26,9 @@ void Horno_programa_actualizar(void)
 	switch(horno_estado) {
 	case INICIO:
 		/* deshabilitamos la carga de datos */
-		horno_teclado_habilitar_carga_datos=false;
+		horno_teclado_deshabilitar_carga_datos=true;
+		/* borramos la última flecha */
+		Horno_grafico_flecha_datos(horno_teclado_linea_datos, true,horno_teclado_deshabilitar_carga_datos);
 		/* activar todo y empezar a calentar */
 		Horno_control_referencia(horno_programa.temperatura_secado);
 		Horno_control_activar(true);
@@ -123,7 +125,7 @@ void Horno_programa_actualizar(void)
 		break;
 	case HACER_NADA:
 		/* habilitamos la carga de datos */
-		horno_teclado_habilitar_carga_datos=true;
+		horno_teclado_deshabilitar_carga_datos=false;
 		break;
 	}
 
@@ -161,7 +163,7 @@ void Horno_programa_inicio(void) {
  * 									false: programa apagado
  */
 void Horno_programa_carga_datos(HORNO_LINEA_T horno_ingreso_datos, uint32_t dato, bool habilitado){
-	if(habilitado!=false){
+	if(!habilitado){
 		switch(horno_ingreso_datos)	{
 		case PENDIENTE_MAX:
 			Horno_grafico_datos_pendiente(dato);

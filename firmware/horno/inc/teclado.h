@@ -9,6 +9,7 @@
 #define TECLADO_H_
 
 void Horno_teclado_init(void);
-bool horno_teclado_habilitar_carga_datos;
+bool horno_teclado_deshabilitar_carga_datos;
 
+uint8_t horno_teclado_linea_datos;
 #endif /* TECLADO_H_ */

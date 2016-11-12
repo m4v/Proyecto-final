@@ -17,6 +17,7 @@
 #include "grafico.h"
 #include "pwm.h"
 #include "control.h"
+#include "teclado.h"
 /* Defines */
 
 #define LAYER2_ADDRESS 0x1000
@@ -394,6 +395,6 @@ void Horno_Display_Test(void){
 
 	Horno_320240_recuadros();
 	Horno_grafico_programa(0, 00, 00, 00, 00, 00);
-	Horno_grafico_flecha_datos(0, false);
+	Horno_grafico_flecha_datos(0, false,false);
 
 }
