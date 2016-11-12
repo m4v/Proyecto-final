@@ -265,10 +265,10 @@ void Horno_grafico_entero_tiempo(uint32_t y, uint32_t segundos){
 	minutos=(segundos%3600)/60;
 
 	if ((horas>99) || (segundos<0)){ // Condiciones de error
-	   	Horno_grafico_digito(pos_h[1], y, 11); 	// E
-	   	Horno_grafico_digito(pos_h[0], y, 12); 	// R
-	   	Horno_grafico_digito(pos_m[1], y, 12); 	// R
-	   	Horno_grafico_CLR_digito(pos_m[0],y); 	// Limpio el 4to digito para q no joda
+	   	Horno_grafico_digito(pos_h[1], y, 9); 	// E
+	   	Horno_grafico_digito(pos_h[0], y, 9); 	// R
+	   	Horno_grafico_digito(pos_m[1], y, 9); 	// R
+	   	Horno_grafico_digito(pos_m[0], y, 9); 	// R
 	}
 	else {
 		Horno_grafico_digito(pos_h[0], y, horas%10);
