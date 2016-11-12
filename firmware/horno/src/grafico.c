@@ -228,7 +228,8 @@ void Horno_grafico_CLR_digito(uint32_t x, uint32_t y) {
  * @param dato: numero entre 0 y 9999
  */
 void Horno_grafico_entero(uint32_t y, uint32_t dato){
-	uint32_t pos[4]={245, 220, 195, 170};
+//	uint32_t pos[4]={245, 220, 195, 170};
+	uint32_t pos[4]={270, 245, 220, 195};
 	uint32_t numero=dato;
 	if (numero>=9999){
 	   	for(int i=0;i<4;i++){
@@ -248,7 +249,7 @@ void Horno_grafico_entero(uint32_t y, uint32_t dato){
 	   		numero=numero/10;
 			}
 		}
-   	Horno_grafico_digito(270,20,10);
+   	Horno_grafico_digito(295,20,10);
 	}
 
 
@@ -456,7 +457,7 @@ void Horno_grafico_programa(bool estado, uint32_t P_calentamiento, uint32_t T_se
  * @param temp: temperatura a mostrar.
  */
 void Horno_grafico_temperatura(uint32_t temp){
-	Put_string_waddr(21,1,"TEMPERATURA: ");
+	Put_string_waddr(33,1,"TEMPERATURA: ");
 	Horno_grafico_entero(20,temp);
 }
 
