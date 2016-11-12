@@ -28,6 +28,7 @@ void Horno_programa_actualizar(void)
 		Horno_control_referencia(horno_programa.temperatura_secado);
 		Horno_control_activar(true);
 		Horno_pwm_inicio();
+		/* calcular el tiempo restante */
 		horno_programa.tiempo_total = horno_programa.tiempo_secado
 									+ horno_programa.tiempo_coccion
 									+ (horno_programa.temperatura_coccion - horno_programa.temperatura_secado)/0.8
@@ -48,6 +49,12 @@ void Horno_programa_actualizar(void)
 		break;
 	case SECADO:
 		Horno_motor_subir_tiempo(horno_programa.tiempo_secado);
+		/* recalcular el tiempo restante */
+		horno_programa.tiempo_total = horno_programa.tiempo_secado
+									+ horno_programa.tiempo_coccion
+									+ (horno_programa.temperatura_coccion - horno_programa.temperatura_secado)/0.8;
+		horno_programa.tiempo_programa_inicio = horno_adc.valor_n;
+
 		horno_estado = ESPERAR_CIERRE;
 		DEBUGOUT("ESPERAR_CIERRE\n");
 		break;
@@ -63,6 +70,11 @@ void Horno_programa_actualizar(void)
 	case CALENTAMIENTO:
 		/* configurar la nueva temperatura */
 		Horno_control_referencia(horno_programa.temperatura_coccion);
+		/* recalcular el tiempo restante */
+		horno_programa.tiempo_total = horno_programa.tiempo_coccion
+									+ (horno_programa.temperatura_coccion - horno_programa.temperatura_secado)/0.8;
+		horno_programa.tiempo_programa_inicio = horno_adc.valor_n;
+
 		horno_estado = ESPERAR_TCOCCION;
 		DEBUGOUT("ESPERAR_TCOCCION\n");
 		break;
@@ -71,6 +83,10 @@ void Horno_programa_actualizar(void)
 		 * esperar hasta alcanzar la temp. de cocción */
 		if (horno_adc.temperatura > (horno_programa.temperatura_coccion - 10))
 		{
+			/* recalcular el tiempo restante */
+			horno_programa.tiempo_total = horno_programa.tiempo_coccion;
+			horno_programa.tiempo_programa_inicio = horno_adc.valor_n;
+
 			horno_estado = COCCION;
 			horno_programa.tiempo_inicio = horno_adc.valor_n;
 			DEBUGOUT("COCCION\n");
@@ -113,7 +129,9 @@ void Horno_programa_actualizar(void)
 		} else {
 			Horno_grafico_dos_puntos(240,75);
 		}
-		uint32_t tiempo = horno_programa.tiempo_total - horno_adc.valor_n;
+		int32_t tiempo = horno_programa.tiempo_total
+				        - horno_adc.valor_n
+				        + horno_programa.tiempo_programa_inicio;
 		Horno_grafico_tiempo(tiempo > 0 ? tiempo : 0);
 	}
 
