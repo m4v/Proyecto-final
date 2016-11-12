@@ -15,6 +15,7 @@
 #include "grafico.h"
 #include "delay.h"
 #include "adc.h"
+#include "320240.h"
 
 #include <stdlib.h>
 
@@ -228,8 +229,14 @@ void Horno_grafico_CLR_digito(uint32_t x, uint32_t y) {
  * @param dato: numero entre 0 y 9999
  */
 void Horno_grafico_entero(uint32_t y, uint32_t dato){
-	uint32_t pos[4]={245, 220, 195, 170};
+	uint32_t pos[4]={270, 245, 220, 195};
 	uint32_t numero=dato;
+	/* Borramos los digitos */
+	Horno_grafico_CLR_digito(pos[0], y);
+	Horno_grafico_CLR_digito(pos[1], y);
+	Horno_grafico_CLR_digito(pos[2], y);
+	Horno_grafico_CLR_digito(pos[3], y);
+
 	if (numero>=9999){
 	   	for(int i=0;i<4;i++){
 	   		Horno_grafico_digito(pos[i], y, 9);
@@ -242,13 +249,14 @@ void Horno_grafico_entero(uint32_t y, uint32_t dato){
 		int i=0;
 		while(numero!=0)
 		{
+			/* Escribimos los digitos */
 			int temp=numero%10;
 	   		Horno_grafico_digito(pos[i], y, temp);
 	   		i++;
 	   		numero=numero/10;
 			}
 		}
-   	Horno_grafico_digito(270,20,10);
+   	Horno_grafico_digito(295,20,10);
 	}
 
 
@@ -258,8 +266,8 @@ void Horno_grafico_entero(uint32_t y, uint32_t dato){
  * @param segundos
  */
 void Horno_grafico_entero_tiempo(uint32_t y, uint32_t segundos){
-	uint32_t pos_m[2]={275, 248};
-	uint32_t pos_h[2]={223, 198};
+	uint32_t pos_m[2]={295, 268};
+	uint32_t pos_h[2]={235, 210};
 	uint32_t horas, minutos;
 	horas=segundos/3600;
 	minutos=(segundos%3600)/60;
@@ -330,7 +338,10 @@ void Horno_grafico_posicion_flecha_CLR(uint32_t estado){
  * @param x: posición X de a pixels
  * @param y: posición Y de a pixels
  */
-void Horno_grafico_dos_puntos(uint32_t x, uint32_t y){
+void Horno_grafico_dos_puntos(void){
+	uint32_t x, y;
+	x=260;
+	y=75;
 	for (uint32_t i=0; i < 42; i++) {
 		Set_graphic_position(x/8, y+i);
 			Command_Write(MEM_WRITE);
@@ -343,7 +354,10 @@ void Horno_grafico_dos_puntos(uint32_t x, uint32_t y){
  * @param x: posición X de a pixels
  * @param y: posición Y de a pixels
  */
-void Horno_grafico_CLR_dos_puntos(uint32_t x, uint32_t y) {
+void Horno_grafico_CLR_dos_puntos(void) {
+	uint32_t x, y;
+	x=260;
+	y=75;
 	for (uint32_t i=0; i < 42; i++) {
 		Set_graphic_position(x/8, y+i);
 			Command_Write(MEM_WRITE);
@@ -355,7 +369,7 @@ void Horno_grafico_CLR_dos_puntos(uint32_t x, uint32_t y) {
  * @brief grafica FIN
  */
 void Horno_grafico_FIN(){
-	uint32_t pos[3]={248, 224, 200};
+	uint32_t pos[3]={268, 244, 220};
 	Horno_grafico_digito(pos[2], 75, 13);
 	Horno_grafico_digito(pos[1], 75, 14);
 	Horno_grafico_digito(pos[0], 75, 15);
@@ -419,34 +433,37 @@ void Horno_grafico_datos_pwm( bool activo, uint32_t periodo, float dc, float ref
 }
 
 void Horno_grafico_programa(bool estado, uint32_t P_calentamiento, uint32_t T_secado, uint32_t T_coccion, uint32_t t_secado, uint32_t t_coccion){
+	uint8_t pos_unit = 21;
 
 	Put_string_waddr(1,1,"DATOS del PROGRAMA");
 	Put_string_waddr(1,2,"==================");
 
-	Put_string_waddr(1,4,"Pendi. Max.:");
+	Put_string_waddr(1,4,"Pendi. Calent.:");
 	Horno_grafico_datos_pendiente(P_calentamiento);
-	Put_string_waddr(18,4,"m/s");
-	Put_string_waddr(1,6,"Tiempo Sec.:");
+	Put_string_waddr(pos_unit-2,4,"`C/m");
+	Put_string_waddr(1,6,"Tiempo Secado :");
 	Horno_grafico_datos_tiempo_secado(T_secado); // En este tenemos que definir qué variable le asignamos
-	Put_string_waddr(19,6,"m");
-	Put_string_waddr(1,8,"Tiempo Coc.:");
+	Put_string_waddr(pos_unit+1,6,"m");
+	Put_string_waddr(1,8,"Tiempo Coccion:");
 	Horno_grafico_datos_tiempo_coccion(T_coccion);
-	Put_string_waddr(19,8,"m");
-	Put_string_waddr(1,10,"Tempe. Sec.:");
+	Put_string_waddr(pos_unit+1,8,"m");
+	Put_string_waddr(1,10,"Tempe. Secado :");
 	Horno_grafico_datos_temperatura_secado(t_secado);
-	Put_string_waddr(18,10,"`C");
-	Put_string_waddr(1,12,"Tempe. Coc.:");
+	Put_string_waddr(pos_unit,10,"`C");
+	Put_string_waddr(1,12,"Tempe. Coccion:");
 	Horno_grafico_datos_temperatura_coccion(t_coccion);
-	Put_string_waddr(18,12,"`C");
+	Put_string_waddr(pos_unit,12,"`C");
 
 	Put_string_waddr(1,14,"ESTADO:");
 	if(estado==1){
 		Put_string_waddr(14,14,"   ");
 		Put_string_waddr(14,14,"ON");
+		Horno_grafico_curva();
 		}
 	else if(estado==0){
 		Put_string_waddr(14,14,"   ");
 		Put_string_waddr(14,14,"OFF");
+		Horno_grafico_CLR_curva();
 	}
 
 }
@@ -456,7 +473,7 @@ void Horno_grafico_programa(bool estado, uint32_t P_calentamiento, uint32_t T_se
  * @param temp: temperatura a mostrar.
  */
 void Horno_grafico_temperatura(uint32_t temp){
-	Put_string_waddr(21,1,"TEMPERATURA: ");
+	Put_string_waddr(24,1,"TEMPERATURA: ");
 	Horno_grafico_entero(20,temp);
 }
 
@@ -465,7 +482,7 @@ void Horno_grafico_temperatura(uint32_t temp){
  * @param tiempo: numero en minutos a graficar.
  */
 void Horno_grafico_tiempo(uint32_t tiempo){
-	Put_string_waddr(21,8,"TIEMPO RESTANTE: ");
+	Put_string_waddr(24,8,"TIEMPO RESTANTE: ");
 	Horno_grafico_entero_tiempo(75,tiempo);
 }
 
@@ -475,4 +492,40 @@ void Horno_grafico_control_referencia(float ref){
 	Put_string_waddr(14,10,"    ");
 	Horno_grafico_datos_PI_referencia(ref);
 	Put_string_waddr(18,10,"`C");
+}
+
+void Horno_grafico_curva(void){
+	/* Esto pone la curva*/
+		/*primer rampa       --desde x0=0 y0=229 hasta x1=83 y1=181*/
+	for (int i=0; i<59; i++){
+		Put_line_waddr(1,239,i,-i,8);
+		}
+	for (int i=0;i<49;i++){
+			/*segunda rampa      --desde x0=150 y0=181 hasta x1=223 y1=132*/
+			if (i>=45){
+				Put_line_waddr(11,229,i,-i,99);			/* Constante 1*/
+				Put_line_waddr(150,181,1.5*i,-i,97);	/* Constante 2*/
+			}
+			else{
+				Put_line_waddr(150,181,1.5*i,-i,8);
+			}
+		}
+}
+
+void Horno_grafico_CLR_curva(void){
+	/* Esto pone la curva*/
+		/*primer rampa       --desde x0=0 y0=229 hasta x1=83 y1=181*/
+	for (int i=0; i<59; i++){
+		Clear_line_waddr(1,239,i,-i,8);
+		}
+	for (int i=0;i<49;i++){
+			/*segunda rampa      --desde x0=150 y0=181 hasta x1=223 y1=132*/
+			if (i>=45){
+				Clear_line_waddr(11,229,i,-i,99);			/* Constante 1*/
+				Clear_line_waddr(150,181,1.5*i,-i,97);	/* Constante 2*/
+			}
+			else{
+				Clear_line_waddr(150,181,1.5*i,-i,8);
+			}
+		}
 }

@@ -260,27 +260,11 @@ void static_curve_wsqare(){
 	for (int i=0;i<=119;i++){
 			Put_pixel(0,i+1);	// vertical en el costado izquierdo
 			Put_pixel(319,i+1);	// vertical en el costado derecho
-			Put_pixel(159,i+1);	// vertical en la mitad
+			Put_pixel(185,i+1);	// vertical en la mitad
 		}
 	/* Ponemos la 2da linea horizontal después de las verticales
 	 * porque sino aparecen huecos */
 	Put_line_waddr(0,0,0,120,320); // Linea horizontal en el medio
-
-	/* Esto pone la curva*/
-		/*primer rampa       --desde x0=0 y0=229 hasta x1=83 y1=181*/
-	for (int i=0; i<59; i++){
-		Put_line_waddr(1,239,i,-i,8);
-		}
-	for (int i=0;i<49;i++){
-			/*segunda rampa      --desde x0=150 y0=181 hasta x1=223 y1=132*/
-			if (i>=45){
-				Put_line_waddr(11,229,i,-i,99);			/* Constante 1*/
-				Put_line_waddr(150,181,1.5*i,-i,97);	/* Constante 2*/
-			}
-			else{
-				Put_line_waddr(150,181,1.5*i,-i,8);
-			}
-		}
 
 }
 
