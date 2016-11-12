@@ -387,16 +387,6 @@ void Horno_Display_Init(void)
 	Command_Write(CSR_DIR_R); //Set cursor shift direction to right.
 }
 
-void Horno_320240_flecha_datos(uint32_t x, uint32_t y){
-	// Fijamos el comienzo del 1er layer
-	Command_Write(CSR_WRITE);
-	Parameter_Write(0x00);
-	Parameter_Write(0x00);
-	// Fijamos la posición del cursor
-	Set_text_position(x,y);
-	Command_Write(MEM_WRITE);
-	Parameter_Write(0x7E);
-}
 
 
 /* Con esta funcion jugamos y testeamos el display */
@@ -404,7 +394,6 @@ void Horno_Display_Test(void){
 
 	Horno_320240_recuadros();
 	Horno_grafico_programa(0, 00, 00, 00, 00, 00);
+	Horno_grafico_flecha_datos(0, false);
 
-//	Put_string_waddr(1,16,"A");
-//	Horno_320240_flecha_datos(1,16);
 }

@@ -174,9 +174,14 @@ void TECLAC_Handler(void) {
 //	DEBUGOUT("C");
 	if(horno_teclado_linea_datos<1) {
 		horno_teclado_linea_datos=0;
+//		Horno_grafico_flecha_datos(horno_teclado_linea_datos-1, true);
+		Horno_grafico_flecha_datos(horno_teclado_linea_datos, false);
 	} else {
 		horno_teclado_linea_datos--;
+		Horno_grafico_flecha_datos(horno_teclado_linea_datos+1, true);
+		Horno_grafico_flecha_datos(horno_teclado_linea_datos, false);
 	}
+
 }
 
 void TECLAD_Handler(void) {
@@ -186,6 +191,8 @@ void TECLAD_Handler(void) {
 	} else {
 		horno_teclado_linea_datos++;
 	}
+	Horno_grafico_flecha_datos(horno_teclado_linea_datos-1, true);
+	Horno_grafico_flecha_datos(horno_teclado_linea_datos, false);
 }
 
 /* tecla asterisco */
@@ -208,6 +215,8 @@ void TECLAF_Handler(void) {
 		horno_teclado_linea_datos=4;
 	} else {
 		horno_teclado_linea_datos++;
+		Horno_grafico_flecha_datos(horno_teclado_linea_datos-1, true);
+		Horno_grafico_flecha_datos(horno_teclado_linea_datos, false);
 	}
 }
 
