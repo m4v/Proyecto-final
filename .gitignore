@@ -43,6 +43,7 @@
 
 # kicad backup files
 *.kicad_pcb-bak
+_saved_*
 
 octave-workspace
 octave/*.csv
