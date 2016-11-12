@@ -249,9 +249,7 @@ void Clear_line_waddr(int x0, uint32_t y0, uint32_t x, uint32_t y, uint32_t larg
 }
 
 /* Curva de trabajo estática con el recuadro*/
-void static_curve_wsqare(){
-
-
+void Horno_320240_recuadros(){
 	/* Esto pone los recuadros */
 	Put_line_waddr(0,0,0,0,320); // Linea horizontal al comienzo
 
@@ -404,7 +402,7 @@ void Horno_320240_flecha_datos(uint32_t x, uint32_t y){
 /* Con esta funcion jugamos y testeamos el display */
 void Horno_Display_Test(void){
 
-	static_curve_wsqare();	// Curva de trabajo + recuadros
+	Horno_320240_recuadros();
 	Horno_grafico_programa(0, 00, 00, 00, 00, 00);
 
 //	Put_string_waddr(1,16,"A");
