@@ -465,8 +465,7 @@ void Horno_grafico_temperatura(uint32_t temp){
  * @param tiempo: numero en minutos a graficar.
  */
 void Horno_grafico_tiempo(uint32_t tiempo){
-//	Put_string_waddr(21,8,"TIEMPO RESTANTE: ");
-	Put_string_waddr(21,8,"TIEMPO Encendido: ");
+	Put_string_waddr(21,8,"TIEMPO RESTANTE: ");
 	Horno_grafico_entero_tiempo(75,tiempo);
 }
 
