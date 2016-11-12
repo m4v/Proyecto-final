@@ -106,10 +106,10 @@ void Horno_programa_actualizar(void)
 		Horno_control_activar(false);
 		Horno_motor_bajar();
 		/* limpiar los 2 puntos */
-		Horno_grafico_CLR_dos_puntos(240,75);
+		Horno_grafico_CLR_dos_puntos();
 		/* escribir FIN */
-		uint32_t pos_m[2]={275, 248};
-		uint32_t pos_h[2]={223, 198};
+		uint32_t pos_m[2]={295, 268};
+		uint32_t pos_h[2]={235, 210};
 	   	Horno_grafico_CLR_digito(pos_m[1],75);
 	   	Horno_grafico_CLR_digito(pos_m[0],75);
 	   	Horno_grafico_CLR_digito(pos_h[1],75);
@@ -125,9 +125,9 @@ void Horno_programa_actualizar(void)
 	if (horno_estado != HACER_NADA) {
 		/* Pone los dos puntos intermitentes del tiempo */
 		if(horno_adc.valor_n & 1){
-			Horno_grafico_CLR_dos_puntos(240,75);
+			Horno_grafico_CLR_dos_puntos();
 		} else {
-			Horno_grafico_dos_puntos(240,75);
+			Horno_grafico_dos_puntos();
 		}
 		int32_t tiempo = horno_programa.tiempo_total
 				        - horno_adc.valor_n

@@ -228,9 +228,14 @@ void Horno_grafico_CLR_digito(uint32_t x, uint32_t y) {
  * @param dato: numero entre 0 y 9999
  */
 void Horno_grafico_entero(uint32_t y, uint32_t dato){
-//	uint32_t pos[4]={245, 220, 195, 170};
 	uint32_t pos[4]={270, 245, 220, 195};
 	uint32_t numero=dato;
+	/* Borramos los digitos */
+	Horno_grafico_CLR_digito(pos[0], y);
+	Horno_grafico_CLR_digito(pos[1], y);
+	Horno_grafico_CLR_digito(pos[2], y);
+	Horno_grafico_CLR_digito(pos[3], y);
+
 	if (numero>=9999){
 	   	for(int i=0;i<4;i++){
 	   		Horno_grafico_digito(pos[i], y, 9);
@@ -243,6 +248,7 @@ void Horno_grafico_entero(uint32_t y, uint32_t dato){
 		int i=0;
 		while(numero!=0)
 		{
+			/* Escribimos los digitos */
 			int temp=numero%10;
 	   		Horno_grafico_digito(pos[i], y, temp);
 	   		i++;
@@ -259,8 +265,8 @@ void Horno_grafico_entero(uint32_t y, uint32_t dato){
  * @param segundos
  */
 void Horno_grafico_entero_tiempo(uint32_t y, uint32_t segundos){
-	uint32_t pos_m[2]={275, 248};
-	uint32_t pos_h[2]={223, 198};
+	uint32_t pos_m[2]={295, 268};
+	uint32_t pos_h[2]={235, 210};
 	uint32_t horas, minutos;
 	horas=segundos/3600;
 	minutos=(segundos%3600)/60;
@@ -331,7 +337,10 @@ void Horno_grafico_posicion_flecha_CLR(uint32_t estado){
  * @param x: posición X de a pixels
  * @param y: posición Y de a pixels
  */
-void Horno_grafico_dos_puntos(uint32_t x, uint32_t y){
+void Horno_grafico_dos_puntos(void){
+	uint32_t x, y;
+	x=260;
+	y=75;
 	for (uint32_t i=0; i < 42; i++) {
 		Set_graphic_position(x/8, y+i);
 			Command_Write(MEM_WRITE);
@@ -344,7 +353,10 @@ void Horno_grafico_dos_puntos(uint32_t x, uint32_t y){
  * @param x: posición X de a pixels
  * @param y: posición Y de a pixels
  */
-void Horno_grafico_CLR_dos_puntos(uint32_t x, uint32_t y) {
+void Horno_grafico_CLR_dos_puntos(void) {
+	uint32_t x, y;
+	x=260;
+	y=75;
 	for (uint32_t i=0; i < 42; i++) {
 		Set_graphic_position(x/8, y+i);
 			Command_Write(MEM_WRITE);
@@ -356,7 +368,7 @@ void Horno_grafico_CLR_dos_puntos(uint32_t x, uint32_t y) {
  * @brief grafica FIN
  */
 void Horno_grafico_FIN(){
-	uint32_t pos[3]={248, 224, 200};
+	uint32_t pos[3]={268, 244, 220};
 	Horno_grafico_digito(pos[2], 75, 13);
 	Horno_grafico_digito(pos[1], 75, 14);
 	Horno_grafico_digito(pos[0], 75, 15);
@@ -457,7 +469,7 @@ void Horno_grafico_programa(bool estado, uint32_t P_calentamiento, uint32_t T_se
  * @param temp: temperatura a mostrar.
  */
 void Horno_grafico_temperatura(uint32_t temp){
-	Put_string_waddr(33,1,"TEMPERATURA: ");
+	Put_string_waddr(24,1,"TEMPERATURA: ");
 	Horno_grafico_entero(20,temp);
 }
 
@@ -466,7 +478,7 @@ void Horno_grafico_temperatura(uint32_t temp){
  * @param tiempo: numero en minutos a graficar.
  */
 void Horno_grafico_tiempo(uint32_t tiempo){
-	Put_string_waddr(21,8,"TIEMPO RESTANTE: ");
+	Put_string_waddr(24,8,"TIEMPO RESTANTE: ");
 	Horno_grafico_entero_tiempo(75,tiempo);
 }
 
