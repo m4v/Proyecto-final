@@ -18,8 +18,6 @@
 #include "motor.h"
 #include "grafico.h"
 
-#define TIEMPO_PROGRAMA (horno_adc.valor_n - horno_programa.tiempo_inicio)
-
 void Horno_programa_actualizar(void)
 {
 	switch(horno_estado) {

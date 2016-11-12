@@ -68,7 +68,6 @@ static uint32_t counter;
 uint8_t horno_teclado_linea_datos=0;
 // Esta la usamos para la posición dentro del enum 'horno_ingreso_datos'
 
-
 void TECLA1_Handler(void) {
 //	DEBUGOUT("1");
 	horno_keypad.dato *= 10;
@@ -297,25 +296,17 @@ void _TIMER_IRQHandler(void)
 		switch(counter & 0b11) {
 		case 0:
 			SET_FILA1(true);
-			SET_FILA2(false);
-			SET_FILA3(false);
 			SET_FILA4(false);
 			break;
 		case 1:
 			SET_FILA1(false);
 			SET_FILA2(true);
-			SET_FILA3(false);
-			SET_FILA4(false);
 			break;
 		case 2:
-			SET_FILA1(false);
 			SET_FILA2(false);
 			SET_FILA3(true);
-			SET_FILA4(false);
 			break;
 		case 3:
-			SET_FILA1(false);
-			SET_FILA2(false);
 			SET_FILA3(false);
 			SET_FILA4(true);
 			break;

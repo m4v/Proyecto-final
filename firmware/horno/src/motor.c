@@ -82,7 +82,6 @@ void Horno_motor_detener(void){
 	MOTOR_P3(false);
 	Chip_TIMER_Disable(_LPC_TIMER);
 	horno_motor.activo = false;
-	DEBUGOUT("Motor detenido. Total pasos %d\n", horno_motor.cantidad_pasos);
 }
 
 /*
