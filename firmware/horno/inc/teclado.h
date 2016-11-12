@@ -9,5 +9,6 @@
 #define TECLADO_H_
 
 void Horno_teclado_init(void);
+bool horno_teclado_habilitar_carga_datos;
 
 #endif /* TECLADO_H_ */

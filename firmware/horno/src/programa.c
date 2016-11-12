@@ -17,11 +17,14 @@
 #include "control.h"
 #include "motor.h"
 #include "grafico.h"
+#include "teclado.h"
 
 void Horno_programa_actualizar(void)
 {
 	switch(horno_estado) {
 	case INICIO:
+		/* deshabilitamos la carga de datos */
+		horno_teclado_habilitar_carga_datos=false;
 		/* activar todo y empezar a calentar */
 		Horno_control_referencia(horno_programa.temperatura_secado);
 		Horno_control_activar(true);
@@ -117,6 +120,8 @@ void Horno_programa_actualizar(void)
 		DEBUGOUT("HACER_NADA\n");
 		break;
 	case HACER_NADA:
+		/* habilitamos la carga de datos */
+		horno_teclado_habilitar_carga_datos=true;
 		break;
 	}
 
@@ -147,13 +152,14 @@ void Horno_programa_inicio(void) {
 	DEBUGOUT("INICIO\n");
 }
 
-/* dato: valor a poner en las lineas de datos
- * estado:	true: funcionando el programa;
- * 			false: programa apagado
+/* @brief: 	Carga/actualiza los datos del programa
+ * @param:	horno_ingreso_datos:	linea a la que ingresamos datos
+ * 			dato:					valor a poner en las lineas de datos
+ * 			estado:					true: funcionando el programa;
+ * 									false: programa apagado
  */
-//void Horno_programa_carga_datos(int horno_ingreso_datos, uint32_t dato, bool estado){
-void Horno_programa_carga_datos(int horno_ingreso_datos, uint32_t dato){
-//	if(!estado==true){
+void Horno_programa_carga_datos(HORNO_LINEA_T horno_ingreso_datos, uint32_t dato, bool habilitado){
+	if(habilitado!=false){
 		switch(horno_ingreso_datos)	{
 		case PENDIENTE_MAX:
 			Horno_grafico_datos_pendiente(dato);
@@ -176,7 +182,7 @@ void Horno_programa_carga_datos(int horno_ingreso_datos, uint32_t dato){
 			horno_programa.temperatura_coccion = dato;
 			break;
 		}
-//	}
+	}
 
 
 }

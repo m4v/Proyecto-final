@@ -48,4 +48,7 @@ void Horno_grafico_FIN();
 void Horno_grafico_curva(void);
 void Horno_grafico_CLR_curva(void);
 
+void Horno_grafico_flecha_datos(int linea, bool borrar);
+
+
 #endif /* GRAFICO_H_ */

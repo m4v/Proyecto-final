@@ -17,6 +17,7 @@
 #include "adc.h"
 #include "320240.h"
 #include "fuentes.h"
+#include "programa.h"
 
 #include <stdlib.h>
 
@@ -359,3 +360,22 @@ void Horno_grafico_CLR_curva(void){
 			}
 		}
 }
+
+void Horno_grafico_flecha_datos(int linea, bool borrar){
+	uint32_t x=16;
+	uint32_t y=4;
+	y+=2*linea;
+	// Fijamos el comienzo del 1er layer
+	Command_Write(CSR_WRITE);
+	Parameter_Write(0x00);
+	Parameter_Write(0x00);
+	// Fijamos la posición del cursor
+	Set_text_position(x,y);
+	Command_Write(MEM_WRITE);
+	if(!borrar){
+	Parameter_Write(0x7E);
+	} else {
+		Parameter_Write(0x20);
+	}
+}
+
