@@ -261,8 +261,8 @@ void Horno_grafico_entero_tiempo(uint32_t y, uint32_t segundos){
 	uint32_t pos_m[2]={275, 248};
 	uint32_t pos_h[2]={223, 198};
 	uint32_t horas, minutos;
-	horas=segundos*3600;
-	minutos=segundos*60;
+	horas=segundos/3600;
+	minutos=(segundos%3600)/60;
 
 	if ((horas>99) || (segundos<0)){ // Condiciones de error
 	   	Horno_grafico_digito(pos_h[1], y, 11); 	// E
