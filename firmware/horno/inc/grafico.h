@@ -45,5 +45,7 @@ void Horno_grafico_dos_puntos(void);
 void Horno_grafico_CLR_dos_puntos(void);
 void Horno_grafico_FIN();
 
+void Horno_grafico_curva(void);
+void Horno_grafico_CLR_curva(void);
 
 #endif /* GRAFICO_H_ */

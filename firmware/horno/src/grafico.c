@@ -15,6 +15,7 @@
 #include "grafico.h"
 #include "delay.h"
 #include "adc.h"
+#include "320240.h"
 
 #include <stdlib.h>
 
@@ -456,10 +457,12 @@ void Horno_grafico_programa(bool estado, uint32_t P_calentamiento, uint32_t T_se
 	if(estado==1){
 		Put_string_waddr(14,14,"   ");
 		Put_string_waddr(14,14,"ON");
+		Horno_grafico_curva();
 		}
 	else if(estado==0){
 		Put_string_waddr(14,14,"   ");
 		Put_string_waddr(14,14,"OFF");
+		Horno_grafico_CLR_curva();
 	}
 
 }
@@ -488,4 +491,40 @@ void Horno_grafico_control_referencia(float ref){
 	Put_string_waddr(14,10,"    ");
 	Horno_grafico_datos_PI_referencia(ref);
 	Put_string_waddr(18,10,"`C");
+}
+
+void Horno_grafico_curva(void){
+	/* Esto pone la curva*/
+		/*primer rampa       --desde x0=0 y0=229 hasta x1=83 y1=181*/
+	for (int i=0; i<59; i++){
+		Put_line_waddr(1,239,i,-i,8);
+		}
+	for (int i=0;i<49;i++){
+			/*segunda rampa      --desde x0=150 y0=181 hasta x1=223 y1=132*/
+			if (i>=45){
+				Put_line_waddr(11,229,i,-i,99);			/* Constante 1*/
+				Put_line_waddr(150,181,1.5*i,-i,97);	/* Constante 2*/
+			}
+			else{
+				Put_line_waddr(150,181,1.5*i,-i,8);
+			}
+		}
+}
+
+void Horno_grafico_CLR_curva(void){
+	/* Esto pone la curva*/
+		/*primer rampa       --desde x0=0 y0=229 hasta x1=83 y1=181*/
+	for (int i=0; i<59; i++){
+		Clear_line_waddr(1,239,i,-i,8);
+		}
+	for (int i=0;i<49;i++){
+			/*segunda rampa      --desde x0=150 y0=181 hasta x1=223 y1=132*/
+			if (i>=45){
+				Clear_line_waddr(11,229,i,-i,99);			/* Constante 1*/
+				Clear_line_waddr(150,181,1.5*i,-i,97);	/* Constante 2*/
+			}
+			else{
+				Clear_line_waddr(150,181,1.5*i,-i,8);
+			}
+		}
 }
