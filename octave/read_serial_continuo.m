@@ -9,7 +9,7 @@ h11 = plot(1, 1, '-b;temperatura;');
 legend('location', 'northwest');
 hold on
 h12 = plot(1, 1, '--r;referencia;');
-h13 = plot(1, 1, '-b;referencia cond;');
+h13 = plot(1, 1, '-r;referencia cond;');
 grid on
 subplot(2, 1, 2);
 h21 = plot(1, 1, '-r;salida PI;');
@@ -22,7 +22,7 @@ log = fopen("registro.log", "a");
 fwrite(log, sprintf("-Inicio del registro de captura %s\r\n", fecha()));
 
 %srl_write(fd, sprintf("S%d\n", referencia)); % valor del escalon
-srl_write(fd, "cM"); % iniciar captura
+srl_write(fd, "c"); % iniciar captura
 Tm = 1; % en este modo el muestreo es cada seg
 if (exist("i", "var"))
   i = length(t);
