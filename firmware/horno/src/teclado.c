@@ -156,7 +156,7 @@ void TECLAA_Handler(void) {
 			horno_programa.tiempo_coccion,
 			horno_programa.temperatura_secado,
 			horno_programa.temperatura_coccion
-			); // Test para update datos
+			);
 }
 
 void TECLAB_Handler(void) {
