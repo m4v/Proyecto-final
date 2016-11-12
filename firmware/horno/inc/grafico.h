@@ -9,12 +9,12 @@
 #define GRAFICO_H_
 
 
-#define Horno_grafico_datos_pendiente(dato)				Horno_grafico_datos(14,4,dato)
-#define Horno_grafico_datos_tiempo_secado(dato)			Horno_grafico_datos(14,6,dato)
-#define Horno_grafico_datos_tiempo_coccion(dato)		Horno_grafico_datos(14,8,dato)
-#define Horno_grafico_datos_temperatura_secado(dato)	Horno_grafico_datos(14,10,dato)
-#define Horno_grafico_datos_temperatura_coccion(dato)	Horno_grafico_datos(14,12,dato)
-#define Horno_grafico_datos_PI_referencia(dato)			Horno_grafico_datos(14,10,dato)
+#define Horno_grafico_datos_pendiente(dato)				Horno_grafico_datos(17,4,dato)
+#define Horno_grafico_datos_tiempo_secado(dato)			Horno_grafico_datos(17,6,dato)
+#define Horno_grafico_datos_tiempo_coccion(dato)		Horno_grafico_datos(17,8,dato)
+#define Horno_grafico_datos_temperatura_secado(dato)	Horno_grafico_datos(17,10,dato)
+#define Horno_grafico_datos_temperatura_coccion(dato)	Horno_grafico_datos(17,12,dato)
+#define Horno_grafico_datos_PI_referencia(dato)			Horno_grafico_datos(17,10,dato)
 
 int Horno_pos_y_flecha[39];
 

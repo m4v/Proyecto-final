@@ -260,7 +260,7 @@ void static_curve_wsqare(){
 	for (int i=0;i<=119;i++){
 			Put_pixel(0,i+1);	// vertical en el costado izquierdo
 			Put_pixel(319,i+1);	// vertical en el costado derecho
-			Put_pixel(159,i+1);	// vertical en la mitad
+			Put_pixel(185,i+1);	// vertical en la mitad
 		}
 	/* Ponemos la 2da linea horizontal después de las verticales
 	 * porque sino aparecen huecos */

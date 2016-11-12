@@ -433,25 +433,26 @@ void Horno_grafico_datos_pwm( bool activo, uint32_t periodo, float dc, float ref
 }
 
 void Horno_grafico_programa(bool estado, uint32_t P_calentamiento, uint32_t T_secado, uint32_t T_coccion, uint32_t t_secado, uint32_t t_coccion){
+	uint8_t pos_unit = 21;
 
 	Put_string_waddr(1,1,"DATOS del PROGRAMA");
 	Put_string_waddr(1,2,"==================");
 
-	Put_string_waddr(1,4,"Pendi. Max.:");
+	Put_string_waddr(1,4,"Pendi. Calent.:");
 	Horno_grafico_datos_pendiente(P_calentamiento);
-	Put_string_waddr(18,4,"m/s");
-	Put_string_waddr(1,6,"Tiempo Sec.:");
+	Put_string_waddr(pos_unit-2,4,"`C/m");
+	Put_string_waddr(1,6,"Tiempo Secado :");
 	Horno_grafico_datos_tiempo_secado(T_secado); // En este tenemos que definir qué variable le asignamos
-	Put_string_waddr(19,6,"m");
-	Put_string_waddr(1,8,"Tiempo Coc.:");
+	Put_string_waddr(pos_unit+1,6,"m");
+	Put_string_waddr(1,8,"Tiempo Coccion:");
 	Horno_grafico_datos_tiempo_coccion(T_coccion);
-	Put_string_waddr(19,8,"m");
-	Put_string_waddr(1,10,"Tempe. Sec.:");
+	Put_string_waddr(pos_unit+1,8,"m");
+	Put_string_waddr(1,10,"Tempe. Secado :");
 	Horno_grafico_datos_temperatura_secado(t_secado);
-	Put_string_waddr(18,10,"`C");
-	Put_string_waddr(1,12,"Tempe. Coc.:");
+	Put_string_waddr(pos_unit,10,"`C");
+	Put_string_waddr(1,12,"Tempe. Coccion:");
 	Horno_grafico_datos_temperatura_coccion(t_coccion);
-	Put_string_waddr(18,12,"`C");
+	Put_string_waddr(pos_unit,12,"`C");
 
 	Put_string_waddr(1,14,"ESTADO:");
 	if(estado==1){
