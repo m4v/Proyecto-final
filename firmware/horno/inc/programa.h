@@ -49,7 +49,5 @@ HORNO_LINEA_T horno_ingreso_datos;
 
 void Horno_programa_inicio(void);
 void Horno_programa_actualizar(void);
-//void Horno_programa_carga_datos(int horno_ingreso_datos, uint32_t dato, bool estado);
-void Horno_programa_carga_datos(int horno_ingreso_datos, uint32_t dato);
-
+void Horno_programa_carga_datos(HORNO_LINEA_T horno_ingreso_datos, uint32_t dato, bool habilitado);
 #endif /* PROGRAMA_H_ */

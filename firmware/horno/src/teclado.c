@@ -65,77 +65,78 @@ typedef struct {
 static HORNO_TECLADO_T horno_keypad = { 0, 0 };
 static uint32_t counter;
 
+
+/*Esta la usamos para la posición dentro del enum 'horno_ingreso_datos' */
 uint8_t horno_teclado_linea_datos=0;
-// Esta la usamos para la posición dentro del enum 'horno_ingreso_datos'
 
 
 void TECLA1_Handler(void) {
 //	DEBUGOUT("1");
 	horno_keypad.dato *= 10;
 	horno_keypad.dato += 1;
-	Horno_programa_carga_datos(horno_teclado_linea_datos,horno_keypad.dato);
+	Horno_programa_carga_datos(horno_teclado_linea_datos,horno_keypad.dato,horno_teclado_habilitar_carga_datos);
 }
 
 void TECLA2_Handler(void) {
 //	DEBUGOUT("2");
 	horno_keypad.dato *= 10;
 	horno_keypad.dato += 2;
-	Horno_programa_carga_datos(horno_teclado_linea_datos,horno_keypad.dato);
+	Horno_programa_carga_datos(horno_teclado_linea_datos,horno_keypad.dato,horno_teclado_habilitar_carga_datos);
 }
 
 void TECLA3_Handler(void) {
 //	DEBUGOUT("3");
 	horno_keypad.dato *= 10;
 	horno_keypad.dato += 3;
-	Horno_programa_carga_datos(horno_teclado_linea_datos,horno_keypad.dato);
+	Horno_programa_carga_datos(horno_teclado_linea_datos,horno_keypad.dato,horno_teclado_habilitar_carga_datos);
 }
 
 void TECLA4_Handler(void) {
 //	DEBUGOUT("4");
 	horno_keypad.dato *= 10;
 	horno_keypad.dato += 4;
-	Horno_programa_carga_datos(horno_teclado_linea_datos,horno_keypad.dato);
+	Horno_programa_carga_datos(horno_teclado_linea_datos,horno_keypad.dato,horno_teclado_habilitar_carga_datos);
 }
 
 void TECLA5_Handler(void) {
 //	DEBUGOUT("5");
 	horno_keypad.dato *= 10;
 	horno_keypad.dato += 5;
-	Horno_programa_carga_datos(horno_teclado_linea_datos,horno_keypad.dato);
+	Horno_programa_carga_datos(horno_teclado_linea_datos,horno_keypad.dato,horno_teclado_habilitar_carga_datos);
 }
 
 void TECLA6_Handler(void) {
 //	DEBUGOUT("6");
 	horno_keypad.dato *= 10;
 	horno_keypad.dato += 6;
-	Horno_programa_carga_datos(horno_teclado_linea_datos,horno_keypad.dato);
+	Horno_programa_carga_datos(horno_teclado_linea_datos,horno_keypad.dato,horno_teclado_habilitar_carga_datos);
 }
 
 void TECLA7_Handler(void) {
 //	DEBUGOUT("7");
 	horno_keypad.dato *= 10;
 	horno_keypad.dato += 7;
-	Horno_programa_carga_datos(horno_teclado_linea_datos,horno_keypad.dato);
+	Horno_programa_carga_datos(horno_teclado_linea_datos,horno_keypad.dato,horno_teclado_habilitar_carga_datos);
 }
 
 void TECLA8_Handler(void) {
 //	DEBUGOUT("8");
 	horno_keypad.dato *= 10;
 	horno_keypad.dato += 8;
-	Horno_programa_carga_datos(horno_teclado_linea_datos,horno_keypad.dato);
+	Horno_programa_carga_datos(horno_teclado_linea_datos,horno_keypad.dato,horno_teclado_habilitar_carga_datos);
 }
 
 void TECLA9_Handler(void) {
 //	DEBUGOUT("9");
 	horno_keypad.dato *= 10;
 	horno_keypad.dato += 9;
-	Horno_programa_carga_datos(horno_teclado_linea_datos,horno_keypad.dato);
+	Horno_programa_carga_datos(horno_teclado_linea_datos,horno_keypad.dato,horno_teclado_habilitar_carga_datos);
 }
 
 void TECLA0_Handler(void) {
 //	DEBUGOUT("0");
 	horno_keypad.dato *= 10;
-	Horno_programa_carga_datos(horno_teclado_linea_datos,horno_keypad.dato);
+	Horno_programa_carga_datos(horno_teclado_linea_datos,horno_keypad.dato,horno_teclado_habilitar_carga_datos);
 }
 
 /* funcion temporal, debería ir a otra parte */
@@ -199,7 +200,7 @@ void TECLAD_Handler(void) {
 void TECLAE_Handler(void) {
 //	DEBUGOUT("\b"); /* \b -> backspace */
 	horno_keypad.dato /= 10;
-	Horno_programa_carga_datos(horno_teclado_linea_datos,horno_keypad.dato);
+	Horno_programa_carga_datos(horno_teclado_linea_datos,horno_keypad.dato,horno_teclado_habilitar_carga_datos);
 }
 
 /* tecla numeral
