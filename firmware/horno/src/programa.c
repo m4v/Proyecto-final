@@ -154,9 +154,11 @@ void Horno_programa_inicio(void) {
 	DEBUGOUT("INICIO\n");
 }
 
-/* dato: valor a poner en las lineas de datos
- * estado:	true: funcionando el programa;
- * 			false: programa apagado
+/* @brief: 	Carga/actualiza los datos del programa
+ * @param:	horno_ingreso_datos:	linea a la que ingresamos datos
+ * 			dato:					valor a poner en las lineas de datos
+ * 			estado:					true: funcionando el programa;
+ * 									false: programa apagado
  */
 void Horno_programa_carga_datos(HORNO_LINEA_T horno_ingreso_datos, uint32_t dato, bool habilitado){
 	if(habilitado!=false){

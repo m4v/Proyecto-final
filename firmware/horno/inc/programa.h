@@ -32,7 +32,6 @@ typedef enum {
 } HORNO_ESTADO_T;
 
 typedef enum {
-//	ESTADO,				// Este lo dejo en stand by
 	PENDIENTE_MAX,
 	TIEMPO_SECADO,
 	TIEMPO_COCCION,
