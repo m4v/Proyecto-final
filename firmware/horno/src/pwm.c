@@ -12,7 +12,7 @@
 #endif
 
 #include "pwm.h"
-#include "init.h"
+#include "horno.h"
 
 typedef struct {
 	uint32_t puerto:3;

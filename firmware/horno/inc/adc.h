@@ -9,7 +9,6 @@
 #define ADC_H
 
 #include "board.h"
-#include "init.h"
 
 #define NUM_MUESTRAS_ADC (1000*PERIODO_PROMEDIO/PERIODO_MUESTREO)
 
@@ -29,7 +28,6 @@ typedef struct {
 HORNO_PROMEDIO_T horno_adc;
 
 int horno_adc_tiempo_restante;
-bool FIN;
 
 void Horno_adc_muestreo(void);
 void Horno_adc_init(void);

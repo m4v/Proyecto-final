@@ -1,12 +1,12 @@
 /*
- * init.h
+ * horno.h
  *
  *  Created on: 31/5/2016
  *      Author: Elián Hanisch, Gastón Riera y Rodrigo Oliver
  */
 
-#ifndef INIT_H_
-#define INIT_H_
+#ifndef HORNO_H_
+#define HORNO_H_
 
 typedef struct {
 	uint32_t pingrp:3;
@@ -22,4 +22,4 @@ typedef struct {
 
 void Horno_Init (void);
 
-#endif /* INIT_H_ */
+#endif /* HORNO_H_ */

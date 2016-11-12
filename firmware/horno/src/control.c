@@ -13,7 +13,7 @@
 
 #include "control.h"
 #include "pwm.h"
-#include "init.h"
+#include "horno.h"
 #include "adc.h"
 
 /* valores del PI de secado */
