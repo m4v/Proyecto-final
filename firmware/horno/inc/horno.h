@@ -20,6 +20,6 @@ typedef struct {
 #define PERIODO_PROMEDIO 1   // muestreo total en seg (tiempo promediando)
 #define PWM_PERIODO 1000     // periodo del PWM en ms
 
-void Horno_Init (void);
+void Horno_muestra_Handler(float temperatura);
 
 #endif /* HORNO_H_ */

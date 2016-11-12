@@ -28,6 +28,7 @@
 #include "adc.h"
 #include "control.h"
 #include "programa.h"
+#include "teclado.h"
 
 /* mensaje de inicio para mandar por el UART */
 static char mensaje_inicio[] =
@@ -182,6 +183,37 @@ void Horno_systick_init(uint32_t ms)
 /* en cada interrupción del systick vemos el resultado en el AD */
 void SysTick_Handler(void) {
 	Horno_adc_muestreo ();
+}
+
+/*
+ * @brief Esta función se ejecuta cada vez que se obtiene una nueva muestra de
+ *        temperatura, y aquí se procesa.
+ * @param temperatura: Temperatura en grados celsius
+ */
+void Horno_muestra_Handler(float temperatura) {
+	/* actualizar la pantalla */
+	Horno_grafico_temperatura((uint32_t)temperatura);
+	/* actualizar la máquina de estados */
+	Horno_programa_actualizar();
+
+	if (horno_pwm.activo) {
+		Horno_control_pi(temperatura);
+	}
+
+	if (horno_adc.salida_uart) {
+		DEBUGOUT("%d, %.2f, %.2f, %.2f, %d, %d, %.4f, %.2f, %.2f, %.2f, %.2f\r\n",
+				horno_adc.valor_n,
+				horno_adc.temperatura,
+				horno_adc.th_temperatura,
+				horno_adc.lm_temperatura,
+				horno_adc.th_valor,
+				horno_adc.lm_valor,
+				horno_pwm.activo ? horno_pwm.dc : 0,
+				horno_control.referencia,
+				horno_control.referencia_cond,
+				horno_control.entrada,
+				horno_control.salida);
+	}
 }
 
 /*
