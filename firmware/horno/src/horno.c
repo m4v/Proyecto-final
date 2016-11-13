@@ -229,8 +229,10 @@ void Horno_Init (void) {
 
 	/* Habilitar el timer para hacer retrasos */
 	Horno_delay_timer_Init();
-
 	Horno_Display_Init();
+    Horno_grafico_pantalla(); // pantalla de inicio
+    Horno_udelay(10e6);
+
 	Horno_adc_init();
 	/* Las interrupciones del SysTick son para muestrear con el ADC. */
 	Horno_systick_init(PERIODO_MUESTREO);

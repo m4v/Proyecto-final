@@ -379,3 +379,19 @@ void Horno_grafico_flecha_datos(int linea, bool borrar){
 	}
 }
 
+/*
+ * @brief grafica la pantalla de inicio
+ */
+
+void Horno_grafico_pantalla(void) {
+	Set_graphic_position(0, 0);
+	Command_Write(MEM_WRITE);
+	for (uint32_t i=0; i < (sizeof(pantalla_inicio)/sizeof(uint32_t)); i++) {
+		uint32_t linea = pantalla_inicio[i];
+		for (uint32_t p=4; p>0;p--) { // p cuenta para atrás para no deformar el gráfico
+			/* separo los 32 bits en bloques de 8 */
+			uint8_t byte = (linea & (0xFF<<((p-1)*8)))>>((p-1)*8);
+			Parameter_Write(byte);
+		}
+	}
+}

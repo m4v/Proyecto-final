@@ -18,6 +18,7 @@
 
 int Horno_pos_y_flecha[39];
 
+void Horno_grafico_pantalla(void);
 void Horno_grafico_digito(uint32_t x, uint32_t y, uint32_t num);
 
 void Horno_grafico_CLR_digito(uint32_t x, uint32_t y);
