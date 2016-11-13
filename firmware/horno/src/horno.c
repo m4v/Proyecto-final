@@ -240,8 +240,7 @@ void Horno_Init (void) {
 	Horno_motor_init();
 	Horno_pwm_init();
 
-
-	horno_teclado_habilitar_carga_datos=true;
+	horno_teclado_deshabilitar_carga_datos=true;
 }
 
 int main(void) {

@@ -361,7 +361,7 @@ void Horno_grafico_CLR_curva(void){
 		}
 }
 
-void Horno_grafico_flecha_datos(int linea, bool borrar){
+void Horno_grafico_flecha_datos(int linea, bool borrar, bool habilitado){
 	uint32_t x=16;
 	uint32_t y=4;
 	y+=2*linea;
@@ -372,7 +372,7 @@ void Horno_grafico_flecha_datos(int linea, bool borrar){
 	// Fijamos la posición del cursor
 	Set_text_position(x,y);
 	Command_Write(MEM_WRITE);
-	if(!borrar){
+	if(!borrar && !habilitado){
 	Parameter_Write(0x7E);
 	} else {
 		Parameter_Write(0x20);
