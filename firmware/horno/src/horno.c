@@ -263,7 +263,7 @@ int main(void) {
 
     Horno_Init();
    	Horno_Display_Test();
-   	Board_LED_Set(0,true); // Esto es para apagar el led que está jodiendo.
+   	Board_LED_Set(0,true); // apagar el led
 
    	DEBUGOUT(mensaje_menu);
 
