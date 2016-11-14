@@ -278,6 +278,14 @@ void Put_string_waddr(int x, int y, char *str){
 	Put_string(str);
 }
 
+void Horno_320240_clean2d_layer(void){
+	Command_Write(CSR_WRITE); // Ponemos el cursor en el comienzo del layer
+	Parameter_Write(0x00); //P1 -- LSB
+	Parameter_Write(0x10); //P2 -- MSB
+	Fill_graphic_layer(0x00);
+}
+
+
 /* inicializa el display con una configuración parecida al 15.1.2 Initialization Example (p.103)
  *  del datasheet del controlador
  */
