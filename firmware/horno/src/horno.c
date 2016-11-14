@@ -232,6 +232,7 @@ void Horno_Init (void) {
 	Horno_Display_Init();
     Horno_grafico_pantalla(); // pantalla de inicio
     Horno_udelay(10e6);
+    Horno_Display_Init();
 
 	Horno_adc_init();
 	/* Las interrupciones del SysTick son para muestrear con el ADC. */
