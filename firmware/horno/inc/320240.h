@@ -17,6 +17,7 @@ void Command_Write(uint8_t cmd);
 void Put_string_waddr(int x, int y, char *str);
 void Put_line_waddr(int x0, uint32_t y0, uint32_t x, uint32_t y, uint32_t largo);
 void Clear_line_waddr(int x0, uint32_t y0, uint32_t x, uint32_t y, uint32_t largo);
+void Horno_320240_clean2d_layer(void);
 
 /* comandos */
 #define SYSTEM_SET  0x40
