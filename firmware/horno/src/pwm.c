@@ -19,7 +19,7 @@ typedef struct {
 	uint32_t pin:5;
 } PUERTO_T;
 
-static PUERTO_T puerto_pwm = {2, 0};
+static const PUERTO_T puerto_pwm = {2, 0};
 
 /*
  * @brief Inicia el PWM
@@ -62,7 +62,7 @@ void Horno_pwm_periodo(uint32_t ms)
 
 /*
  * @brief Configura el ciclo de trabajo del PWM
- * @param dc ciclo de trabajo, entre 0.0 y 1.0
+ * @param dc: ciclo de trabajo, entre 0.0 y 1.0
  */
 void Horno_pwm_ciclo(float dc) {
 	if (dc > 1) {

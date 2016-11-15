@@ -9,9 +9,9 @@
 #define PWM_H_
 
 typedef struct {
-	bool activo;
-	uint32_t periodo;
-	float dc;
+	bool activo;         // si el PWM está activo
+	uint32_t periodo;    // periodo del PWM en ms
+	float dc;            // ciclo de trabajo (de 0.0 a 1.0)
 } HORNO_PWM_T;
 
 void Horno_pwm_init(void);

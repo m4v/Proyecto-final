@@ -17,11 +17,11 @@ void Horno_motor_subir_tiempo(uint32_t periodo);
 void Horno_motor_bajar(void);
 
 typedef struct {
-	bool activo;
-	uint32_t secuencia;
-	uint32_t cantidad_pasos;
-	uint32_t periodo;
-	bool ascender;
+	bool activo;               // si el motor está activo
+	uint32_t secuencia;        // el paso actual
+	uint32_t cantidad_pasos;   // cantidad de pasos hechos
+	uint32_t periodo;          // tiempo que tarda en dar una vuelta (en ms)
+	bool ascender;             // subir o bajar la plataforma.
 } HORNO_MOTOR_T;
 
 HORNO_MOTOR_T horno_motor;
