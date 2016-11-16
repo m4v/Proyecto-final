@@ -16,8 +16,6 @@
 #define Horno_grafico_datos_temperatura_coccion(dato)	Horno_grafico_datos(17,12,dato)
 #define Horno_grafico_datos_PI_referencia(dato)			Horno_grafico_datos(17,10,dato)
 
-int Horno_pos_y_flecha[39];
-
 void Horno_grafico_pantalla(void);
 void Horno_grafico_digito(uint32_t x, uint32_t y, uint32_t num);
 

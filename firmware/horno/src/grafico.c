@@ -149,11 +149,11 @@ void Horno_grafico_CLR_flecha(uint32_t x, uint32_t y) {
  * @param estado: momento en que está el programa (de 0 a 39 estados)
  */
 void Horno_grafico_posicion_flecha(uint32_t estado){
-	Horno_grafico_flecha(estado, Horno_pos_y_flecha[estado]);
+	Horno_grafico_flecha(estado, horno_pos_y_flecha[estado]);
 }
 
 void Horno_grafico_posicion_CLR_flecha(uint32_t estado){
-	Horno_grafico_CLR_flecha(estado, Horno_pos_y_flecha[estado]);
+	Horno_grafico_CLR_flecha(estado, horno_pos_y_flecha[estado]);
 }
 
 /*
@@ -161,7 +161,7 @@ void Horno_grafico_posicion_CLR_flecha(uint32_t estado){
  * @param estado: momento en que está el programa (de 0 a 39 estados)
  */
 void Horno_grafico_posicion_flecha_CLR(uint32_t estado){
-	Horno_grafico_CLR_flecha(estado, Horno_pos_y_flecha[estado]);
+	Horno_grafico_CLR_flecha(estado, horno_pos_y_flecha[estado]);
 }
 
 /*
