@@ -263,7 +263,7 @@ void Horno_grafico_datos_pwm( bool activo, uint32_t periodo, float dc, float ref
 	Horno_grafico_control_referencia(referencia);
 }
 
-void Horno_grafico_programa(bool estado, uint32_t P_calentamiento, uint32_t T_secado, uint32_t T_coccion, uint32_t t_secado, uint32_t t_coccion){
+void Horno_grafico_programa(bool deshabilitar, uint32_t P_calentamiento, uint32_t T_secado, uint32_t T_coccion, uint32_t t_secado, uint32_t t_coccion){
 	uint8_t pos_unit = 21;
 
 	Put_string_waddr(1,1,"DATOS del PROGRAMA");
@@ -286,15 +286,15 @@ void Horno_grafico_programa(bool estado, uint32_t P_calentamiento, uint32_t T_se
 	Put_string_waddr(pos_unit,12,"`C");
 
 	Put_string_waddr(1,14,"ESTADO:");
-	if(estado==1){
-		Put_string_waddr(14,14,"   ");
-		Put_string_waddr(14,14,"ON");
-		Horno_grafico_curva();
-		}
-	else if(estado==0){
+	if(!deshabilitar){
 		Put_string_waddr(14,14,"   ");
 		Put_string_waddr(14,14,"OFF");
 		Horno_grafico_CLR_curva();
+		}
+	else{
+		Put_string_waddr(14,14,"   ");
+		Put_string_waddr(14,14,"ON");
+		Horno_grafico_curva();
 	}
 
 }

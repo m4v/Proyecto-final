@@ -67,6 +67,7 @@ static HORNO_TECLADO_T horno_keypad = { 0, 0 };
 static uint32_t counter;
 
 
+
 /*Esta la usamos para la posición dentro del enum 'horno_ingreso_datos' */
 //uint8_t horno_teclado_linea_datos=0;
 
@@ -179,7 +180,7 @@ void TECLAB_Handler(void) {
 
 void TECLAC_Handler(void) {
 //	DEBUGOUT("C");
-	if (horno_teclado_deshabilitar_carga_datos==false){
+	if (!horno_teclado_deshabilitar_carga_datos){
 		if(horno_teclado_linea_datos<1) {
 			horno_teclado_linea_datos=0;
 			Horno_grafico_flecha_datos(horno_teclado_linea_datos, false,horno_teclado_deshabilitar_carga_datos);
@@ -193,7 +194,7 @@ void TECLAC_Handler(void) {
 
 void TECLAD_Handler(void) {
 //	DEBUGOUT("D");
-	if (horno_teclado_deshabilitar_carga_datos==false){
+	if (!horno_teclado_deshabilitar_carga_datos){
 		if(horno_teclado_linea_datos>3){
 			horno_teclado_linea_datos=4;
 		} else {
