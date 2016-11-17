@@ -12,4 +12,5 @@ void Horno_teclado_init(void);
 bool horno_teclado_deshabilitar_carga_datos;
 
 uint8_t horno_teclado_linea_datos;
+uint8_t horno_teclado_posicion_flecha;
 #endif /* TECLADO_H_ */

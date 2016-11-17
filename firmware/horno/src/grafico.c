@@ -18,6 +18,7 @@
 #include "320240.h"
 #include "fuentes.h"
 #include "programa.h"
+#include "teclado.h"
 
 #include <stdlib.h>
 
@@ -149,11 +150,11 @@ void Horno_grafico_CLR_flecha(uint32_t x, uint32_t y) {
  * @param estado: momento en que está el programa (de 0 a 39 estados)
  */
 void Horno_grafico_posicion_flecha(uint32_t estado){
-	Horno_grafico_flecha(estado, Horno_pos_y_flecha[estado]);
+	Horno_grafico_flecha(estado, horno_pos_y_flecha[estado]);
 }
 
 void Horno_grafico_posicion_CLR_flecha(uint32_t estado){
-	Horno_grafico_CLR_flecha(estado, Horno_pos_y_flecha[estado]);
+	Horno_grafico_CLR_flecha(estado, horno_pos_y_flecha[estado]);
 }
 
 /*
@@ -161,7 +162,7 @@ void Horno_grafico_posicion_CLR_flecha(uint32_t estado){
  * @param estado: momento en que está el programa (de 0 a 39 estados)
  */
 void Horno_grafico_posicion_flecha_CLR(uint32_t estado){
-	Horno_grafico_CLR_flecha(estado, Horno_pos_y_flecha[estado]);
+	Horno_grafico_CLR_flecha(estado, horno_pos_y_flecha[estado]);
 }
 
 /*
@@ -221,7 +222,6 @@ void Horno_grafico_datos(uint32_t x, uint32_t y, uint32_t dato) {
 	else{
 		char str[4];
 		itoa(numero,str,10);
-
 		Put_string_waddr(x,y,str);
 	}
 }
@@ -263,7 +263,7 @@ void Horno_grafico_datos_pwm( bool activo, uint32_t periodo, float dc, float ref
 	Horno_grafico_control_referencia(referencia);
 }
 
-void Horno_grafico_programa(bool estado, uint32_t P_calentamiento, uint32_t T_secado, uint32_t T_coccion, uint32_t t_secado, uint32_t t_coccion){
+void Horno_grafico_programa(bool deshabilitar, uint32_t P_calentamiento, uint32_t T_secado, uint32_t T_coccion, uint32_t t_secado, uint32_t t_coccion){
 	uint8_t pos_unit = 21;
 
 	Put_string_waddr(1,1,"DATOS del PROGRAMA");
@@ -286,15 +286,15 @@ void Horno_grafico_programa(bool estado, uint32_t P_calentamiento, uint32_t T_se
 	Put_string_waddr(pos_unit,12,"`C");
 
 	Put_string_waddr(1,14,"ESTADO:");
-	if(estado==1){
-		Put_string_waddr(14,14,"   ");
-		Put_string_waddr(14,14,"ON");
-		Horno_grafico_curva();
-		}
-	else if(estado==0){
+	if(!deshabilitar){
 		Put_string_waddr(14,14,"   ");
 		Put_string_waddr(14,14,"OFF");
 		Horno_grafico_CLR_curva();
+		}
+	else{
+		Put_string_waddr(14,14,"   ");
+		Put_string_waddr(14,14,"ON");
+		Horno_grafico_curva();
 	}
 
 }
