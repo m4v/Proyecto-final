@@ -19,6 +19,8 @@
 #include "grafico.h"
 #include "teclado.h"
 
+static uint32_t flecha_posicion;
+
 void Horno_programa_actualizar(void)
 {
 	switch(horno_estado) {
@@ -48,12 +50,12 @@ void Horno_programa_actualizar(void)
 			horno_programa.tiempo_inicio = horno_adc.valor_n;
 			horno_estado = SECADO;
 			DEBUGOUT("SECADO\n");
-		}
-		else if (horno_adc.temperatura < (horno_programa.temperatura_secado - 10))
-		{
-			int pasos_rampa=horno_programa.temperatura_secado/8;
-			Horno_grafico_posicion_flecha(horno_adc.temperatura/pasos_rampa);
-			Horno_grafico_posicion_CLR_flecha((horno_adc.temperatura/pasos_rampa)-1);
+		} else {
+			/* actualizamos la flecha */
+			Horno_grafico_posicion_CLR_flecha(flecha_posicion);
+			int pasos_rampa = horno_programa.temperatura_secado/7;
+			flecha_posicion = horno_adc.temperatura/pasos_rampa;
+			Horno_grafico_posicion_flecha(flecha_posicion);
 		}
 		break;
 	case SECADO:
@@ -74,14 +76,12 @@ void Horno_programa_actualizar(void)
 			horno_estado = CALENTAMIENTO;
 			DEBUGOUT("CALENTAMIENTO\n");
 		}
-
-
-		uint32_t flecha_temp=0;
-		flecha_temp += (horno_adc.valor_n - horno_programa.tiempo_programa_inicio);
-		if(flecha_temp < horno_programa.tiempo_secado/12 || flecha_temp < 12)
-		{
-		Horno_grafico_posicion_flecha(8+(flecha_temp/12)); // 8 son los pasos ya hechos
-		Horno_grafico_posicion_CLR_flecha(7+(flecha_temp/12)-1);
+		/* actualizamos la flecha */
+		if (flecha_posicion < 18) {
+			Horno_grafico_posicion_CLR_flecha(flecha_posicion);
+			int pasos = horno_programa.tiempo_secado/12;
+			flecha_posicion = (horno_adc.valor_n - horno_programa.tiempo_programa_inicio)/pasos + 7;
+			Horno_grafico_posicion_flecha(flecha_posicion);
 		}
 		break;
 	case CALENTAMIENTO:
@@ -106,31 +106,28 @@ void Horno_programa_actualizar(void)
 			horno_estado = COCCION;
 			horno_programa.tiempo_inicio = horno_adc.valor_n;
 			DEBUGOUT("COCCION\n");
-			//Borrar la flecha que queda colgada.
-			Horno_grafico_posicion_CLR_flecha(27);
 		}
-		else if (horno_adc.temperatura < (horno_programa.temperatura_coccion - 10))
+		else
 		{
-			int paso_rampa=(horno_programa.temperatura_coccion - horno_programa.temperatura_secado)/8;
-			Horno_grafico_posicion_flecha(19 + (horno_adc.temperatura - horno_programa.temperatura_secado)/paso_rampa); //19 son los pasos ya hechos
-			Horno_grafico_posicion_CLR_flecha((19 + (horno_adc.temperatura - horno_programa.temperatura_secado)/paso_rampa) - 1);
+			/* actualizamos la flecha */
+			Horno_grafico_posicion_CLR_flecha(flecha_posicion);
+			int paso_rampa = (horno_programa.temperatura_coccion - horno_programa.temperatura_secado)/8;
+			flecha_posicion = (horno_adc.temperatura - horno_programa.temperatura_secado)/paso_rampa + 18;
+			Horno_grafico_posicion_flecha(flecha_posicion);
 		}
 		break;
 	case COCCION:
 		/* esperar el tiempo programado */
 		if (horno_programa.tiempo_coccion < (horno_adc.valor_n - horno_programa.tiempo_inicio))
 		{
-			Horno_grafico_posicion_CLR_flecha(39); // borrar la última flecha
 			horno_estado = FIN_PROGRAMA;
 			DEBUGOUT("FIN_PROGRAMA\n");
-		}
-
-		uint32_t flecha_temp2=0; // temporal
-		flecha_temp2 += (horno_adc.valor_n - horno_programa.tiempo_programa_inicio);
-		if(flecha_temp < horno_programa.tiempo_coccion/12 || flecha_temp2 < 12)
-		{
-		Horno_grafico_posicion_flecha(27+(flecha_temp/12)); // 27 son los pasos ya hechos
-		Horno_grafico_posicion_CLR_flecha(27+(flecha_temp2/12)-1);
+		} else {
+			/* actualizamos la flecha */
+			Horno_grafico_posicion_CLR_flecha(flecha_posicion);
+			int pasos_flecha = horno_programa.tiempo_coccion/12;
+			flecha_posicion = (horno_adc.valor_n - horno_programa.tiempo_programa_inicio)/pasos_flecha + 26;
+			Horno_grafico_posicion_flecha(flecha_posicion);
 		}
 		break;
 	case FIN_PROGRAMA:
