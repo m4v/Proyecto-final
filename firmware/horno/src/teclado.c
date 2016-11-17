@@ -151,6 +151,8 @@ void estado_pwm(void) {
 }
 
 void TECLAA_Handler(void) {
+	horno_teclado_posicion_flecha=0; // Flecha de gráfico al inicio
+
 	horno_estado = INICIO;
 	Horno_grafico_programa(true,
 			horno_programa.pendiente_calentamiento,
@@ -162,6 +164,9 @@ void TECLAA_Handler(void) {
 }
 
 void TECLAB_Handler(void) {
+
+	Horno_grafico_posicion_CLR_flecha(horno_teclado_posicion_flecha);
+
 	horno_estado = FIN_PROGRAMA;
 	Horno_grafico_programa(false,
 				horno_programa.pendiente_calentamiento,

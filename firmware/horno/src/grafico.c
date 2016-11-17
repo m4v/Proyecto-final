@@ -18,6 +18,7 @@
 #include "320240.h"
 #include "fuentes.h"
 #include "programa.h"
+#include "teclado.h"
 
 #include <stdlib.h>
 
@@ -221,7 +222,6 @@ void Horno_grafico_datos(uint32_t x, uint32_t y, uint32_t dato) {
 	else{
 		char str[4];
 		itoa(numero,str,10);
-
 		Put_string_waddr(x,y,str);
 	}
 }
