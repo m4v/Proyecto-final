@@ -39,6 +39,13 @@ void Horno_programa_actualizar(void)
 									+ (horno_programa.temperatura_coccion - horno_programa.temperatura_secado)/0.8
 									+ horno_programa.temperatura_secado / 0.3333;
 		horno_programa.tiempo_programa_inicio = horno_adc.valor_n;
+		Horno_grafico_programa(true,
+				horno_programa.pendiente_calentamiento,
+				horno_programa.tiempo_secado,
+				horno_programa.tiempo_coccion,
+				horno_programa.temperatura_secado,
+				horno_programa.temperatura_coccion
+				);
 		horno_estado = ESPERAR_TSECADO;
 		DEBUGOUT("ESPERAR_TSECADO\n");
 		break;
@@ -145,6 +152,15 @@ void Horno_programa_actualizar(void)
 	   	Horno_grafico_CLR_digito(pos_h[1],75);
 	   	Horno_grafico_CLR_digito(pos_h[0],75);
 		Horno_grafico_FIN(); // Ponemos la palabra FIN
+		/* limpiamos la pantalla */
+		Horno_grafico_posicion_CLR_flecha(flecha_posicion);
+		Horno_grafico_programa(false,
+						horno_programa.pendiente_calentamiento,
+						horno_programa.tiempo_secado,
+						horno_programa.tiempo_coccion,
+						horno_programa.temperatura_secado,
+						horno_programa.temperatura_coccion
+						);
 		horno_estado = HACER_NADA;
 		DEBUGOUT("HACER_NADA\n");
 		break;
