@@ -17,7 +17,7 @@
 #include "adc.h"
 
 /* valores del PI de secado */
-#define KPs 0.5		    // constante proporcional
+#define KPs 0.5 		    // constante proporcional
 #define KIs 0.003		    // constante integrador
 
 /* valores del PI de coccion */
@@ -26,7 +26,10 @@
 
 #define TS PERIODO_PROMEDIO // periodo de muestreo (segundos)
 #define P_MAX 0.8
-#define P_SEC 0.3333
+#define P_SEC 0.3333        // pendiente de la referencia durante el secado.
+
+/* TEMP_SECADO marca el límite donde usamos un PI o el otro. Si la
+ * referencia es menor a TEMP_SECADO, se utiliza el PI de secado y viceversa. */
 #define TEMP_SECADO 350
 
 /* constantes del PI discreto, usando la transformación bilineal */
@@ -35,8 +38,9 @@ static const float kx_coc = KIc*TS*0.5 + KPc, kx1_coc = KIc*TS*0.5 - KPc;
 
 /*
  * @brief Lazo de control PI
+ * @param temperatura: temperatura del sistema.
  */
-void Horno_control_pi(float entrada) {
+void Horno_control_pi(float temperatura) {
 	if (!horno_control.activo) {
 		return;
 	}
@@ -64,14 +68,16 @@ void Horno_control_pi(float entrada) {
 		}
 	}
 
-	horno_control.entrada = horno_control.referencia_cond - entrada;
+	horno_control.entrada = horno_control.referencia_cond - temperatura;
 	if (horno_control.referencia < TEMP_SECADO) {
 		/* secado */
 		if ((horno_control.entrada < 10) && (horno_control.entrada > -10)) {
+			/* control PI */
 			horno_control.salida = horno_control.entrada   * kx_sec
 								 + horno_control.entrada_1 * kx1_sec
 								 + horno_control.salida_1;
 		} else {
+			/* solo control proporcional */
 			horno_control.salida = horno_control.entrada * KPs;
 		}
 	} else {
@@ -82,8 +88,8 @@ void Horno_control_pi(float entrada) {
 	}
 
 	/* Actualizamos el PWM
-	 * Dado nuestro modelo de la planta, la salida es en tensión.
-	 * Escalamos para que 220V sean 100% del ciclo de trabajo del PWM */
+	 * Dado nuestro modelo de la planta, la salida del PI es el ciclo de
+	 * trabajo del PWM. */
 	Horno_pwm_ciclo(horno_control.salida / 100);
 
 	/* actualizamos las muestras anteriores */
@@ -91,6 +97,10 @@ void Horno_control_pi(float entrada) {
 	horno_control.salida_1 = horno_control.salida;
 }
 
+/*
+ * @brief actualiza la referencia o consigna de temperatura
+ * @param ref: temperatura a alcanzar.
+ */
 void Horno_control_referencia(float ref)
 {
 	horno_control.referencia = ref;

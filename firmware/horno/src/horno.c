@@ -31,12 +31,12 @@
 #include "teclado.h"
 
 /* mensaje de inicio para mandar por el UART */
-static char mensaje_inicio[] =
+static const char mensaje_inicio[] =
 		"\r\n"
 		"Proyecto Final 2016 - Horno Dental\r\n"
 		"==================================\r\n"
 		"\r\n";
-static char mensaje_menu[] =
+static const char mensaje_menu[] =
 		"Controles UART:\r\n"
 		" 'c' mostrar/ocultar datos del ADC y PWM.\r\n"
 		" 'i' para poner en marcha el motor.\r\n"
@@ -109,7 +109,7 @@ static const PINMUX_GRP_T pinmux[] = {
 	{0,  25,  IOCON_MODE_PULLDOWN | IOCON_FUNC0},
 	/* pin del fin de carrera */
 	{0,  26,  IOCON_MODE_PULLDOWN | IOCON_FUNC0},
-	/* LED */
+	/* LED de la placa LPCXpresso */
 	{0,  22,  IOCON_MODE_INACT | IOCON_FUNC0},
 };
 
@@ -231,7 +231,7 @@ void Horno_Init (void) {
 	Horno_delay_timer_Init();
 	Horno_Display_Init();
     Horno_grafico_pantalla(); // pantalla de inicio
-    Horno_udelay(10e6);
+    Horno_udelay(5e6);
     Horno_320240_clean2d_layer(); // Limpiamos la pantalla que tiene el gráfico de inicio.
 
 	Horno_adc_init();
@@ -267,7 +267,11 @@ int main(void) {
 
    	DEBUGOUT(mensaje_menu);
 
-   	/* bucle principal */
+   	/* Bucle principal
+   	 *
+   	 * el bucle principal no hace nada, más que manejar los comandos y la
+   	 * salida del UART, que son puramente para hacer ensayos.
+   	 */
    	while(1){
     	charUART = DEBUGIN();
     	switch(charUART) {

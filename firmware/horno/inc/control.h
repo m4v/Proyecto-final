@@ -10,13 +10,13 @@
 
 /* estructura con valores del lazo de control*/
 typedef struct{
-	bool activo;
-	float referencia;	// valor de temperatura de referencia
-	float referencia_cond;
-	float entrada;      // valor de la entrada del PI
-	float entrada_1;    // valor de la entrada del PI una muestra anterior
-	float salida;       // valor de la salida del PI
-	float salida_1;     // valor de la salida del PI una muestra anterior
+	bool activo;            // si el control PI está activo
+	float referencia;	    // valor de temperatura de referencia
+	float referencia_cond;  // referencia condicionada
+	float entrada;          // valor de la entrada del PI
+	float entrada_1;        // valor de la entrada del PI una muestra anterior
+	float salida;           // valor de la salida del PI
+	float salida_1;         // valor de la salida del PI una muestra anterior
 } HORNO_CONTROL_T;
 
 HORNO_CONTROL_T horno_control;

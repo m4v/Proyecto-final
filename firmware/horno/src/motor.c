@@ -34,8 +34,7 @@
 #define MOTOR_P1(estado) Chip_GPIO_SetPinState(LPC_GPIO, 0,  4, estado);
 #define MOTOR_P2(estado) Chip_GPIO_SetPinState(LPC_GPIO, 0,  5, estado);
 #define MOTOR_P3(estado) Chip_GPIO_SetPinState(LPC_GPIO, 0, 29, estado);
-
-#define FIN_CARRERA Chip_GPIO_GetPinState(LPC_GPIO, 0, 26)
+#define FIN_CARRERA      Chip_GPIO_GetPinState(LPC_GPIO, 0, 26)
 
 /*
  * @brief traduce el número de paso actual a la sequencia correspondiente

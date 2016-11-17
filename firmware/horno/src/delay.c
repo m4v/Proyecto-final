@@ -20,6 +20,7 @@
 #define _SYSCTL_PCLK_TIMER SYSCTL_PCLK_TIMER3
 #define _TIMER_IRQHandler TIMER3_IRQHandler
 
+// TODO hacer un struct
 volatile static bool delay_enabled;
 static uint32_t timer_clock;
 static uint32_t ticks;
@@ -37,7 +38,9 @@ void _TIMER_IRQHandler(void)
 	}
 }
 
-/*
+/* FIXME se rompe si una interrupción llama esta función cuando esta misma se
+ * está ejecutando.
+ *
  * @brief  función para generar retrasos
  * @param  usec: cantidad de microsegundos
  */
