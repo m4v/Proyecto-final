@@ -35,10 +35,10 @@ void Horno_grafico_digito(uint32_t x, uint32_t y, uint32_t num) {
 	for (uint32_t i=0; i < 42; i++) {
 		Set_graphic_position(x/8, y+i);
 		uint32_t linea = bloque.linea[i];
+		Command_Write(MEM_WRITE);
 		for (uint32_t p=3; p>0;p--) { // p cuenta para atrás para no deformar el gráfico
 			/* separo los 32 bits en bloques de 8 */
 			uint8_t byte = (linea & (0xFF<<((p-1)*8)))>>((p-1)*8);
-			Command_Write(MEM_WRITE);
 			Parameter_Write(byte);
 		}
 	}
@@ -47,10 +47,9 @@ void Horno_grafico_digito(uint32_t x, uint32_t y, uint32_t num) {
 void Horno_grafico_CLR_digito(uint32_t x, uint32_t y) {
 	for (uint32_t i=0; i < 42; i++) {
 		Set_graphic_position(x/8, y+i);
+		Command_Write(MEM_WRITE);
 		for (uint32_t p=3; p>0;p--) { // p cuenta para atrás para no deformar el gráfico
-			uint8_t byte = 0x00;
-			Command_Write(MEM_WRITE);
-			Parameter_Write(byte);
+			Parameter_Write(0x00);
 		}
 	}
 }
