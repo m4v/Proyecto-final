@@ -28,6 +28,9 @@ t0_4 = 0
 datos_5 = "../captura_programa_15-Nov-2016_173219.csv"
 t0_5 = 95
 
+datos_6 = "../captura_programa_17-Nov-2016_180946.csv"
+t0_6 = 46
+
 set xrange [0:50]
 #set yrange [0:3.24]
 #set y2range [0:1000]
@@ -52,3 +55,9 @@ set xrange [0:50]
 
 plot datos_5 using (($1 - t0_5)/60):($2) title "temperatura" with lines lc rgb "red", \
      datos_5 using (($1 - t0_5)/60):($9) title "referencia" with lines lc rgb "blue"
+
+set output "horno_programa_5.png"
+set title "Ensayo del programa 17/11 (con display)"
+set xrange [0:50]
+plot datos_6 using (($1 - t0_6)/60):($2) title "temperatura" with lines lc rgb "red", \
+     datos_6 using (($1 - t0_6)/60):($9) title "referencia" with lines lc rgb "blue"
