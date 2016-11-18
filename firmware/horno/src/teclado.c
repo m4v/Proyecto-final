@@ -67,11 +67,6 @@ static HORNO_TECLADO_T horno_keypad = { 0, 0 };
 static uint32_t counter;
 
 
-
-/*Esta la usamos para la posición dentro del enum 'horno_ingreso_datos' */
-//uint8_t horno_teclado_linea_datos=0;
-
-
 void TECLA1_Handler(void) {
 //	DEBUGOUT("1");
 	horno_keypad.dato *= 10;
@@ -139,16 +134,6 @@ void TECLA0_Handler(void) {
 //	DEBUGOUT("0");
 	horno_keypad.dato *= 10;
 	Horno_programa_carga_datos(horno_teclado_linea_datos,horno_keypad.dato,horno_teclado_deshabilitar_carga_datos);
-}
-
-/* funcion temporal, debería ir a otra parte */
-void estado_pwm(void) {
-	DEBUGOUT("\n"
-			"PWM %s\n"
-			"PWM ciclo de trabajo: %.2f %\n"
-			"PWM periodo: %d ms\n",
-			horno_pwm.activo ? "ACTIVO" : "INACTIVO",
-			horno_pwm.dc*100, horno_pwm.periodo);
 }
 
 void TECLAA_Handler(void) {
