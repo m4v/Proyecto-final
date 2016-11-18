@@ -23,7 +23,7 @@ static uint32_t flecha_posicion;
 
 void Horno_programa_actualizar(void)
 {
-	switch(horno_estado) {
+	switch(horno_programa.estado) {
 	case INICIO:
 		/* deshabilitamos la carga de datos */
 		horno_teclado_deshabilitar_carga_datos=true;
@@ -46,7 +46,7 @@ void Horno_programa_actualizar(void)
 				horno_programa.temperatura_secado,
 				horno_programa.temperatura_coccion
 				);
-		horno_estado = ESPERAR_TSECADO;
+		horno_programa.estado = ESPERAR_TSECADO;
 		DEBUGOUT("ESPERAR_TSECADO\n");
 		break;
 	case ESPERAR_TSECADO:
@@ -55,7 +55,7 @@ void Horno_programa_actualizar(void)
 		if (horno_adc.temperatura > (horno_programa.temperatura_secado - 10))
 		{
 			horno_programa.tiempo_inicio = horno_adc.valor_n;
-			horno_estado = SECADO;
+			horno_programa.estado = SECADO;
 			DEBUGOUT("SECADO\n");
 		} else {
 			/* actualizamos la flecha */
@@ -72,7 +72,7 @@ void Horno_programa_actualizar(void)
 									+ horno_programa.tiempo_coccion
 									+ (horno_programa.temperatura_coccion - horno_programa.temperatura_secado)/0.8;
 		horno_programa.tiempo_programa_inicio = horno_adc.valor_n;
-		horno_estado = ESPERAR_CIERRE;
+		horno_programa.estado = ESPERAR_CIERRE;
 		DEBUGOUT("ESPERAR_CIERRE\n");
 		break;
 	case ESPERAR_CIERRE:
@@ -80,7 +80,7 @@ void Horno_programa_actualizar(void)
 		if (!horno_motor.activo)
 		{
 			/* llegó al fin de carrera */
-			horno_estado = CALENTAMIENTO;
+			horno_programa.estado = CALENTAMIENTO;
 			DEBUGOUT("CALENTAMIENTO\n");
 		}
 		/* actualizamos la flecha */
@@ -98,7 +98,7 @@ void Horno_programa_actualizar(void)
 		horno_programa.tiempo_total = horno_programa.tiempo_coccion
 									+ (horno_programa.temperatura_coccion - horno_programa.temperatura_secado)/0.8;
 		horno_programa.tiempo_programa_inicio = horno_adc.valor_n;
-		horno_estado = ESPERAR_TCOCCION;
+		horno_programa.estado = ESPERAR_TCOCCION;
 		DEBUGOUT("ESPERAR_TCOCCION\n");
 		break;
 	case ESPERAR_TCOCCION:
@@ -110,7 +110,7 @@ void Horno_programa_actualizar(void)
 			horno_programa.tiempo_total = horno_programa.tiempo_coccion;
 			horno_programa.tiempo_programa_inicio = horno_adc.valor_n;
 
-			horno_estado = COCCION;
+			horno_programa.estado = COCCION;
 			horno_programa.tiempo_inicio = horno_adc.valor_n;
 			DEBUGOUT("COCCION\n");
 		}
@@ -127,7 +127,7 @@ void Horno_programa_actualizar(void)
 		/* esperar el tiempo programado */
 		if (horno_programa.tiempo_coccion < (horno_adc.valor_n - horno_programa.tiempo_inicio))
 		{
-			horno_estado = FIN_PROGRAMA;
+			horno_programa.estado = FIN_PROGRAMA;
 			DEBUGOUT("FIN_PROGRAMA\n");
 		} else {
 			/* actualizamos la flecha */
@@ -161,7 +161,7 @@ void Horno_programa_actualizar(void)
 						horno_programa.temperatura_secado,
 						horno_programa.temperatura_coccion
 						);
-		horno_estado = HACER_NADA;
+		horno_programa.estado = HACER_NADA;
 		DEBUGOUT("HACER_NADA\n");
 		break;
 	case HACER_NADA:
@@ -170,7 +170,7 @@ void Horno_programa_actualizar(void)
 		break;
 	}
 
-	if (horno_estado != HACER_NADA) {
+	if (horno_programa.estado != HACER_NADA) {
 		/* Pone los dos puntos intermitentes del tiempo */
 		if(horno_adc.valor_n & 1){
 			Horno_grafico_CLR_dos_puntos();
@@ -193,7 +193,7 @@ void Horno_programa_inicio(void) {
 	horno_programa.tiempo_coccion = 600;
 	horno_programa.pendiente_calentamiento = 0.8;
 
-	horno_estado = INICIO;
+	horno_programa.estado = INICIO;
 	DEBUGOUT("INICIO\n");
 }
 

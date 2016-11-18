@@ -139,13 +139,13 @@ void TECLA0_Handler(void) {
 void TECLAA_Handler(void) {
 	horno_teclado_posicion_flecha=0; // Flecha de gráfico al inicio
 
-	horno_estado = INICIO;
+	horno_programa.estado = INICIO;
 }
 
 void TECLAB_Handler(void) {
 
 	Horno_grafico_posicion_CLR_flecha(horno_teclado_posicion_flecha);
-	horno_estado = FIN_PROGRAMA;
+	horno_programa.estado = FIN_PROGRAMA;
 }
 
 void TECLAC_Handler(void) {

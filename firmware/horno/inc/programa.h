@@ -8,17 +8,6 @@
 #ifndef PROGRAMA_H_
 #define PROGRAMA_H_
 
-typedef struct {
-	uint32_t temperatura_secado;
-	uint32_t temperatura_coccion;
-	uint32_t tiempo_secado;
-	uint32_t tiempo_coccion;
-	uint32_t tiempo_inicio;
-	uint32_t tiempo_total;
-	uint32_t tiempo_programa_inicio;
-	float pendiente_calentamiento;
-} HORNO_PROGRAMA_T;
-
 typedef enum {
 	INICIO,
 	ESPERAR_TSECADO,
@@ -31,6 +20,18 @@ typedef enum {
 	HACER_NADA
 } HORNO_ESTADO_T;
 
+typedef struct {
+	HORNO_ESTADO_T estado;
+	uint32_t temperatura_secado;
+	uint32_t temperatura_coccion;
+	uint32_t tiempo_secado;
+	uint32_t tiempo_coccion;
+	uint32_t tiempo_inicio;
+	uint32_t tiempo_total;
+	uint32_t tiempo_programa_inicio;
+	float pendiente_calentamiento;
+} HORNO_PROGRAMA_T;
+
 typedef enum {
 	PENDIENTE_MAX,
 	TIEMPO_SECADO,
@@ -41,7 +42,6 @@ typedef enum {
 
 
 HORNO_PROGRAMA_T horno_programa;
-HORNO_ESTADO_T horno_estado;
 HORNO_LINEA_T horno_ingreso_datos;
 
 void Horno_programa_inicio(void);

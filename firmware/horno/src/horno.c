@@ -225,7 +225,7 @@ void Horno_muestra_Handler(float temperatura) {
  */
 void Horno_Init (void) {
 	/* inicializar la máquina de estados */
-	horno_estado = HACER_NADA;
+	horno_programa.estado = HACER_NADA;
 
 	/* configurar puertos */
 	Chip_IOCON_SetPinMuxing(LPC_IOCON, pinmux, sizeof(pinmux) / sizeof(PINMUX_GRP_T));
@@ -353,10 +353,10 @@ int main(void) {
     		DEBUGOUT(mensaje_menu);
     		break;
     	case 'M':
-    		if (horno_estado == HACER_NADA) {
+    		if (horno_programa.estado == HACER_NADA) {
     			Horno_programa_inicio();
     		} else {
-    			horno_estado = FIN_PROGRAMA;
+    			horno_programa.estado = FIN_PROGRAMA;
     		}
     		break;
     	}
