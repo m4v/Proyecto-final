@@ -285,14 +285,15 @@ void Horno_grafico_programa(bool deshabilitar, uint32_t P_calentamiento, uint32_
 	Put_string_waddr(pos_unit,12,"`C");
 
 	Put_string_waddr(1,14,"ESTADO:");
+	/* Hasta 14 caracteres puede ser el estado */
 	if(!deshabilitar){
-		Put_string_waddr(14,14,"   ");
-		Put_string_waddr(14,14,"OFF");
+		Put_string_waddr(9,14,"              ");
+		Put_string_waddr(9,14,"       APAGADO");
 		Horno_grafico_CLR_curva();
 		}
 	else{
-		Put_string_waddr(14,14,"   ");
-		Put_string_waddr(14,14,"ON");
+		Put_string_waddr(9,14,"              ");
+		Put_string_waddr(9,14,"     ENCENDIDO");
 		Horno_grafico_curva();
 	}
 
