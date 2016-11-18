@@ -25,10 +25,10 @@
 
 
 /*
- * @brief grafica un número de 24x42 pixeles
- * @param x: posición X en pixels
- * @param y: posición Y en pixels
- * @param num: dígito de 0 a 9
+ * @brief  grafica un número de 24x42 pixeles
+ * @param  x: posición X en pixels
+ * @param  y: posición Y en pixels
+ * @param  num: dígito de 0 a 9
  */
 void Horno_grafico_digito(uint32_t x, uint32_t y, uint32_t num) {
 	BLOQUE42_T bloque = HORNO_DIGITO[num];

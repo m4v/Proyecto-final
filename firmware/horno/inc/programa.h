@@ -8,6 +8,7 @@
 #ifndef PROGRAMA_H_
 #define PROGRAMA_H_
 
+/* estados del programa */
 typedef enum {
 	INICIO,
 	ESPERAR_TSECADO,

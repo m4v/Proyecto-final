@@ -196,14 +196,17 @@ void Horno_muestra_Handler(float temperatura) {
 	/* actualizar la máquina de estados */
 	Horno_programa_actualizar();
 
+	/* si el pwm está activo hacemos control */
 	if (horno_pwm.activo) {
 		Horno_control_pi(temperatura);
 	}
 
+	/* parpadeo del LED */
 	Board_LED_Set(0,true);
 	Horno_udelay(10e3);
 	Board_LED_Set(0,false);
 
+	/* para debuguear y levantar curvas */
 	if (horno_adc.salida_uart) {
 		DEBUGOUT("%d, %.2f, %.2f, %.2f, %d, %d, %.4f, %.2f, %.2f, %.2f, %.2f\r\n",
 				horno_adc.valor_n,
