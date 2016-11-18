@@ -183,4 +183,7 @@ void Horno_motor_init(void) {
 	NVIC_EnableIRQ(_TIMER_IRQn);
 
 	horno_motor.periodo = PERIODO_MIN_SUBIDA;
+
+	/* nos aseguramos que el horno esté abierto */
+	Horno_motor_bajar();
 }
