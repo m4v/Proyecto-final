@@ -303,11 +303,10 @@ int main(void) {
     		DEBUGOUT("Motor sentido ascender %d\n", horno_motor.ascender);
     		break;
     	case 'P':
+    		Horno_pwm_activar(!horno_pwm.activo);
     		if (horno_pwm.activo) {
-    			Horno_pwm_parar();
     			DEBUGOUT("PWM inactivo\n");
     		} else {
-    			Horno_pwm_inicio();
     			DEBUGOUT("PWM activo\n");
     		}
     		break;

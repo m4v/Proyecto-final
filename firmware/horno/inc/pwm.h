@@ -17,8 +17,7 @@ typedef struct {
 void Horno_pwm_init(void);
 void Horno_pwm_periodo(uint32_t ms);
 void Horno_pwm_ciclo(float dc);
-void Horno_pwm_inicio(void);
-void Horno_pwm_parar(void);
+void Horno_pwm_activar(bool estado);
 
 HORNO_PWM_T horno_pwm;
 

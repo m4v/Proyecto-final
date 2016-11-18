@@ -32,7 +32,7 @@ void Horno_programa_actualizar(void)
 		/* activar todo y empezar a calentar */
 		Horno_control_referencia(horno_programa.temperatura_secado);
 		Horno_control_activar(true);
-		Horno_pwm_inicio();
+		Horno_pwm_activar(true);
 		/* calcular el tiempo restante */
 		horno_programa.tiempo_total = horno_programa.tiempo_secado
 									+ horno_programa.tiempo_coccion
@@ -139,7 +139,7 @@ void Horno_programa_actualizar(void)
 		break;
 	case FIN_PROGRAMA:
 		/* detenemos todo y abrimos la puerta */
-		Horno_pwm_parar();
+		Horno_pwm_activar(false);
 		Horno_control_activar(false);
 		Horno_motor_bajar();
 		/* limpiar los 2 puntos */

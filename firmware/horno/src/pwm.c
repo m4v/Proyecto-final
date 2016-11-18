@@ -22,29 +22,27 @@ typedef struct {
 static const PUERTO_T puerto_pwm = {2, 0};
 
 /*
- * @brief Inicia el PWM
+ * @brief  inicia/detiene el PWM
+ * @param  estado: true, activar el PWM.
+ *                 false, apagar el PWM.
  */
-void Horno_pwm_inicio(void)
+void Horno_pwm_activar(bool estado)
 {
-	Chip_IOCON_PinMuxSet(LPC_IOCON, puerto_pwm.puerto, puerto_pwm.pin,
-			             IOCON_MODE_INACT | IOCON_FUNC1);
+	if (estado) {
+		Chip_IOCON_PinMuxSet(LPC_IOCON, puerto_pwm.puerto, puerto_pwm.pin,
+							 IOCON_MODE_INACT | IOCON_FUNC1);
 
-	Chip_PWM_Enable(LPC_PWM1);
-	horno_pwm.activo = true;
-}
+		Chip_PWM_Enable(LPC_PWM1);
+	} else {
+		Chip_PWM_Disable(LPC_PWM1);
 
-/*
- * @brief Detener el PWM. Se asegura que la salida quede en low.
- */
-void Horno_pwm_parar(void)
-{
-	Chip_PWM_Disable(LPC_PWM1);
-	horno_pwm.activo = false;
+		/* para asegurar apagar el PWM lo pasamos a GPIO con r de pulldown.
+		 * de lo contrario la salida puede quedar en alto cuando no es lo que queremos */
+		Chip_IOCON_PinMuxSet(LPC_IOCON, puerto_pwm.puerto, puerto_pwm.pin,
+							 IOCON_MODE_PULLDOWN | IOCON_FUNC0);
 
-	/* para asegurar apagar el PWM lo pasamos a GPIO con r de pulldown.
-	 * de lo contrario la salida puede quedar en alto cuando no es lo que queremos */
-	Chip_IOCON_PinMuxSet(LPC_IOCON, puerto_pwm.puerto, puerto_pwm.pin,
-			             IOCON_MODE_PULLDOWN | IOCON_FUNC0);
+	}
+	horno_pwm.activo = estado;
 }
 
 /*
