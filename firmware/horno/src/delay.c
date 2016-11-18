@@ -38,15 +38,14 @@ void _TIMER_IRQHandler(void)
 	}
 }
 
-/* FIXME se rompe si una interrupción llama esta función cuando esta misma se
- * está ejecutando.
- *
- * @brief  función para generar retrasos
+/*
+ * @brief  Función para generar retrasos. Si se llama mientras ya hay un
+ *         retardo en curso entonces se reinicia el timer con el nuevo
+ *         valor.
  * @param  usec: cantidad de microsegundos
  */
 void Horno_udelay(uint32_t usec)
 {
-	delay_enabled = true;
 	/* poner todos los contadores a cero */
 	Chip_TIMER_Reset(_LPC_TIMER);
 
@@ -54,11 +53,16 @@ void Horno_udelay(uint32_t usec)
 	Chip_TIMER_SetMatch(_LPC_TIMER, 1, usec * ticks);
 	Chip_TIMER_Enable(_LPC_TIMER);
 
-	/* Esperamos hasta que llegue la interrupción */
-	while (1) {
-		__WFI();
-		if (delay_enabled == false) {
-			break;
+	if (delay_enabled) {
+		/* ya hay un retardo en curso. No pasamos por el while(1) { _WFI() } */
+	} else {
+		delay_enabled = true;
+		/* Esperamos hasta que llegue la interrupción */
+		while (1) {
+			__WFI();
+			if (!delay_enabled) {
+				break;
+			}
 		}
 	}
 }
