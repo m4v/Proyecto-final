@@ -61,11 +61,10 @@
 typedef struct {
 	uint32_t dato;
 	uint32_t dato_ingresado;
+	uint32_t contador;
 } HORNO_TECLADO_T;
 
 static HORNO_TECLADO_T horno_keypad = { 0, 0 };
-static uint32_t counter;
-
 
 void TECLA1_Handler(void) {
 //	DEBUGOUT("1");
@@ -283,7 +282,7 @@ void _TIMER_IRQHandler(void)
 		/* limpiar la interrupción */
 		Chip_TIMER_ClearMatch(_LPC_TIMER, 1);
 		/* rotar la fila */
-		switch(counter & 0b11) {
+		switch(horno_keypad.contador & 0b11) {
 		case 0:
 			SET_FILA1(true);
 			SET_FILA4(false);
@@ -301,7 +300,7 @@ void _TIMER_IRQHandler(void)
 			SET_FILA4(true);
 			break;
 		}
-		counter++;
+		horno_keypad.contador++;
 	}
 }
 
