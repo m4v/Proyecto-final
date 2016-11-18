@@ -200,6 +200,10 @@ void Horno_muestra_Handler(float temperatura) {
 		Horno_control_pi(temperatura);
 	}
 
+	Board_LED_Set(0,true);
+	Horno_udelay(10e3);
+	Board_LED_Set(0,false);
+
 	if (horno_adc.salida_uart) {
 		DEBUGOUT("%d, %.2f, %.2f, %.2f, %d, %d, %.4f, %.2f, %.2f, %.2f, %.2f\r\n",
 				horno_adc.valor_n,
@@ -263,7 +267,7 @@ int main(void) {
 
     Horno_Init();
    	Horno_Display_Test();
-   	Board_LED_Set(0,true); // apagar el led
+   	Board_LED_Set(0,false); // apagar el led
 
    	DEBUGOUT(mensaje_menu);
 
