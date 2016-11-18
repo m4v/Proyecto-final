@@ -20,10 +20,13 @@
 #define _SYSCTL_PCLK_TIMER SYSCTL_PCLK_TIMER3
 #define _TIMER_IRQHandler TIMER3_IRQHandler
 
-// TODO hacer un struct
-volatile static bool delay_enabled;
-static uint32_t timer_clock;
-static uint32_t ticks;
+typedef struct {
+	bool enabled;
+	uint32_t ticks;
+} HORNO_DELAY_T;
+
+
+volatile static HORNO_DELAY_T horno_delay;
 
 /**
  * @brief	Handle interrupt from 32-bit timer
@@ -34,7 +37,7 @@ void _TIMER_IRQHandler(void)
 	/* limpiar la interrupción y detener el delay */
 	if (Chip_TIMER_MatchPending(_LPC_TIMER, 1)) {
 		Chip_TIMER_ClearMatch(_LPC_TIMER, 1);
-		delay_enabled = false;
+		horno_delay.enabled = false;
 	}
 }
 
@@ -50,17 +53,17 @@ void Horno_udelay(uint32_t usec)
 	Chip_TIMER_Reset(_LPC_TIMER);
 
 	/* configuramos la cantidad de ciclos a esperar y activamos el timer */
-	Chip_TIMER_SetMatch(_LPC_TIMER, 1, usec * ticks);
+	Chip_TIMER_SetMatch(_LPC_TIMER, 1, usec * horno_delay.ticks);
 	Chip_TIMER_Enable(_LPC_TIMER);
 
-	if (delay_enabled) {
+	if (horno_delay.enabled) {
 		/* ya hay un retardo en curso. No pasamos por el while(1) { _WFI() } */
 	} else {
-		delay_enabled = true;
+		horno_delay.enabled = true;
 		/* Esperamos hasta que llegue la interrupción */
 		while (1) {
 			__WFI();
-			if (!delay_enabled) {
+			if (!horno_delay.enabled) {
 				break;
 			}
 		}
@@ -72,8 +75,8 @@ void Horno_udelay(uint32_t usec)
  */
 void Horno_delay_timer_Init(void) {
 	/* obtener el clock que utiliza el timer */
-	timer_clock = Chip_Clock_GetPeripheralClockRate(_SYSCTL_PCLK_TIMER);
-	ticks = timer_clock / 1e6; // cantidad de ciclos por microsegundo.
+	uint32_t timer_clock = Chip_Clock_GetPeripheralClockRate(_SYSCTL_PCLK_TIMER);
+	horno_delay.ticks = timer_clock / 1e6; // cantidad de ciclos por microsegundo.
 
 	/* configurar timer */
 	Chip_TIMER_Init(_LPC_TIMER); // activa el clock del timer
