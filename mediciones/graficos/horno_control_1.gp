@@ -1,6 +1,6 @@
 #!/usr/bin/gnuplot
 
-set term pngcairo enhanced solid size 1280,720 fontscale 1
+set term pngcairo enhanced size 1280,720 fontscale 1
 
 set datafile separator ","
 set decimalsign ","
@@ -54,10 +54,10 @@ set title "Ensayo del programa 15/11 (con display)"
 set xrange [0:50]
 
 plot datos_5 using (($1 - t0_5)/60):($2) title "temperatura" with lines lc rgb "red", \
-     datos_5 using (($1 - t0_5)/60):($9) title "referencia" with lines lc rgb "blue"
+     datos_5 using (($1 - t0_5)/60):($9) title "referencia" with lines dashtype "--" lc rgb "blue"
 
 set output "horno_programa_5.png"
 set title "Ensayo del programa 17/11 (con display)"
 set xrange [0:50]
 plot datos_6 using (($1 - t0_6)/60):($2) title "temperatura" with lines lc rgb "red", \
-     datos_6 using (($1 - t0_6)/60):($9) title "referencia" with lines lc rgb "blue"
+     datos_6 using (($1 - t0_6)/60):($9) title "referencia" with lines dashtype "--" lc rgb "blue"
