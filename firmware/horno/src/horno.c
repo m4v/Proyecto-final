@@ -234,6 +234,11 @@ void Horno_Init (void) {
 	Chip_IOCON_SetPinMuxing(LPC_IOCON, pinmux, sizeof(pinmux) / sizeof(PINMUX_GRP_T));
 	GPIO_SetDirections(gpiodir, sizeof(gpiodir) / sizeof(GPIO_DIR_T));
 
+	/* bajamos la prioridad de la interrupción del UART3 para que no bloqueé el
+	 * bucle de retardos en delay.c
+	 */
+	NVIC_SetPriority(UART3_IRQn, 10);
+
 	/* Habilitar el timer para hacer retrasos */
 	Horno_delay_timer_Init();
 	Horno_Display_Init();
