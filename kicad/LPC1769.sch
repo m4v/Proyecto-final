@@ -196,8 +196,6 @@ F 3 "" H 7200 5300 50  0000 C CNN
 	1    7200 5300
 	1    0    0    -1  
 $EndComp
-Text HLabel 7100 4900 2    60   Output ~ 0
-RST
 Text HLabel 4300 3800 0    60   Input ~ 0
 AD_TERMOCUPLA
 Text HLabel 4300 3100 0    60   Output ~ 0
@@ -242,8 +240,6 @@ Wire Wire Line
 	7100 4700 6600 4700
 Wire Wire Line
 	7100 4800 6600 4800
-Wire Wire Line
-	6600 4900 7100 4900
 Wire Wire Line
 	7100 3700 6600 3700
 Wire Wire Line
@@ -331,4 +327,5 @@ Wire Wire Line
 	1600 3200 2000 3200
 Wire Wire Line
 	2000 3300 1600 3300
+NoConn ~ 6600 4900
 $EndSCHEMATC
