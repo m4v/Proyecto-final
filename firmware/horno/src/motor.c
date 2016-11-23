@@ -149,6 +149,23 @@ void Horno_motor_bajar(void) {
 }
 
 /*
+ * @brief Baja la plataforma para cerrar en el tiempo indicado
+ * @param tiempo: Tiempo que debería tardar en cerrar la plataforma (segundos).
+ */
+
+void Horno_motor_bajar_tiempo(uint32_t tiempo) {
+	horno_motor.ascender = false;
+
+	uint32_t periodo = 1000*tiempo/DISTANCIA_VUELTAS;
+
+	if (periodo < PERIODO_MIN_BAJADA) {
+		periodo = PERIODO_MIN_BAJADA;
+	}
+
+	Horno_motor_marcha(periodo);
+}
+
+/*
  * @brief	Handle interrupt from 32-bit timer
  */
 

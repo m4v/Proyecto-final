@@ -15,6 +15,7 @@ void Horno_motor_ascender(bool ascender);
 void Horno_motor_subir(void);
 void Horno_motor_subir_tiempo(uint32_t periodo);
 void Horno_motor_bajar(void);
+void Horno_motor_bajar_tiempo(uint32_t periodo);
 
 typedef struct {
 	bool activo;               // si el motor está activo
