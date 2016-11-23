@@ -52,7 +52,7 @@ void Horno_programa_actualizar(void)
 	case ESPERAR_TSECADO:
 		/* pendiente inicial de temperatura.
 		 * esperar hasta alcanzar la temperatura de secado */
-		if (horno_adc.temperatura > (horno_programa.temperatura_secado - 10))
+		if (horno_adc.temperatura > (horno_programa.temperatura_secado))
 		{
 			horno_programa.tiempo_inicio = horno_adc.valor_n;
 			horno_programa.estado = SECADO;
@@ -104,7 +104,7 @@ void Horno_programa_actualizar(void)
 	case ESPERAR_TCOCCION:
 		/* segunda pendiente de temperatura.
 		 * esperar hasta alcanzar la temp. de cocción */
-		if (horno_adc.temperatura > (horno_programa.temperatura_coccion - 10))
+		if (horno_adc.temperatura > (horno_programa.temperatura_coccion))
 		{
 			/* recalcular el tiempo restante */
 			horno_programa.tiempo_total = horno_programa.tiempo_coccion;
