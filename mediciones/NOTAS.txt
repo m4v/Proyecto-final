@@ -1,0 +1,36 @@
+notas sobre las mediciones
+==========================
+
+Lamentablemente no tuvimos la previción para hacer un registro completo de los parámetros y
+condiciones sobre las que se realizaban las mediciones, pero tenemos:
+
+== captura_programa_*
+
+Capturas de ensayos donde se probaba el programa completo.
+
+=== 9 nov 14hs
+
+* PI secado
+pendiente = 0,5 Kp = 0,5 Ki = 0,0001 (Ti = 83 minutos)
+
+* PI coccion
+pendiente = 0.8 Kp = 3,5 Ki = 0,001 (Ti = 58 minutos)
+
+=== 9 nov 19hs
+
+* PI secado
+pendiente = 0,3 Kp = 0,5 Ki = 0,0005 (Ti = 16 minutos)
+(con el integrado desactivado hasta alcanzar la temp de secado)
+
+* PI coccion
+pendiente = 0,8 Kp = 3,5 Ki = 0,001
+
+=== 10 nov
+
+* PI secado
+pendiente = 0,3333 Kp = 0,5 Ki = 0,003 (Ti = 2,7 minutos)
+(con el integrado desactivado hasta alcanzar la temp de secado)
+
+* PI coccion
+pendiente = 0,8 Kp = 3,5 Ki = 0,0012 (Ti = 48 min)
+
