@@ -13,12 +13,8 @@
 
 #include "320240.h"
 #include "grafico.h"
-#include "delay.h"
-#include "adc.h"
 #include "320240.h"
 #include "fuentes.h"
-#include "programa.h"
-#include "teclado.h"
 
 #include <stdlib.h>
 
@@ -223,44 +219,13 @@ void Horno_grafico_datos(uint32_t x, uint32_t y, uint32_t dato) {
 	}
 }
 
-void Horno_grafico_pwm_encendido(bool activo) {
-	Put_string_waddr(1,4,"PWM:");
-	if(activo==1){
-		Put_string_waddr(14,4,"    ");
-		Put_string_waddr(14,4,"ON");
-		}
-	else if(activo==0){
-		Put_string_waddr(14,4,"    ");
-		Put_string_waddr(14,4,"OFF");
-	}
-}
-
-void Horno_grafico_pwm_periodo(uint32_t periodo) {
-	Put_string_waddr(1,6,"Periodo:");
-	Put_string_waddr(14,6,"    ");
-	Horno_grafico_datos_temperatura_ascenso(periodo);
-	Put_string_waddr(18,6,"ms");
-}
-
-void Horno_grafico_pwm_ciclo(float dc){
-	Put_string_waddr(1,8,"C. Trabajo:");
-	Put_string_waddr(14,8,"    ");
-	Horno_grafico_datos_tiempo_coccion((int)100*(dc));
-	Put_string_waddr(18,8,"%");
-}
-
-/* Esta funcion pone los datos del programa en la parte izquierda */
-void Horno_grafico_datos_pwm( bool activo, uint32_t periodo, float dc, float referencia){
-	Put_string_waddr(1,1,"DATOS del PWM");
-	Put_string_waddr(1,2,"=============");
-
-	Horno_grafico_pwm_encendido(activo);
-	Horno_grafico_pwm_periodo(periodo);
-	Horno_grafico_pwm_ciclo(dc);
-	Horno_grafico_control_referencia(referencia);
-}
-
-void Horno_grafico_programa(bool deshabilitar, uint32_t P_calentamiento, uint32_t T_secado, uint32_t T_coccion, uint32_t t_secado, uint32_t t_coccion){
+void Horno_grafico_programa(bool deshabilitar,
+							uint32_t P_calentamiento,
+							uint32_t T_secado,
+							uint32_t T_coccion,
+							uint32_t t_secado,
+							uint32_t t_coccion)
+{
 	uint8_t pos_unit = 21;
 
 	Put_string_waddr(1,1,"DATOS del PROGRAMA");
@@ -314,7 +279,6 @@ void Horno_grafico_tiempo(uint32_t tiempo){
 	Put_string_waddr(24,8,"TIEMPO RESTANTE: ");
 	Horno_grafico_entero_tiempo(75,tiempo);
 }
-
 
 void Horno_grafico_control_referencia(float ref){
 	Put_string_waddr(1,10,"Ref. PI:");
