@@ -23,6 +23,10 @@
 
 static uint32_t flecha_posicion;
 
+/*
+ * Actualiza la maquina de estados que maneja el programa de cocción. Esta
+ * función debe ejecutarse periodicamente para que avance el programa.
+ */
 void Horno_programa_actualizar(void)
 {
 	switch(horno_programa.estado) {
@@ -189,6 +193,10 @@ void Horno_programa_actualizar(void)
 	}
 }
 
+/*
+ * @brief Inicia la ejecución de un programa predefinido. Usado solamente para
+ *        hacer pruebas desde el UART.
+ */
 void Horno_programa_inicio(void) {
 	horno_programa.temperatura_coccion = 800;
 	horno_programa.temperatura_secado = 200;

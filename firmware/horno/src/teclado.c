@@ -339,6 +339,9 @@ void _TIMER_IRQHandler(void)
 	}
 }
 
+/*
+ * @brief Inicialización de los perifericos para manejar el teclado.
+ */
 void Horno_teclado_init(void) {
 	/* configurar interrupciones del GPIO */
 	Chip_GPIOINT_Init(LPC_GPIOINT);

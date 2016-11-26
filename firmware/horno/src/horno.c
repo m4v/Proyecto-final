@@ -161,6 +161,10 @@ void GPIO_SetDirections(const GPIO_DIR_T *pinArray, uint32_t arrayLength)
 	}
 }
 
+/*
+ * @brief  Inicializa las interrupciones del periódicas del SysTick.
+ * @param  ms: tiempo entre interrupciones, en ms.
+ */
 void Horno_systick_init(uint32_t ms)
 {
 	/*
