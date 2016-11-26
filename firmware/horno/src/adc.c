@@ -14,6 +14,9 @@
 #include "horno.h"
 #include "adc.h"
 
+#define ADC_TH   ADC_CH0     // ADC termocupla
+#define ADC_LM35 ADC_CH6     // ADC LM35
+
 #define ADC_SIZE 4096		//tamaño del ADC
 #define ADC_REF  3.3		//tension de referencia de ADC
 #define TH_GAIN  80.7 		//ganancia de la etapa de termocupla
