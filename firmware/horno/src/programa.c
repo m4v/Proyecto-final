@@ -30,8 +30,9 @@ void Horno_programa_actualizar(void)
 		/* deshabilitamos la carga de datos */
 		horno_teclado_deshabilitar_carga_datos=true;
 		/* borramos la última flecha */
-		Horno_grafico_flecha_datos(horno_teclado_linea_datos, true,horno_teclado_deshabilitar_carga_datos);
-		/* activar todo y empezar a calentar */
+		Horno_grafico_flecha_datos(horno_teclado_linea_datos,
+		                           true, horno_teclado_deshabilitar_carga_datos);
+		/* activar y empezar a calentar */
 		Horno_control_referencia(horno_programa.temperatura_secado);
 		Horno_control_activar(true);
 		Horno_pwm_activar(true);
@@ -182,12 +183,10 @@ void Horno_programa_actualizar(void)
 			Horno_grafico_dos_puntos();
 		}
 		int32_t tiempo = horno_programa.tiempo_total
-				        - horno_adc.valor_n
-				        + horno_programa.tiempo_programa_inicio;
+		               - horno_adc.valor_n
+		               + horno_programa.tiempo_programa_inicio;
 		Horno_grafico_tiempo(tiempo > 0 ? tiempo : 0);
 	}
-
-
 }
 
 void Horno_programa_inicio(void) {
@@ -215,7 +214,7 @@ void Horno_programa_carga_datos(HORNO_LINEA_T horno_ingreso_datos, uint32_t dato
 			horno_programa.pendiente_calentamiento = dato;
 			break;
 		case TIEMPO_SECADO:
-			Horno_grafico_datos_tiempo_secado(dato); // En este tenemos que definir qué variable le asignamos
+			Horno_grafico_datos_tiempo_secado(dato);
 			horno_programa.tiempo_secado = dato;
 			break;
 		case TIEMPO_COCCION:
@@ -232,6 +231,4 @@ void Horno_programa_carga_datos(HORNO_LINEA_T horno_ingreso_datos, uint32_t dato
 			break;
 		}
 	}
-
-
 }

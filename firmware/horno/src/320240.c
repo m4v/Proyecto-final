@@ -15,9 +15,6 @@
 #include "delay.h"
 #include "320240.h"
 #include "grafico.h"
-#include "pwm.h"
-#include "control.h"
-#include "teclado.h"
 /* Defines */
 
 #define LAYER2_ADDRESS 0x1000
@@ -396,13 +393,10 @@ void Horno_Display_Init(void)
 	Command_Write(CSR_DIR_R); //Set cursor shift direction to right.
 }
 
-
-
 /* Con esta funcion jugamos y testeamos el display */
 void Horno_Display_Test(void){
 
 	Horno_320240_recuadros();
 	Horno_grafico_programa(0, 00, 00, 00, 00, 00);
 	Horno_grafico_flecha_datos(0, false,false);
-
 }

@@ -5,7 +5,6 @@
  *      Author: Elián Hanisch, Gastón Riera y Rodrigo Oliver
  */
 
-
 #if defined (__USE_LPCOPEN)
 #if defined(NO_BOARD_LIB)
 #include "chip.h"

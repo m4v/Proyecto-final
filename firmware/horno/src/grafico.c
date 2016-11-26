@@ -22,8 +22,6 @@
 
 #include <stdlib.h>
 
-
-
 /*
  * @brief  grafica un número de 24x42 pixeles
  * @param  x: posición X en pixels

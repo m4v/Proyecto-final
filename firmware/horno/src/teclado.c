@@ -12,12 +12,7 @@
 #endif
 
 #include "delay.h"
-#include "adc.h"
 #include "grafico.h"
-#include "320240.h"
-#include "pwm.h"
-#include "control.h"
-#include "motor.h"
 #include "teclado.h"
 #include "programa.h"
 
@@ -71,86 +66,102 @@ typedef struct {
 	uint32_t contador;
 } HORNO_TECLADO_T;
 
-static HORNO_TECLADO_T horno_keypad = { 0, 0 };
+static HORNO_TECLADO_T horno_keypad = { 0, 0, 0 };
 
 void TECLA1_Handler(void) {
 //	DEBUGOUT("1");
 	horno_keypad.dato *= 10;
 	horno_keypad.dato += 1;
-	Horno_programa_carga_datos(horno_teclado_linea_datos,horno_keypad.dato,horno_teclado_deshabilitar_carga_datos);
+	Horno_programa_carga_datos(horno_teclado_linea_datos,
+	                           horno_keypad.dato,
+	                           horno_teclado_deshabilitar_carga_datos);
 }
 
 void TECLA2_Handler(void) {
 //	DEBUGOUT("2");
 	horno_keypad.dato *= 10;
 	horno_keypad.dato += 2;
-	Horno_programa_carga_datos(horno_teclado_linea_datos,horno_keypad.dato,horno_teclado_deshabilitar_carga_datos);
+	Horno_programa_carga_datos(horno_teclado_linea_datos,
+	                           horno_keypad.dato,
+	                           horno_teclado_deshabilitar_carga_datos);
 }
 
 void TECLA3_Handler(void) {
 //	DEBUGOUT("3");
 	horno_keypad.dato *= 10;
 	horno_keypad.dato += 3;
-	Horno_programa_carga_datos(horno_teclado_linea_datos,horno_keypad.dato,horno_teclado_deshabilitar_carga_datos);
+	Horno_programa_carga_datos(horno_teclado_linea_datos,
+	                           horno_keypad.dato,
+	                           horno_teclado_deshabilitar_carga_datos);
 }
 
 void TECLA4_Handler(void) {
 //	DEBUGOUT("4");
 	horno_keypad.dato *= 10;
 	horno_keypad.dato += 4;
-	Horno_programa_carga_datos(horno_teclado_linea_datos,horno_keypad.dato,horno_teclado_deshabilitar_carga_datos);
+	Horno_programa_carga_datos(horno_teclado_linea_datos,
+	                           horno_keypad.dato,
+	                           horno_teclado_deshabilitar_carga_datos);
 }
 
 void TECLA5_Handler(void) {
 //	DEBUGOUT("5");
 	horno_keypad.dato *= 10;
 	horno_keypad.dato += 5;
-	Horno_programa_carga_datos(horno_teclado_linea_datos,horno_keypad.dato,horno_teclado_deshabilitar_carga_datos);
+	Horno_programa_carga_datos(horno_teclado_linea_datos,
+	                           horno_keypad.dato,
+	                           horno_teclado_deshabilitar_carga_datos);
 }
 
 void TECLA6_Handler(void) {
 //	DEBUGOUT("6");
 	horno_keypad.dato *= 10;
 	horno_keypad.dato += 6;
-	Horno_programa_carga_datos(horno_teclado_linea_datos,horno_keypad.dato,horno_teclado_deshabilitar_carga_datos);
+	Horno_programa_carga_datos(horno_teclado_linea_datos,
+	                           horno_keypad.dato,
+	                           horno_teclado_deshabilitar_carga_datos);
 }
 
 void TECLA7_Handler(void) {
 //	DEBUGOUT("7");
 	horno_keypad.dato *= 10;
 	horno_keypad.dato += 7;
-	Horno_programa_carga_datos(horno_teclado_linea_datos,horno_keypad.dato,horno_teclado_deshabilitar_carga_datos);
+	Horno_programa_carga_datos(horno_teclado_linea_datos,
+	                           horno_keypad.dato,
+	                           horno_teclado_deshabilitar_carga_datos);
 }
 
 void TECLA8_Handler(void) {
 //	DEBUGOUT("8");
 	horno_keypad.dato *= 10;
 	horno_keypad.dato += 8;
-	Horno_programa_carga_datos(horno_teclado_linea_datos,horno_keypad.dato,horno_teclado_deshabilitar_carga_datos);
+	Horno_programa_carga_datos(horno_teclado_linea_datos,
+	                           horno_keypad.dato,
+	                           horno_teclado_deshabilitar_carga_datos);
 }
 
 void TECLA9_Handler(void) {
 //	DEBUGOUT("9");
 	horno_keypad.dato *= 10;
 	horno_keypad.dato += 9;
-	Horno_programa_carga_datos(horno_teclado_linea_datos,horno_keypad.dato,horno_teclado_deshabilitar_carga_datos);
+	Horno_programa_carga_datos(horno_teclado_linea_datos,
+	                           horno_keypad.dato,
+	                           horno_teclado_deshabilitar_carga_datos);
 }
 
 void TECLA0_Handler(void) {
 //	DEBUGOUT("0");
 	horno_keypad.dato *= 10;
-	Horno_programa_carga_datos(horno_teclado_linea_datos,horno_keypad.dato,horno_teclado_deshabilitar_carga_datos);
+	Horno_programa_carga_datos(horno_teclado_linea_datos,
+	                           horno_keypad.dato,
+	                           horno_teclado_deshabilitar_carga_datos);
 }
 
 void TECLAA_Handler(void) {
-	horno_teclado_posicion_flecha=0; // Flecha de gráfico al inicio
-
 	horno_programa.estado = INICIO;
 }
 
 void TECLAB_Handler(void) {
-
-	Horno_grafico_posicion_CLR_flecha(horno_teclado_posicion_flecha);
 	horno_programa.estado = FIN_PROGRAMA;
 }
 
@@ -159,11 +170,17 @@ void TECLAC_Handler(void) {
 	if (!horno_teclado_deshabilitar_carga_datos){
 		if(horno_teclado_linea_datos<1) {
 			horno_teclado_linea_datos=0;
-			Horno_grafico_flecha_datos(horno_teclado_linea_datos, false,horno_teclado_deshabilitar_carga_datos);
+			Horno_grafico_flecha_datos(horno_teclado_linea_datos,
+			                           false,
+			                           horno_teclado_deshabilitar_carga_datos);
 		} else {
 			horno_teclado_linea_datos--;
-			Horno_grafico_flecha_datos(horno_teclado_linea_datos+1, true,horno_teclado_deshabilitar_carga_datos);
-			Horno_grafico_flecha_datos(horno_teclado_linea_datos, false,horno_teclado_deshabilitar_carga_datos);
+			Horno_grafico_flecha_datos(horno_teclado_linea_datos + 1,
+			                           true,
+			                           horno_teclado_deshabilitar_carga_datos);
+			Horno_grafico_flecha_datos(horno_teclado_linea_datos,
+			                           false,
+			                           horno_teclado_deshabilitar_carga_datos);
 		}
 	}
 }
@@ -176,8 +193,12 @@ void TECLAD_Handler(void) {
 		} else {
 			horno_teclado_linea_datos++;
 		}
-		Horno_grafico_flecha_datos(horno_teclado_linea_datos-1, true,horno_teclado_deshabilitar_carga_datos);
-		Horno_grafico_flecha_datos(horno_teclado_linea_datos, false,horno_teclado_deshabilitar_carga_datos);
+		Horno_grafico_flecha_datos(horno_teclado_linea_datos - 1,
+		                           true,
+		                           horno_teclado_deshabilitar_carga_datos);
+		Horno_grafico_flecha_datos(horno_teclado_linea_datos,
+		                           false,
+		                           horno_teclado_deshabilitar_carga_datos);
 	}
 }
 
@@ -187,7 +208,9 @@ void TECLAD_Handler(void) {
 void TECLAE_Handler(void) {
 //	DEBUGOUT("\b"); /* \b -> backspace */
 	horno_keypad.dato /= 10;
-	Horno_programa_carga_datos(horno_teclado_linea_datos,horno_keypad.dato,horno_teclado_deshabilitar_carga_datos);
+	Horno_programa_carga_datos(horno_teclado_linea_datos,
+	                           horno_keypad.dato,
+	                           horno_teclado_deshabilitar_carga_datos);
 }
 
 /* tecla numeral
@@ -203,8 +226,12 @@ void TECLAF_Handler(void) {
 		horno_teclado_linea_datos=4;
 	} else {
 		horno_teclado_linea_datos++;
-		Horno_grafico_flecha_datos(horno_teclado_linea_datos-1, true,horno_teclado_deshabilitar_carga_datos);
-		Horno_grafico_flecha_datos(horno_teclado_linea_datos, false,horno_teclado_deshabilitar_carga_datos);
+		Horno_grafico_flecha_datos(horno_teclado_linea_datos - 1,
+		                           true,
+		                           horno_teclado_deshabilitar_carga_datos);
+		Horno_grafico_flecha_datos(horno_teclado_linea_datos,
+		                           false,
+		                           horno_teclado_deshabilitar_carga_datos);
 	}
 }
 
@@ -227,7 +254,6 @@ void COLUMN3_Handler(void) {
 	else if (FILA2) { TECLA6_Handler(); }
 	else if (FILA3) { TECLA9_Handler(); }
 	else if (FILA4) { TECLAF_Handler(); }
-
 }
 
 void COLUMN4_Handler(void) {
