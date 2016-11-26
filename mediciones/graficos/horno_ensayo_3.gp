@@ -22,9 +22,9 @@ set ytics nomirror
 set y2label "Temperatura [°C]"
 set y2tics
 
-datos_3 = "../captura_continua_29-Sep-2016_20:00:26.csv"
-datos_4 = "../captura_continua_30-Sep-2016_19:32:35.csv"
-datos_5 = "../captura_continua_04-Oct-2016_15:16:34.csv"
+datos_3 = "../captura_continua_29-Sep-2016_200026.csv"
+datos_4 = "../captura_continua_30-Sep-2016_193235.csv"
+datos_5 = "../captura_continua_04-Oct-2016_151634.csv"
 
 set xrange [0:300]
 set yrange [0:3.24]
