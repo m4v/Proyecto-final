@@ -2,7 +2,9 @@
  * programa.c
  *
  *  Created on: 8 de nov. de 2016
- *      Author: m4v
+ *      Author: Elián Hanisch, Gastón Riera y Rodrigo Oliver
+ *
+ *  Implementación de la máquina de estados del programa.
  */
 
 #if defined(NO_BOARD_LIB)
@@ -33,7 +35,9 @@ void Horno_programa_actualizar(void)
 		Horno_control_referencia(horno_programa.temperatura_secado);
 		Horno_control_activar(true);
 		Horno_pwm_activar(true);
-		/* calcular el tiempo restante */
+		/* calcular el tiempo restante
+		 * FIXME para el calculo usa la pendiente de calentamiento 0.8 pero
+		 * debería usar la que esté configurada */
 		horno_programa.tiempo_total = horno_programa.tiempo_secado
 									+ horno_programa.tiempo_coccion
 									+ (horno_programa.temperatura_coccion - horno_programa.temperatura_secado)/0.8
@@ -138,7 +142,7 @@ void Horno_programa_actualizar(void)
 		}
 		break;
 	case FIN_PROGRAMA:
-		/* detenemos todo y abrimos la puerta */
+		/* detenemos y abrimos la puerta */
 		Horno_pwm_activar(false);
 		Horno_control_activar(false);
 		Horno_motor_bajar();

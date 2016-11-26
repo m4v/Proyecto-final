@@ -2,7 +2,7 @@
  * delay.h
  *
  *  Created on: 27 de ago. de 2016
- *      Author: m4v
+ *      Author: Elián Hanisch, Gastón Riera y Rodrigo Oliver
  */
 
 #ifndef DELAY_H_

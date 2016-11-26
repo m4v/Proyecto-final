@@ -2,7 +2,9 @@
  * control.c
  *
  *  Created on: 23 de oct. de 2016
- *      Author: Nico
+ *      Author: Elián Hanisch, Gastón Riera y Rodrigo Oliver
+ *
+ *  Implementación del control.
  */
 
 #if defined(NO_BOARD_LIB)
@@ -49,6 +51,7 @@ void Horno_control_pi(float temperatura) {
 	if (horno_control.referencia < TEMP_SECADO) {
 		p_max = P_SEC;
 	} else {
+		/* TODO esta pendiente debería ser configurable */
 		p_max = P_MAX;
 	}
 

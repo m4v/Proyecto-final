@@ -2,7 +2,7 @@
  * pwm.h
  *
  *  Created on: 21 de oct. de 2016
- *      Author: m4v
+ *      Author: Elián Hanisch, Gastón Riera y Rodrigo Oliver
  */
 
 #ifndef PWM_H_

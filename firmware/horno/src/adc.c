@@ -98,6 +98,3 @@ void Horno_adc_init(void) {
 	Chip_ADC_EnableChannel(LPC_ADC, ADC_LM35, ENABLE);
 	Chip_ADC_SetBurstCmd(LPC_ADC, ENABLE); // habilitar conversión continua
 }
-
-
-

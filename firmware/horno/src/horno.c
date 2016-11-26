@@ -1,12 +1,10 @@
 /*
-===============================================================================
- Name        : horno.c
- Author      : Elián Hanisch, Gastón Riera y Rodrigo Oliver
- Version     :
- Copyright   : $(copyright)
- Description : main definition
-===============================================================================
-*/
+ * horno.c
+ *
+ *  Created on: 31/5/2016
+ *      Author: Elián Hanisch, Gastón Riera y Rodrigo Oliver
+ */
+
 
 #if defined (__USE_LPCOPEN)
 #if defined(NO_BOARD_LIB)

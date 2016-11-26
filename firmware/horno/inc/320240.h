@@ -1,6 +1,5 @@
 /*
-void Horno_grafico_curva(void){
- * 320240.c
+ * 320240.h
  *
  *  Created on: 9 de ago. de 2016
  *      Author: Gastón Riera, Elián Hanisch y Rodrigo Oliver

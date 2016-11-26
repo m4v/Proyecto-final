@@ -2,7 +2,9 @@
  * fuentes.h
  *
  *  Created on: Nov 12, 2016
- *      Author: gast
+ *      Author: Elián Hanisch, Gastón Riera y Rodrigo Oliver
+ *
+ *  bitmaps de las fuentes e imágenes del diplay
  */
 
 #ifndef FUENTES_H_

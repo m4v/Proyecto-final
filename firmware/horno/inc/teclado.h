@@ -2,7 +2,7 @@
  * teclado.h
  *
  *  Created on: 22 de oct. de 2016
- *      Author: Nico
+ *      Author: Elián Hanisch, Gastón Riera y Rodrigo Oliver
  */
 
 #ifndef TECLADO_H_

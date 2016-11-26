@@ -1,3 +1,10 @@
+/*
+ * teclado.c
+ *
+ *  Created on: 22 de oct. de 2016
+ *      Author: Elián Hanisch, Gastón Riera y Rodrigo Oliver
+ */
+
 #if defined(NO_BOARD_LIB)
 #include "chip.h"
 #else
@@ -174,7 +181,9 @@ void TECLAD_Handler(void) {
 	}
 }
 
-/* tecla asterisco */
+/* tecla asterisco
+ * funciona como tecla retroceso
+ */
 void TECLAE_Handler(void) {
 //	DEBUGOUT("\b"); /* \b -> backspace */
 	horno_keypad.dato /= 10;
@@ -182,8 +191,8 @@ void TECLAE_Handler(void) {
 }
 
 /* tecla numeral
- *  ---FUNCIONA COMO ENTER: confirma el número ingresado
- *  */
+ * funciona como enter, confirma el número ingresado
+ */
 void TECLAF_Handler(void) {
 //	DEBUGOUT("\n");
 	horno_keypad.dato_ingresado = horno_keypad.dato;

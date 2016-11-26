@@ -2,7 +2,7 @@
  * grafico.h
  *
  *  Created on: 22 de oct. de 2016
- *      Author: m4v
+ *      Author: Elián Hanisch, Gastón Riera y Rodrigo Oliver
  */
 
 #ifndef GRAFICO_H_

@@ -2,7 +2,7 @@
  * programa.h
  *
  *  Created on: 8 de nov. de 2016
- *      Author: m4v
+ *      Author: Elián Hanisch, Gastón Riera y Rodrigo Oliver
  */
 
 #ifndef PROGRAMA_H_
@@ -21,6 +21,8 @@ typedef enum {
 	HACER_NADA
 } HORNO_ESTADO_T;
 
+
+/* parámetros del programa */
 typedef struct {
 	HORNO_ESTADO_T estado;
 	uint32_t temperatura_secado;
@@ -33,6 +35,7 @@ typedef struct {
 	float pendiente_calentamiento;
 } HORNO_PROGRAMA_T;
 
+/* tipo de parámetro */
 typedef enum {
 	PENDIENTE_MAX,
 	TIEMPO_SECADO,

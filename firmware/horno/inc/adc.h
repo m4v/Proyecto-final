@@ -1,8 +1,8 @@
 /*
- * delay.h
+ * adc.h
  *
  *  Created on: 27 de ago. de 2016
- *      Author: m4v
+ *      Author: Elián Hanisch, Gastón Riera y Rodrigo Oliver
  */
 
 #ifndef ADC_H
@@ -19,9 +19,9 @@ typedef struct {
 	uint32_t lm_suma;			// lo mismo para lm
 	uint16_t lm_valor;
 	uint32_t suma_cantidad;     // cantidad de valores sumados
-	uint32_t valor_n;           // número del último valor obtenido
+	uint32_t valor_n;           // número de muestras tomadas
 	float    th_temperatura;	// valor de temperatura de termocupla actual en gr C
-	float 	 lm_temperatura;
+	float 	 lm_temperatura;    // valor de temperatura del LM35 actual en gr C
 	float 	 temperatura;		// valor de temperatura actual en gr C
 } HORNO_PROMEDIO_T;
 

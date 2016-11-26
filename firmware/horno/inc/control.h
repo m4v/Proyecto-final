@@ -2,7 +2,7 @@
  * control.h
  *
  *  Created on: 23 de oct. de 2016
- *
+ *      Author: Elián Hanisch, Gastón Riera y Rodrigo Oliver
  */
 
 #ifndef CONTROL_H_

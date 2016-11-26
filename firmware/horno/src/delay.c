@@ -41,9 +41,7 @@ void _TIMER_IRQHandler(void)
 	}
 }
 
-/* FIXME se rompe si una interrupción llama esta función cuando esta misma se
- * está ejecutando.
- *
+/*
  * @brief  función para generar retrasos
  * @param  usec: cantidad de microsegundos
  */
