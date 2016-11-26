@@ -11,6 +11,7 @@
 void Horno_Display_Init(void);
 void Horno_Display_Test(void);
 void Set_graphic_position(uint32_t x, uint32_t y);
+void Set_text_position(uint32_t x, uint32_t y);
 void Parameter_Write(uint8_t pmtr);
 void Command_Write(uint8_t cmd);
 void Put_string_waddr(int x, int y, char *str);
