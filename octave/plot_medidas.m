@@ -18,9 +18,9 @@ for i=1:length(files)
 
   figure(1);
   plot(t, T, 'xb', t, ref, 'r');
-  title(name)
+  title(strrep(name, "_", " "))
   figure(2);
   plot(t, piy, 'r', t, dc, 'b');
-  title(name)
+  title(strrep(name, "_", " "))
   waitforbuttonpress()
 end
