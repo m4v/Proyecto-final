@@ -210,7 +210,7 @@ void Horno_programa_inicio(void) {
 void Horno_programa_carga_datos(HORNO_LINEA_T horno_ingreso_datos, uint32_t dato, bool habilitado){
 	if(!habilitado){
 		switch(horno_ingreso_datos)	{
-		case PENDIENTE_MAX:
+		case PENDIENTE_CALENTAMIENTO:
 			Horno_grafico_datos_pendiente(dato);
 			horno_programa.pendiente_calentamiento = dato;
 			break;

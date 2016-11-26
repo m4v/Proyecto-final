@@ -37,7 +37,7 @@ typedef struct {
 
 /* tipo de parámetro */
 typedef enum {
-	PENDIENTE_MAX,
+	PENDIENTE_CALENTAMIENTO,
 	TIEMPO_SECADO,
 	TIEMPO_COCCION,
 	TEMPERATURA_SECADO,
