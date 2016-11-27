@@ -68,6 +68,9 @@ typedef struct {
 
 static HORNO_TECLADO_T horno_keypad = { 0, 0, 0 };
 
+/*
+ * @brief	Tecla 1
+ */
 void TECLA1_Handler(void) {
 //	DEBUGOUT("1");
 	horno_keypad.dato *= 10;
@@ -77,6 +80,9 @@ void TECLA1_Handler(void) {
 	                           horno_teclado_deshabilitar_carga_datos);
 }
 
+/*
+ * @brief	Tecla 2
+ */
 void TECLA2_Handler(void) {
 //	DEBUGOUT("2");
 	horno_keypad.dato *= 10;
@@ -86,6 +92,9 @@ void TECLA2_Handler(void) {
 	                           horno_teclado_deshabilitar_carga_datos);
 }
 
+/*
+ * @brief	Tecla 3
+ */
 void TECLA3_Handler(void) {
 //	DEBUGOUT("3");
 	horno_keypad.dato *= 10;
@@ -95,6 +104,9 @@ void TECLA3_Handler(void) {
 	                           horno_teclado_deshabilitar_carga_datos);
 }
 
+/*
+ * @brief	Tecla 4
+ */
 void TECLA4_Handler(void) {
 //	DEBUGOUT("4");
 	horno_keypad.dato *= 10;
@@ -104,6 +116,9 @@ void TECLA4_Handler(void) {
 	                           horno_teclado_deshabilitar_carga_datos);
 }
 
+/*
+ * @brief	Tecla 5
+ */
 void TECLA5_Handler(void) {
 //	DEBUGOUT("5");
 	horno_keypad.dato *= 10;
@@ -113,6 +128,9 @@ void TECLA5_Handler(void) {
 	                           horno_teclado_deshabilitar_carga_datos);
 }
 
+/*
+ * @brief	Tecla 6
+ */
 void TECLA6_Handler(void) {
 //	DEBUGOUT("6");
 	horno_keypad.dato *= 10;
@@ -122,6 +140,9 @@ void TECLA6_Handler(void) {
 	                           horno_teclado_deshabilitar_carga_datos);
 }
 
+/*
+ * @brief	Tecla 7
+ */
 void TECLA7_Handler(void) {
 //	DEBUGOUT("7");
 	horno_keypad.dato *= 10;
@@ -131,6 +152,9 @@ void TECLA7_Handler(void) {
 	                           horno_teclado_deshabilitar_carga_datos);
 }
 
+/*
+ * @brief	Tecla 8
+ */
 void TECLA8_Handler(void) {
 //	DEBUGOUT("8");
 	horno_keypad.dato *= 10;
@@ -140,6 +164,9 @@ void TECLA8_Handler(void) {
 	                           horno_teclado_deshabilitar_carga_datos);
 }
 
+/*
+ * @brief	Tecla 9
+ */
 void TECLA9_Handler(void) {
 //	DEBUGOUT("9");
 	horno_keypad.dato *= 10;
@@ -149,6 +176,9 @@ void TECLA9_Handler(void) {
 	                           horno_teclado_deshabilitar_carga_datos);
 }
 
+/*
+ * @brief	Tecla 0
+ */
 void TECLA0_Handler(void) {
 //	DEBUGOUT("0");
 	horno_keypad.dato *= 10;
@@ -157,14 +187,23 @@ void TECLA0_Handler(void) {
 	                           horno_teclado_deshabilitar_carga_datos);
 }
 
+/*
+ * @brief	Tecla inicio programa
+ */
 void TECLAA_Handler(void) {
 	horno_programa.estado = INICIO;
 }
 
+/*
+ * @brief	Tecla parada(forzosa)
+ */
 void TECLAB_Handler(void) {
 	horno_programa.estado = FIN_PROGRAMA;
 }
 
+/*
+ * @brief	Subir de línea de ingreso de datos
+ */
 void TECLAC_Handler(void) {
 //	DEBUGOUT("C");
 	if (!horno_teclado_deshabilitar_carga_datos){
@@ -185,6 +224,9 @@ void TECLAC_Handler(void) {
 	}
 }
 
+/*
+ * @brief	Bajar de línea de ingreso de datos
+ */
 void TECLAD_Handler(void) {
 //	DEBUGOUT("D");
 	if (!horno_teclado_deshabilitar_carga_datos){
@@ -202,8 +244,9 @@ void TECLAD_Handler(void) {
 	}
 }
 
-/* tecla asterisco
- * funciona como tecla retroceso
+/*
+ * @brief	tecla asterisco
+ * 			funciona como tecla retroceso
  */
 void TECLAE_Handler(void) {
 //	DEBUGOUT("\b"); /* \b -> backspace */
@@ -213,8 +256,9 @@ void TECLAE_Handler(void) {
 	                           horno_teclado_deshabilitar_carga_datos);
 }
 
-/* tecla numeral
- * funciona como enter, confirma el número ingresado
+/*
+ * @brief 	tecla numeral
+ * 			funciona como enter, confirma el número ingresado
  */
 void TECLAF_Handler(void) {
 //	DEBUGOUT("\n");
@@ -235,6 +279,9 @@ void TECLAF_Handler(void) {
 	}
 }
 
+/*
+ * @brief	manejador de la columna 1
+ */
 void COLUMN1_Handler(void) {
 	     if (FILA1) { TECLA1_Handler(); }
 	else if (FILA2) { TECLA4_Handler(); }
@@ -242,6 +289,9 @@ void COLUMN1_Handler(void) {
 	else if (FILA4) { TECLAE_Handler(); }
 }
 
+/*
+ * @brief	manejador de la columna 2
+ */
 void COLUMN2_Handler(void) {
 	     if (FILA1) { TECLA2_Handler(); }
 	else if (FILA2) { TECLA5_Handler(); }
@@ -249,6 +299,9 @@ void COLUMN2_Handler(void) {
 	else if (FILA4) { TECLA0_Handler(); }
 }
 
+/*
+ * @brief	manejador de la columna 3
+ */
 void COLUMN3_Handler(void) {
 	     if (FILA1) { TECLA3_Handler(); }
 	else if (FILA2) { TECLA6_Handler(); }
@@ -256,6 +309,9 @@ void COLUMN3_Handler(void) {
 	else if (FILA4) { TECLAF_Handler(); }
 }
 
+/*
+ * @brief	manejador de la columna 4
+ */
 void COLUMN4_Handler(void) {
 	     if (FILA1) { TECLAA_Handler(); }
 	else if (FILA2) { TECLAB_Handler(); }
@@ -263,7 +319,9 @@ void COLUMN4_Handler(void) {
 	else if (FILA4) { TECLAD_Handler(); }
 }
 
-/* interrupción del GPIO, cuando detecta un flanco ascendiente */
+/*
+ * @brief interrupción del GPIO, cuando detecta un flanco ascendiente
+ */
 void EINT3_IRQHandler(void) {
 	if (Chip_GPIOINT_IsIntPending(LPC_GPIOINT, 0)) {
 		uint32_t pint = Chip_GPIOINT_GetStatusRising(LPC_GPIOINT, 0);
@@ -310,7 +368,9 @@ void EINT3_IRQHandler(void) {
 	NVIC_ClearPendingIRQ(EINT3_IRQn);
 }
 
-/* la interrupcion del timer rota las filas */
+/*
+ * @brief	la interrupcion del timer rota las filas
+ */
 void _TIMER_IRQHandler(void)
 {
 	if (Chip_TIMER_MatchPending(_LPC_TIMER, 1)) {
@@ -340,7 +400,7 @@ void _TIMER_IRQHandler(void)
 }
 
 /*
- * @brief Inicialización de los perifericos para manejar el teclado.
+ * @brief	Inicialización de los perifericos para manejar el teclado.
  */
 void Horno_teclado_init(void) {
 	/* configurar interrupciones del GPIO */
