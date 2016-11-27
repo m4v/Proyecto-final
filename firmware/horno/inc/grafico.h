@@ -38,7 +38,6 @@ void Horno_grafico_datos_pwm( bool activo, uint32_t periodo, float dc, float ref
 void Horno_grafico_pwm_encendido(bool activo);
 void Horno_grafico_pwm_periodo(uint32_t periodo);
 void Horno_grafico_pwm_ciclo(float dc);
-void Horno_grafico_control_referencia(float ref);
 
 void Horno_grafico_dos_puntos(void);
 void Horno_grafico_CLR_dos_puntos(void);

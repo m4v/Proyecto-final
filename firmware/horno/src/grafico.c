@@ -280,13 +280,6 @@ void Horno_grafico_tiempo(uint32_t tiempo){
 	Horno_grafico_entero_tiempo(75,tiempo);
 }
 
-void Horno_grafico_control_referencia(float ref){
-	Put_string_waddr(1,10,"Ref. PI:");
-	Put_string_waddr(14,10,"    ");
-	Horno_grafico_datos_PI_referencia(ref);
-	Put_string_waddr(18,10,"`C");
-}
-
 void Horno_grafico_curva(void){
 	/* Esto pone la curva*/
 		/*primer rampa       --desde x0=0 y0=229 hasta x1=83 y1=181*/

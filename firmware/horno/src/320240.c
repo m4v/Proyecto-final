@@ -167,30 +167,6 @@ void Clr_pixel(uint32_t x, uint32_t y){
 	Parameter_Write(0x00<<temp);
 }
 
-/* Pone una línea que comienza en (x,y) y de longitud 'largo' */
-void Put_line( int x, uint32_t y, uint32_t largo){
-	char pp=(0x80>>(x%8)); // pixel inicial
-	int i;
-	largo=x+largo;
-	for (i=1; i<=(8-x%8); i++){
-		Set_graphic_position(x/8,y);
-		Command_Write(MEM_WRITE);
-		Parameter_Write(pp);
-		pp=pp+((0x80>>(x%8))>>(i));
-	}
-	x=x+i-1;
-
-	for(; x<largo; x++){
-		Set_graphic_position(x/8,y);
-//		int temp= (7-(t%8));
-		Command_Write(MEM_WRITE);
-		char p=0x7F;
-		char q;
-		q=~(p>>(x%8));
-		Parameter_Write(q);
-	}
-}
-
 /* Crea una linea en la posición (x,y) relativa al origen (x0,y0) de longitud 'largo' */
 void Put_line_waddr(int x0, uint32_t y0, uint32_t x, uint32_t y, uint32_t largo){
 	// quiero darle una direccion base y que de ahí
