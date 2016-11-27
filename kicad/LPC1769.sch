@@ -33,7 +33,7 @@ $Descr A4 11693 8268
 encoding utf-8
 Sheet 4 5
 Title "Conexión LPCXpresso LPC1769"
-Date "2016-11-08"
+Date "2016-11-26"
 Rev "3"
 Comp "Elián Hanisch - Rodrigo Oliver - Gastón Riera"
 Comment1 "Cátedra de Proyecto Final"
@@ -328,4 +328,87 @@ Wire Wire Line
 Wire Wire Line
 	2000 3300 1600 3300
 NoConn ~ 6600 4900
+$Comp
+L BC547 Q2
+U 1 1 583A29DB
+P 8850 2400
+F 0 "Q2" H 9050 2475 50  0000 L CNN
+F 1 "BC547" H 9050 2400 50  0000 L CNN
+F 2 "TO-92" H 9050 2325 50  0001 L CIN
+F 3 "" H 8850 2400 50  0000 L CNN
+	1    8850 2400
+	1    0    0    -1  
+$EndComp
+$Comp
+L R R13
+U 1 1 583A2A40
+P 8950 1900
+F 0 "R13" V 9030 1900 50  0000 C CNN
+F 1 "220" V 8950 1900 50  0000 C CNN
+F 2 "" V 8880 1900 50  0000 C CNN
+F 3 "" H 8950 1900 50  0000 C CNN
+	1    8950 1900
+	1    0    0    -1  
+$EndComp
+$Comp
+L LED D1
+U 1 1 583A2AB1
+P 8950 1350
+F 0 "D1" H 8950 1450 50  0000 C CNN
+F 1 "LED" H 8950 1250 50  0000 C CNN
+F 2 "" H 8950 1350 50  0000 C CNN
+F 3 "" H 8950 1350 50  0000 C CNN
+	1    8950 1350
+	0    -1   -1   0   
+$EndComp
+$Comp
+L +5V #PWR53
+U 1 1 583A2AF6
+P 8950 1000
+F 0 "#PWR53" H 8950 850 50  0001 C CNN
+F 1 "+5V" H 8950 1140 50  0000 C CNN
+F 2 "" H 8950 1000 50  0000 C CNN
+F 3 "" H 8950 1000 50  0000 C CNN
+	1    8950 1000
+	1    0    0    -1  
+$EndComp
+$Comp
+L R R12
+U 1 1 583A35FD
+P 8200 2400
+F 0 "R12" V 8280 2400 50  0000 C CNN
+F 1 "10k" V 8200 2400 50  0000 C CNN
+F 2 "" V 8130 2400 50  0000 C CNN
+F 3 "" H 8200 2400 50  0000 C CNN
+	1    8200 2400
+	0    1    1    0   
+$EndComp
+$Comp
+L GND #PWR54
+U 1 1 583A3630
+P 8950 3000
+F 0 "#PWR54" H 8950 2750 50  0001 C CNN
+F 1 "GND" H 8950 2850 50  0000 C CNN
+F 2 "" H 8950 3000 50  0000 C CNN
+F 3 "" H 8950 3000 50  0000 C CNN
+	1    8950 3000
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8950 3000 8950 2600
+Wire Wire Line
+	8950 2200 8950 2050
+Wire Wire Line
+	8950 1750 8950 1550
+Wire Wire Line
+	8950 1000 8950 1150
+Wire Wire Line
+	8650 2400 8350 2400
+Wire Wire Line
+	8050 2400 7050 2400
+Wire Wire Line
+	7050 2400 7050 3800
+Connection ~ 7050 3800
+Text Notes 9050 2700 0    60   ~ 0
+Indicador del PWM
 $EndSCHEMATC

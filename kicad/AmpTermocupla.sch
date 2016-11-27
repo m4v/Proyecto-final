@@ -34,7 +34,7 @@ encoding utf-8
 Sheet 3 5
 Title "Amplificador y filtro de la termocupla"
 Date "2016-09-11"
-Rev "2"
+Rev "3"
 Comp "Elián Hanisch - Rodrigo Oliver - Gastón Riera"
 Comment1 "Cátedra de Proyecto Final"
 Comment2 "Ingeniería Electrónica"
