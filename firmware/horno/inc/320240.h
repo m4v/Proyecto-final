@@ -8,16 +8,25 @@
 #ifndef D320240_H_
 #define D320240_H_
 
-void Horno_Display_Init(void);
-void Horno_Display_Test(void);
-void Set_graphic_position(uint32_t x, uint32_t y);
-void Set_text_position(uint32_t x, uint32_t y);
+void Display_Reset(void);
+void Data_Write(uint8_t dato);
 void Parameter_Write(uint8_t pmtr);
 void Command_Write(uint8_t cmd);
-void Put_string_waddr(int x, int y, char *str);
+void Put_string(char str[]);
+void Fill_text_layer(uint8_t value);
+void Fill_graphic_layer(uint8_t value);
+void Set_text_position(uint32_t x, uint32_t y);
+void Set_graphic_position(uint32_t x, uint32_t y);
+void Put_pixel(uint32_t x, uint32_t y);
+void Clr_pixel(uint32_t x, uint32_t y);
 void Put_line_waddr(int x0, uint32_t y0, uint32_t x, uint32_t y, uint32_t largo);
 void Clear_line_waddr(int x0, uint32_t y0, uint32_t x, uint32_t y, uint32_t largo);
-void Horno_320240_clean2d_layer(void);
+void Horno_320240_recuadros(void);
+void Put_string_waddr(int x, int y, char *str);
+void Horno_320240_clear2d_layer(void);
+void Horno_Display_Init(void);
+void Horno_Display_static(void);
+
 
 /* comandos */
 #define SYSTEM_SET  0x40

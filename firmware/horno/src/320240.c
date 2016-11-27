@@ -34,7 +34,9 @@
 #define LCD_DELAY 1 /* retraso usado para comunicarse con la pantalla */
 
 
-/* activo la pata de reset del display */
+/*
+ * @brief activo la pata de reset del display
+ */
 void Display_Reset(void)
 {
 	CLR_RST;
@@ -43,7 +45,10 @@ void Display_Reset(void)
 	Horno_udelay(3e3);
 }
 
-/* escribir un byte en el bus de datos */
+/*
+ * @brief escribir un byte en el bus de datos
+ * @param dato: valor de 8 bits a poner en los pines de datos
+ */
 void Data_Write(uint8_t dato)
 {
 	/*
@@ -66,7 +71,10 @@ void Data_Write(uint8_t dato)
 	Chip_GPIO_SetPortValue(LPC_GPIO, 2, port);
 }
 
-/* escribe parámetros. */
+/*
+ * @brief escribe parámetros.
+ * @param pmtr: valor de 8bits a configurar
+ */
 void Parameter_Write(uint8_t pmtr)
 {
 	Data_Write(pmtr);
@@ -81,7 +89,10 @@ void Parameter_Write(uint8_t pmtr)
 	Horno_udelay(LCD_DELAY);
 }
 
-/* escribe comandos, necesarios para la configuración del controlador */
+/*
+ * @brief escribe comandos, necesarios para la configuración del controlador
+ * @param cmd: valor de 8 bits, comando de la hoja de datos
+ */
 void Command_Write(uint8_t cmd)
 {
 	Data_Write(cmd);
@@ -96,7 +107,10 @@ void Command_Write(uint8_t cmd)
 	Horno_udelay(LCD_DELAY);
 }
 
-/* escribe letra por letra, el contenido de una cadena */
+/*
+ * @brief escribe letra por letra, el contenido de una cadena
+ * @param str: cadena de caracteres a escribir
+ */
 void Put_string(char str[]){
 	Command_Write(MEM_WRITE);
 	for(int i=0; i<strlen(str);i++){
@@ -104,32 +118,39 @@ void Put_string(char str[]){
 	}
 }
 
-/* rellena la capa de texto con el valor de 8bit ingresado
- * 0x00 pone todo en blanco.
- * 0x20 pone todo en blanco, pero le pasamos el caracter espacio.
+/*
+ * @brief rellena la capa de texto con el valor de 8bit ingresado
+ * @param value:
+ * 				0x00 Limpia la capa
+ *				0x20 Limpoa la capa, pero le pasamos el caracter espacio.
  */
-void Fill_text_layer(uint8_t x){
+void Fill_text_layer(uint8_t value){
 	int i;
 	Command_Write(MEM_WRITE);
 	for(i=0;i<(40*30);i++){
-		Parameter_Write(x);
+		Parameter_Write(value);
 	}
 }
 
-/* rellena la capa gráfica con el valor de 8bit ingresado
- * 0x00 pone todo en blanco
+/*
+ * @brief rellena la capa gráfica con el valor de 8bit ingresado
+ * @param value:
+ * 				0x00 Limpia la capa
  */
-void Fill_graphic_layer(uint8_t x){
+void Fill_graphic_layer(uint8_t value){
 	Command_Write(MEM_WRITE);
 	for(int i=0;i<((0x28)*240);i++){
-		Parameter_Write(x);
+		Parameter_Write(value);
 	}
 }
 
-/* fijamos una coordenada para comenzar a escribir en el layer de texto
+/*
+ * @brief fijamos una coordenada para comenzar a escribir en el layer de texto
+ * @param x: posición horizontal, de a byte
+ * @param y: posicion vertican, de a 1 bit
  *
- * Usamos, a mano que la dirección de comienzo de la capa de texto es 0x0000.
- * Acá hay que poner la dirección en un define
+ * 		Usamos, a mano que la dirección de comienzo de la capa de texto es 0x0000.
+ * 		Acá hay que poner la dirección en un define
  */
 void Set_text_position(uint32_t x, uint32_t y){
 	uint32_t address;
@@ -151,7 +172,11 @@ void Set_graphic_position(uint32_t x, uint32_t y){
 	Parameter_Write((uint8_t)(address >> 8));   // MSB
 }
 
-/* Pone un pixel en la coordenada indicada */
+/*
+ * @brief Pone un pixel en la coordenada indicada
+ * @param x: posición horizontal, de a byte
+ * @param y: posicion vertican, de a 1 bit
+ */
 void Put_pixel(uint32_t x, uint32_t y){
 	Set_graphic_position(x/8,y);
 	int temp= (7-(x%8));
@@ -159,7 +184,11 @@ void Put_pixel(uint32_t x, uint32_t y){
 	Parameter_Write(0x01<<temp);
 }
 
-/* Limpia la coordenada puntual */
+/*
+ * @brief Limpia un pixel en la coordenada indicada
+ * @param x: posición horizontal, de a byte
+ * @param y: posicion vertican, de a 1 bit
+ */
 void Clr_pixel(uint32_t x, uint32_t y){
 	Set_graphic_position(x/8,y);
 	int temp= (7-(x%8));
@@ -167,9 +196,13 @@ void Clr_pixel(uint32_t x, uint32_t y){
 	Parameter_Write(0x00<<temp);
 }
 
-/* Crea una linea en la posición (x,y) relativa al origen (x0,y0) de longitud 'largo' */
+/*
+ * @brief Crea una linea en la posición (x,y) relativa al origen (x0,y0) de longitud 'largo'
+ * @param x0, y0: coordenadas de origen
+ * @param x, y: coordenadas a escribir
+ * @param largo: logitud en bits(o pixels) de la línea.
+ */
 void Put_line_waddr(int x0, uint32_t y0, uint32_t x, uint32_t y, uint32_t largo){
-	// quiero darle una direccion base y que de ahí
 	x=x0+x;
 	y=y0+y;
 	char pp=(0x80>>(x%8)); // pixel inicial
@@ -182,24 +215,25 @@ void Put_line_waddr(int x0, uint32_t y0, uint32_t x, uint32_t y, uint32_t largo)
 		pp=pp+((0x80>>(x%8))>>(i));
 	}
 	x=x+i-1;
-
 	for(; x<(largo); x++){
 		Set_graphic_position(x/8,y);
-//		int temp= (7-(t%8));
 		Command_Write(MEM_WRITE);
 		char p=0x7F;
 		char q;
 		q=~(p>>(x%8));
 		Parameter_Write(q);
 	}
-
 }
-
+/*
+ * @brief Limpia la linea en la posición (x,y) relativa al origen (x0,y0) de longitud 'largo'
+ * @param x0, y0: coordenadas de origen
+ * @param x, y: coordenadas a escribir
+ * @param largo: logitud en bits(o pixels) de la línea.
+ */
 void Clear_line_waddr(int x0, uint32_t y0, uint32_t x, uint32_t y, uint32_t largo){
-	// quiero darle una direccion base y que de ahí
 	x=x0+x;
 	y=y0+y;
-	char pp=(0x00>>(x%8));// 0x80  // pixel inicial
+	char pp=(0x00>>(x%8));// pixel inicial
 	int i;
 	largo=x+largo;
 	for (i=1; i<=(8-x%8); i++){
@@ -222,11 +256,12 @@ void Clear_line_waddr(int x0, uint32_t y0, uint32_t x, uint32_t y, uint32_t larg
 
 }
 
-/* Curva de trabajo estática con el recuadro*/
-void Horno_320240_recuadros(){
+/*
+ * @brief Curva de trabajo estática con el recuadro
+ */
+void Horno_320240_recuadros(void){
 	/* Esto pone los recuadros */
 	Put_line_waddr(0,0,0,0,320); // Linea horizontal al comienzo
-
 
 	/* Esto pone las lineas verticales en los laterales */
 	for (int i=0;i<=119;i++){
@@ -237,9 +272,13 @@ void Horno_320240_recuadros(){
 	/* Ponemos la 2da linea horizontal después de las verticales
 	 * porque sino aparecen huecos */
 	Put_line_waddr(0,0,0,120,320); // Linea horizontal en el medio
-
 }
 
+/*
+ * @brief escribe una cadena de caracteres comenzando en la coordenada (x,y).
+ * @param x, y: coordenadas a escribir.
+ * @param *str: puntero a la cadena de caracteres.
+ */
 void Put_string_waddr(int x, int y, char *str){
 	// Fijamos el comienzo del 1er layer
 	Command_Write(CSR_WRITE);
@@ -251,16 +290,19 @@ void Put_string_waddr(int x, int y, char *str){
 	Put_string(str);
 }
 
-void Horno_320240_clean2d_layer(void){
+/*
+ * @brief Limpia el 2do layer
+ */
+void Horno_320240_clear2d_layer(void){
 	Command_Write(CSR_WRITE); // Ponemos el cursor en el comienzo del layer
 	Parameter_Write(0x00); //P1 -- LSB
 	Parameter_Write(0x10); //P2 -- MSB
 	Fill_graphic_layer(0x00);
 }
 
-
-/* inicializa el display con una configuración parecida al 15.1.2 Initialization Example (p.103)
- *  del datasheet del controlador
+/*
+ * @brief inicializa el display con una configuración parecida al 15.1.2 Initialization
+ * Example (p.103) del datasheet del controlador
  */
 void Horno_Display_Init(void)
 {
@@ -369,8 +411,9 @@ void Horno_Display_Init(void)
 	Command_Write(CSR_DIR_R); //Set cursor shift direction to right.
 }
 
-/* Con esta funcion jugamos y testeamos el display */
-void Horno_Display_Test(void){
+/*
+ * @brief Función para agregar partes estáticas del display */
+void Horno_Display_static(void){
 
 	Horno_320240_recuadros();
 	Horno_grafico_programa(0, 00, 00, 00, 00, 00);
