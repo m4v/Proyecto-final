@@ -3,6 +3,8 @@
  *
  *  Created on: 22 de oct. de 2016
  *      Author: Elián Hanisch, Gastón Riera y Rodrigo Oliver
+ *
+ *  Funciones para graficar en la pantalla.
  */
 
 #if defined(NO_BOARD_LIB)
@@ -13,7 +15,6 @@
 
 #include "320240.h"
 #include "grafico.h"
-#include "320240.h"
 #include "fuentes.h"
 
 #include <stdlib.h>
@@ -365,4 +366,14 @@ void Horno_grafico_pantalla(void) {
 			Parameter_Write(byte);
 		}
 	}
+}
+
+/*
+ * @brief Función para agregar partes estáticas del display
+ */
+void Horno_grafico_static(void)
+{
+	Horno_320240_recuadros();
+	Horno_grafico_programa(0, 00, 00, 00, 00, 00);
+	Horno_grafico_flecha_datos(0, false,false);
 }

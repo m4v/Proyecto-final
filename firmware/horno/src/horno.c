@@ -275,7 +275,7 @@ int main(void) {
     DEBUGOUT(mensaje_inicio);
 
     Horno_Init();
-    Horno_Display_static();
+    Horno_grafico_static();
    	Board_LED_Set(0,false); // apagar el led
 
    	DEBUGOUT(mensaje_menu);

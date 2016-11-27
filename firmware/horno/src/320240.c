@@ -3,6 +3,8 @@
  *
  *  Created on: 9 de ago. de 2016
  *      Author: Gastón Riera, Elián Hanisch y Rodrigo Oliver
+ *
+ *  Funciones para dar comandos al display.
  */
 
 #if defined(NO_BOARD_LIB)
@@ -14,7 +16,6 @@
 #include <string.h>
 #include "delay.h"
 #include "320240.h"
-#include "grafico.h"
 /* Defines */
 
 #define LAYER2_ADDRESS 0x1000
@@ -409,13 +410,4 @@ void Horno_Display_Init(void)
 	  */
 
 	Command_Write(CSR_DIR_R); //Set cursor shift direction to right.
-}
-
-/*
- * @brief Función para agregar partes estáticas del display */
-void Horno_Display_static(void){
-
-	Horno_320240_recuadros();
-	Horno_grafico_programa(0, 00, 00, 00, 00, 00);
-	Horno_grafico_flecha_datos(0, false,false);
 }

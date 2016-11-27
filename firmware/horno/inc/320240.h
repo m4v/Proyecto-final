@@ -25,8 +25,6 @@ void Horno_320240_recuadros(void);
 void Put_string_waddr(int x, int y, char *str);
 void Horno_320240_clear2d_layer(void);
 void Horno_Display_Init(void);
-void Horno_Display_static(void);
-
 
 /* comandos */
 #define SYSTEM_SET  0x40
