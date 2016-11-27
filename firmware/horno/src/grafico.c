@@ -38,6 +38,11 @@ void Horno_grafico_digito(uint32_t x, uint32_t y, uint32_t num) {
 	}
 }
 
+/*
+ * @brief  borra el bloque de 24x42 pixeles
+ * @param  x: posición X en pixels
+ * @param  y: posición Y en pixels
+ */
 void Horno_grafico_CLR_digito(uint32_t x, uint32_t y) {
 	for (uint32_t i=0; i < 42; i++) {
 		Set_graphic_position(x/8, y+i);
@@ -84,7 +89,6 @@ void Horno_grafico_entero(uint32_t y, uint32_t dato){
    	Horno_grafico_digito(295,20,10);
 	}
 
-
 /*
  * @brief Grafica el tiempo en formato HH:MM
  * @param y: posición Y en pixels
@@ -111,6 +115,23 @@ void Horno_grafico_entero_tiempo(uint32_t y, uint32_t segundos){
 		}
 }
 
+/*
+ * @brief pone datos en de temperatura actual en ºC
+ * @param temp: temperatura a mostrar.
+ */
+void Horno_grafico_temperatura(uint32_t temp){
+	Put_string_waddr(24,1,"TEMPERATURA: ");
+	Horno_grafico_entero(20,temp);
+}
+
+/*
+ * @brief pone datos en de tiempo restante
+ * @param tiempo: numero en minutos a graficar.
+ */
+void Horno_grafico_tiempo(uint32_t tiempo){
+	Put_string_waddr(24,8,"TIEMPO RESTANTE: ");
+	Horno_grafico_entero_tiempo(75,tiempo);
+}
 
 /*
  * @brief grafica flecha de 8x12 px
@@ -146,15 +167,11 @@ void Horno_grafico_posicion_flecha(uint32_t estado){
 	Horno_grafico_flecha(estado, horno_pos_y_flecha[estado]);
 }
 
-void Horno_grafico_posicion_CLR_flecha(uint32_t estado){
-	Horno_grafico_CLR_flecha(estado, horno_pos_y_flecha[estado]);
-}
-
 /*
  * @brief borra la flecha siguiendo la gráfica
  * @param estado: momento en que está el programa (de 0 a 39 estados)
  */
-void Horno_grafico_posicion_flecha_CLR(uint32_t estado){
+void Horno_grafico_posicion_CLR_flecha(uint32_t estado){
 	Horno_grafico_CLR_flecha(estado, horno_pos_y_flecha[estado]);
 }
 
@@ -219,6 +236,12 @@ void Horno_grafico_datos(uint32_t x, uint32_t y, uint32_t dato) {
 	}
 }
 
+/*
+ * @brief imprime las los parámetros junto con sus leyendas.
+ * @param deshabilitar: bloquea la modificación de los datos.
+ * @param P_calentamiento, T_secado, T_coccion, t_secado,
+ * 			t_coccion: Datos ingresados por el usuario.
+ */
 void Horno_grafico_programa(bool deshabilitar,
 							uint32_t P_calentamiento,
 							uint32_t T_secado,
@@ -263,23 +286,8 @@ void Horno_grafico_programa(bool deshabilitar,
 }
 
 /*
- * @brief pone datos en de temperatura actual en ºC
- * @param temp: temperatura a mostrar.
+ * @brief grafica la curva de trabajo estática.
  */
-void Horno_grafico_temperatura(uint32_t temp){
-	Put_string_waddr(24,1,"TEMPERATURA: ");
-	Horno_grafico_entero(20,temp);
-}
-
-/*
- * @brief pone datos en de tiempo restante
- * @param tiempo: numero en minutos a graficar.
- */
-void Horno_grafico_tiempo(uint32_t tiempo){
-	Put_string_waddr(24,8,"TIEMPO RESTANTE: ");
-	Horno_grafico_entero_tiempo(75,tiempo);
-}
-
 void Horno_grafico_curva(void){
 	/* Esto pone la curva*/
 		/*primer rampa       --desde x0=0 y0=229 hasta x1=83 y1=181*/
@@ -298,6 +306,9 @@ void Horno_grafico_curva(void){
 		}
 }
 
+/*
+ * @brief borra la curva hecha con Horno_grafico_curva()
+ */
 void Horno_grafico_CLR_curva(void){
 	/* Esto pone la curva*/
 		/*primer rampa       --desde x0=0 y0=229 hasta x1=83 y1=181*/
@@ -316,6 +327,12 @@ void Horno_grafico_CLR_curva(void){
 		}
 }
 
+/*
+ * @brief flecha indicador de línea para el ingreso de datos.
+ * @param linea: (0-4) línea de del ingreso de datos a escribir.
+ * @param borrar: borra la linea.
+ * @param habilitado: habilita/deshabilita la entrada de datos.
+ */
 void Horno_grafico_flecha_datos(int linea, bool borrar, bool habilitado){
 	uint32_t x=16;
 	uint32_t y=4;
@@ -337,7 +354,6 @@ void Horno_grafico_flecha_datos(int linea, bool borrar, bool habilitado){
 /*
  * @brief grafica la pantalla de inicio
  */
-
 void Horno_grafico_pantalla(void) {
 	Set_graphic_position(0, 0);
 	Command_Write(MEM_WRITE);
