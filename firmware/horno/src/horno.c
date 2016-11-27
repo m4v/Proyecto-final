@@ -245,7 +245,7 @@ void Horno_Init (void) {
 	Horno_Display_Init();
     Horno_grafico_pantalla(); // pantalla de inicio
     Horno_udelay(5e6);
-    Horno_320240_clean2d_layer(); // Limpiamos la pantalla que tiene el gráfico de inicio.
+    Horno_320240_clear2d_layer(); // Limpiamos la pantalla que tiene el gráfico de inicio.
 
 	Horno_adc_init();
 	/* Las interrupciones del SysTick son para muestrear con el ADC. */
@@ -275,7 +275,7 @@ int main(void) {
     DEBUGOUT(mensaje_inicio);
 
     Horno_Init();
-   	Horno_Display_Test();
+    Horno_Display_static();
    	Board_LED_Set(0,false); // apagar el led
 
    	DEBUGOUT(mensaje_menu);
