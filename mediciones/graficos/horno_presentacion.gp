@@ -16,9 +16,6 @@ set ylabel "Temperatura [°C]"
 # grosor de las curvas
 LW = 3
 
-dv = 3.3/4096 # LSB
-tm = 0.01     # periodo de muestreo
-g = 81        # ganancia
 c = 3.24e-3
 
 datos_escalon = "../captura_continua_04-Oct-2016_151634.csv"
